@@ -1,9 +1,6 @@
 public class Board
 {
-    // Board: Clase que representa el tablero del juego.
-
-    // Propiedades: Grid, Size
-    // Métodos: GenerateBoard(), PlaceObjects()
+    
 
     public int Size { get; private set; }
 
@@ -199,3 +196,25 @@ public class Board
 
     }
 }
+
+// public void GenerateVisualBoard(GameObject tilePrefab)
+// {
+//     for (int x = 0; x < Size; x++)
+//     {
+//         for (int y = 0; y < Size; y++)
+//         {
+//             GameObject tileGO = Instantiate(tilePrefab, new Vector3(x, 0, y), Quaternion.identity);
+//             Tile tile = GetTileAtPosition(x, y);
+
+//             // Configura el color o el aspecto visual del tile según el tipo
+//             if (tile is ObstacleTile)
+//             {
+//                 // Cambia el color a gris, por ejemplo
+//             }
+//             else if (tile is TrapTile)
+//             {
+//                 // Cambia el color o agrega un ícono de trampa
+//             }
+//         }
+//     }
+// }

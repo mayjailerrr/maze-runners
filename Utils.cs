@@ -1,4 +1,4 @@
-public delegate void TurnActionHandler(Player player, Piece ficha);
+public delegate bool Ability(Player player, Piece ficha);
 //Delegado TurnActionHandler: Para acciones que ocurren en cada turno (ej. movimiento de ficha, activación de habilidad).
 
 // Eventos en Ficha:

@@ -1,10 +1,6 @@
 public class TrapTile : Tile
 {
-    // Trap: Clase que representa trampas en el juego.
-
-    // Propiedades: Effect, Duration, TriggerCondition
-    // Métodos: Activate(), ApplyEffect()
-
+    
     public Trap TrapEffect { get; private set; }
     public bool IsTriggered { get; private set; } = false;
 
