@@ -26,5 +26,6 @@ public class ExitTile : Tile
     private void TriggerVictory(Piece piece)
     {
         Debug.Log($"{piece.Name} ha alcanzado el objeto {RepresentingObject} y ha ganado el juego!");
-        }
+        // Aquí podrías agregar lógica para mostrar la imagen flotante, lanzar un evento de victoria, etc.
+    }
 }

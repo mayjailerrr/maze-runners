@@ -1,6 +1,10 @@
 public abstract class Piece
 {
-  
+    // Ficha: Clase base para las fichas, con características como habilidad, velocidad y enfriamiento.
+
+    // Propiedades: Speed, Cooldown, Habilidad, Position
+    // Métodos: Move(), UseHabilidad()
+    // Subclases posibles: VacaParacaidista, SoldadoTanque (o cualquier otra ficha específica con habilidades).
 
     public string Name { get; protected set; }
     public int Speed { get; protected set; }

@@ -1,6 +1,6 @@
 public class TrapTile : Tile
 {
-    
+
     public Trap TrapEffect { get; private set; }
     public bool IsTriggered { get; private set; } = false;
 

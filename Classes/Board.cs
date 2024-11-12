@@ -1,6 +1,9 @@
 public class Board
 {
-    
+    // Board: Clase que representa el tablero del juego.
+
+    // Propiedades: Grid, Size
+    // Métodos: GenerateBoard(), PlaceObjects()
 
     public int Size { get; private set; }
 

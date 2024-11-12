@@ -1,6 +1,5 @@
 public class Tile
 {
-    
     public Vector2Int Position { get; private set; }
     public bool IsOccupied { get; set; }
 

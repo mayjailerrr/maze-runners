@@ -1,13 +1,31 @@
 public class GameManager : MonoBehaviour
 {
-    
+    //Clase central para gestionar el flujo general del juego (inicialización, turnos, condiciones de victoria).
+
+    // Propiedades: Players, Board, TurnManager
+    // Métodos: StartGame(), EndGame(), CheckWinCondition()
 
     public int numPlayers;
     public int boardSize;
     public Board board;
-    public List<Player> players;
+    private Dictionary<int, Player> players;
     private int currentPlayerIndex;
+    private List<string> availableMovies = new List<string>
+    {
+        "Ponyo", "Spirited Away", "Kiki's Delivery Service", "Howl's Moving Castle", "Princess Mononoke", "My Neighbor Totoro"
+    };
 
+    //change it to list of pieces
+    private Dictionary<string, List<string>> movieCharacters = new Dictionary<string, List<string>>
+    {
+        { "Ponyo", new List<string> { "Ponyo", "Sosuke", "Gran Mamare" } },
+        { "Spirited Away", new List<string> { "Chihiro", "Haku", "No-Face" } },
+        { "Kiki's Delivery Service", new List<string> { "Kiki", "Jiji", "Tombo" } },
+        { "Howl's Moving Castle", new List<string> { "Sophie", "Howl", "Turnip Head" } },
+        { "Princess Mononoke", new List<string> { "Ashitaka", "San", "Lady Eboshi" } },
+        { "My Neighbor Totoro", new List<string> { "Totoro", "Satsuki", "Mei" } }
+    };
+   
     void Start()
     {
         InitializeGame();
@@ -16,31 +34,49 @@ public class GameManager : MonoBehaviour
     private void InitializeGame()
     {
         board = new Board(boardSize);
-        players = new List<Player>();
+        players = new Dictionary<int, Player>();
 
-        // Create players and assign pieces
         for (int i = 0; i < numPlayers; i++)
         {
             Player player = new Player(i);
-            AssignPiecesToPlayer(player);
-            players.Add(player);
+            //AssignPiecesToPlayer(player);
+            players.Add(i, player);
         }
 
-        //generate board and put elements in the labrynth
         board.GenerateBoard();
         board.PlaceObstacles();
         board.PlaceTraps();
         board.PlaceExits();
 
-        currentPlayerIndex = 0; // Start with the first player
+        currentPlayerIndex = 0;
     }
 
-    private void AssignPiecesToPlayer(Player player)
+    public void SelectPlayerMovie(int playerId, string selectedMovie)
     {
-        player.AddPiece(new Piece("VacaParacaidista"));  
-        player.AddPiece(new Piece("SoldadoTanque"));
-         //player.AddFicha(new VacaParacaidista());
-        // player.AddFicha(new SoldadoTanque());
+        if (players.ContainsKey(playerId) && availableMovies.Contains(selectedMovie))
+        {
+            Player player = players[playerId];
+            player.SelectedMovie = selectedMovie;
+            availableMovies.Remove(selectedMovie);
+
+            AssignPiecesToPlayerBasedOnMovie(player, selectedMovie);
+        }
+
+        else Debug.Log("Invalid movie selection or player ID");
+    }
+
+    //TO-DO: CHANGE THIS
+    private void AssignPiecesToPlayerBasedOnMovie(Player player, string movie)
+    {
+        if (movieCharacters.TryGetValue(movie, out List<string> characters))
+        {
+            foreach (string characterName in characters)
+            {
+                player.AddPiece(new Piece(characterName));
+            }
+        }
+        else Debug.Log($"No characters found for movie")
+       
     }
 
     private void NextTurn()
