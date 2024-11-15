@@ -1,10 +1,5 @@
 public class Player
 {
-    //Player: Representa a cada jugador y sus fichas.
-
-   // Propiedades: Fichas, ID
-    //Métodos: ChooseFicha(), MoveFicha()
-
     public int ID { get; private set; }
     public List<Piece> Pieces { get; private set; }
 
@@ -50,17 +45,3 @@ public class Player
 
 }
 
-// // Ejemplo de uso
-// Player player = new Player(id: 1);
-
-// // Añadir fichas al jugador
-// player.AddFicha(new VacaParacaidista());
-// player.AddFicha(new SoldadoTanque());
-
-// // Turno del jugador
-// Ficha selectedFicha = player.ChooseFicha(0); // Selecciona la primera ficha
-// if (selectedFicha != null)
-// {
-//     player.MoveFicha(selectedFicha, newX: 5, newY: 5, board: gameBoard);
-//     player.UseFichaHabilidad(selectedFicha);
-// }
