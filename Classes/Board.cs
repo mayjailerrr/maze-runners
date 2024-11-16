@@ -194,6 +194,15 @@ public class Board
         return null;
 
     }
+
+    public bool IsValidMove(Piece piece, int targetX, int targetY)
+    {
+        if (!IsWithinBounds(targetX, targetY)) return false;
+
+        Tile targetTile = GetTileAtPosition(targetX, targetY);
+
+        return !targetTile.IsOccupied && !(targetTile is ObstacleTile);
+    }
 }
 
 // public void GenerateVisualBoard(GameObject tilePrefab)

@@ -31,6 +31,83 @@ public class GameManager : MonoBehaviour
         InitializeGame();
     }
 
+    void Update()
+    {
+        HandlePlayerInput();
+    }
+
+    private void HandlePlayerInput()
+    {
+        Player currentPlayer = players[currentPlayerIndex];
+        Piece selectedPiece = currentPlayer.ChoosePiece(0); //TO-DO: Change this to player input
+
+        if (selectedPiece == null) return;
+
+        Vector2Int direction = Vector2Int.zero;
+
+        if (Input.GetKeyDown(KeyCode.W)) direction = Vector2Int.up;
+        else if (Input.GetKeyDown(KeyCode.S)) direction = Vector2Int.down;
+        else if (Input.GetKeyDown(KeyCode.A)) direction = Vector2Int.left;
+        else if (Input.GetKeyDown(KeyCode.D)) direction = Vector2Int.right;
+
+        if (direction != Vector2Int.zero)
+        {
+            Vector2Int targetPosition = new Vector2Int(
+                selectedPiece.Position.x + direction.x,
+                selectedPiece.Position.y + direction.y
+            );
+
+            if (MovePieceIfValid(currentPlayer, selectedPiece, targetPosition))
+            {
+                EndTurn();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            currentPlayer.UsePieceAbility(selectedPiece);
+        }
+    }
+
+    private bool MovePieceIfValid(Player player, Piece piece, Vector2Int targetPosition)
+    {
+        if (board.IsValidMove(piece, targetPosition.x, targetPosition.y))
+        {
+            board.GetTileAtPosition(piece.Position).IsOccupied = false;
+            board.GetTileAtPosition(targetPosition).IsOccupied = true;
+
+            player.MovePiece(piece, targetPosition.x, targetPosition.y, board);
+            return true;
+        }
+
+        else
+        {
+            Debug.Log("Invalid move");
+            return false;
+        }
+    }
+
+    private void EndTurn()
+    {
+        Debug.Log($"Player {currentPlayerIndex} ends turn");
+
+        activePiece = null;
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
+
+        Debug.Log($"Player {currentPlayerIndex}'s turn");
+    }
+
+
+    public void PlayTurn(Piece selectedPiece, int targetX, int targetY)
+    {
+        Player currentPlayer = players[currentPlayerIndex];
+
+        currentPlayer.MovePiece(selectedPiece, targetX, targetY, board);
+        currentPlayer.UsePieceAbility(selectedPiece);
+
+        if (CheckWinCondition(currentPlayer)) EndGame(currentPlayer);
+        else EndTurn();
+    }
     private void InitializeGame()
     {
         board = new Board(boardSize);

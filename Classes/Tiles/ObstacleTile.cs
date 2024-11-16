@@ -4,6 +4,6 @@ public class ObstacleTile : Tile
 
     public override void OnEnter(Piece piece)
     {
-        //IMPELEMENT: Pieces cannot step on obstacles
+       Debug.Log("You hit an obstacle!");
     }
 }
