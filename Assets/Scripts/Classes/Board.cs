@@ -3,10 +3,8 @@ using MazeRunners;
 using UnityEngine;
 using System;
 
-
 public class Board
 {
-
     public int Size { get; private set; }
 
     public Tile[,] grid;
@@ -24,9 +22,7 @@ public class Board
         PlaceObstacles();
         PlaceTraps();
         EnsureReachability();
-        PrintBoard();
-        PlaceExists();
-       
+        PlaceExits();
     }
 
     private void CreateEmptyGrid()
@@ -39,63 +35,46 @@ public class Board
             }
         }
     }
-   
 
-   public void PlaceObstacles()
-{
-    int obstacleCount = (int)(Size * Size * 0.4f); // 40% of the board will be obstacles
-    System.Random random = new System.Random();
-
-    for (int i = 0; i < obstacleCount; i++)
+    private bool CanPlaceTile(int x, int y, Func<Tile, bool> additionalChecks = null)
     {
-        int x, y;
+        if (grid[x, y] is ObstacleTile || grid[x, y] is TrapTile || grid[x, y] is ExitTile)
+            return false;
 
-        do
-        {
-            x = random.Next(0, Size);
-            y = random.Next(0, Size);
-        } while (!CanPlaceObstacle(x, y));
+        if (additionalChecks != null && !additionalChecks(grid[x, y]))
+            return false;
 
-        grid[x, y] = new ObstacleTile(x, y);
+        return true;
     }
-}
 
+    private bool CanPlaceObstacle(int x, int y)
+    {
+        return CanPlaceTile(x, y, tile =>
+        {
+            Tile originalTile = grid[tile.Position.x, tile.Position.y];
+            grid[tile.Position.x, tile.Position.y] = new ObstacleTile(tile.Position.x, tile.Position.y);
+            bool isReachable = CheckMazeConnectivity();
+            grid[tile.Position.x, tile.Position.y] = originalTile;
+            return isReachable;
+        });
+    }
 
-private bool CanPlaceObstacle(int x, int y)
-{
-    if (grid[x, y] is ObstacleTile || grid[x, y] is TrapTile || grid[x, y] is ExitTile)
-        return false;
+    private bool CanPlaceTrapOrExit(int x, int y)
+    {
+        return CanPlaceTile(x, y, tile =>
+        {
+            foreach (Tile neighbor in GetNeighbours(tile))
+            {
+                if (!(neighbor is ObstacleTile)) return true;
+            }
+            return false;
+        });
+    }
 
-    Tile originalTile = grid[x, y];
-    grid[x, y] = new ObstacleTile(x, y);
-   
-    bool isReachable = CheckMazeConnectivity();
-
-    grid[x, y] = originalTile;
-
-    return isReachable;
-}
-
-
-  
-
-    private bool CheckMazeConnectivity()
+    private bool[,] PerformBFS(Tile startTile, Func<Tile, bool> canVisit = null)
     {
         bool[,] visited = new bool[Size, Size];
         Queue<Tile> queue = new Queue<Tile>();
-
-        Tile startTile = null;
-
-        for (int x = 0; x < Size && startTile == null; x++)
-        {
-            for (int y = 0; y < Size && startTile == null; y++)
-            {
-                if (!(grid[x, y] is ObstacleTile))
-                    startTile = grid[x, y];
-            }
-        }
-
-        if(startTile == null) return false;
 
         queue.Enqueue(startTile);
         visited[startTile.Position.x, startTile.Position.y] = true;
@@ -109,13 +88,23 @@ private bool CanPlaceObstacle(int x, int y)
                 int nx = neighbour.Position.x;
                 int ny = neighbour.Position.y;
 
-                if (!visited[nx, ny] && !(grid[nx, ny] is ObstacleTile))
+                if (!visited[nx, ny] && (canVisit == null || canVisit(neighbour)))
                 {
                     visited[nx, ny] = true;
                     queue.Enqueue(neighbour);
                 }
             }
         }
+
+        return visited;
+    }
+
+    private bool CheckMazeConnectivity()
+    {
+        Tile startTile = GetFirstNonObstacleTile();
+        if (startTile == null) return false;
+
+        bool[,] visited = PerformBFS(startTile, tile => !(grid[tile.Position.x, tile.Position.y] is ObstacleTile));
 
         for (int x = 0; x < Size; x++)
         {
@@ -128,86 +117,13 @@ private bool CanPlaceObstacle(int x, int y)
 
         return true;
     }
-
-    private bool CanPlaceTrapOrExit(int x, int y)
-    {
-        if (grid[x, y] is ObstacleTile || grid[x, y] is TrapTile || grid[x, y] is ExitTile)
-            return false;
-
-        foreach (Tile neighbor in GetNeighbours(grid[x, y]))
-        {
-            if (!(neighbor is ObstacleTile))
-                return true; 
-        }
-
-        return false; 
-    }
-
-    public void PlaceTraps()
-    {
-        int trapCount = (int)(Size * Size * 0.1f); // 10% of the board will be traps
-        System.Random random = new System.Random();
-
-        
-       for (int i = 0; i < trapCount; i++)
-        {
-            int x, y;
-
-            do
-            {
-                x = random.Next(0, Size);
-                y = random.Next(0, Size);
-            } while (!CanPlaceTrapOrExit(x, y));
-
-            Trap randomTrap = TrapFactory.CreateRandomTrap();
-
-           grid[x, y] = new TrapTile(x, y, randomTrap);
-        }
-    }
-
-
+  
     public void EnsureReachability()
     {
-        bool[,] visited = new bool[Size, Size];
-        Queue<Tile> queue = new Queue<Tile>();
+        Tile startTile = GetFirstNonObstacleTile();
+        if (startTile == null) return;
 
-       
-        Tile startTile = null;
-        for (int x = 0; x < Size && startTile == null; x++)
-        {
-            for (int y = 0; y < Size && startTile == null; y++)
-            {
-                if (!(grid[x, y] is ObstacleTile))
-                {
-                    startTile = grid[x, y];
-                }
-            }
-        }
-
-        //BFS algorithm
-        if (startTile != null)
-        {
-            queue.Enqueue(startTile);
-            visited[startTile.Position.x, startTile.Position.y] = true;
-
-            while (queue.Count > 0)
-            {
-                Tile currentTile = queue.Dequeue();
-
-                foreach (Tile neighbour in GetNeighbours(currentTile))
-                {
-                    int nx = neighbour.Position.x;
-                    int ny = neighbour.Position.y;
-
-
-                    if (!visited[nx, ny])
-                    {
-                        visited[nx, ny] = true;
-                        queue.Enqueue(neighbour);
-                    }
-                }
-            }
-        }
+        bool[,] visited = PerformBFS(startTile);
 
         for (int x = 0; x < Size; x++)
         {
@@ -221,26 +137,20 @@ private bool CanPlaceObstacle(int x, int y)
         }
     }
 
-    public void PrintBoard()
+    private Tile GetFirstNonObstacleTile()
     {
-        for (int y = Size - 1; y >= 0; y--)
+        for (int x = 0; x < Size; x++)
         {
-            string row = "";
-            for (int x = 0; x < Size; x++)
+            for (int y = 0; y < Size; y++)
             {
-                if (grid[x, y] is ObstacleTile)
-                    row += "O ";
-                else if (grid[x, y] is TrapTile)
-                    row += "T ";
-                else if (grid[x, y] is ExitTile)
-                    row += "E ";
-                else
-                    row += ". ";
+                if (!(grid[x, y] is ObstacleTile))
+                {
+                    return grid[x, y];
+                }
             }
-            Debug.Log(row);
         }
+        return null; 
     }
-
 
     private IEnumerable<Tile> GetNeighbours(Tile tile)
     {
@@ -261,25 +171,6 @@ private bool CanPlaceObstacle(int x, int y)
         }
     }
 
-    private void PlaceExists()
-    {
-        System.Random random = new System.Random();
-        int exitCount = 2; //just two exits, i can adjust this
-
-        for (int i = 0; i < exitCount; i++)
-        {
-            int x, y;
-
-            do 
-            {
-                x = random.Next(0, Size);
-                y = random.Next(0, Size);
-            } while (grid[x, y] is ObstacleTile || grid[x, y] is TrapTile || grid[x, y] is ExitTile);
-
-            grid[x, y] = new ExitTile(x, y);
-        }
-    }
-
     public bool IsWithinBounds(int x, int y)
     {
         return x >= 0 && x < Size && y >= 0 && y < Size;
@@ -293,14 +184,42 @@ private bool CanPlaceObstacle(int x, int y)
 
     }
 
-    public bool IsValidMove(Piece piece, int targetX, int targetY)
+    private void PlaceTiles<T>(int count, Func<int, int, bool> canPlace, Func<int, int, T> createTile) where T : Tile
     {
-        if (!IsWithinBounds(targetX, targetY)) return false;
+        System.Random random = new System.Random();
 
-        Tile targetTile = GetTileAtPosition(targetX, targetY);
+        for (int i = 0; i < count; i++)
+        {
+            int x, y;
 
-        return !targetTile.IsOccupied && !(targetTile is ObstacleTile);
+            do
+            {
+                x = random.Next(0, Size);
+                y = random.Next(0, Size);
+            } while (!canPlace(x, y));
+
+            grid[x, y] = createTile(x, y);
+        }
     }
+
+    public void PlaceObstacles()
+    {
+        int obstacleCount = (int)(Size * Size * 0.4f);
+        PlaceTiles(obstacleCount, CanPlaceObstacle, (x, y) => new ObstacleTile(x, y));
+    }
+
+    public void PlaceTraps()
+    {
+        int trapCount = (int)(Size * Size * 0.1f);
+        PlaceTiles(trapCount, CanPlaceTrapOrExit, (x, y) => new TrapTile(x, y, TrapFactory.CreateRandomTrap()));
+    }
+
+    public void PlaceExits()
+    {
+        int exitCount = 2; 
+        PlaceTiles(exitCount, CanPlaceTrapOrExit, (x, y) => new ExitTile(x, y));
+    }
+
 }
 
 

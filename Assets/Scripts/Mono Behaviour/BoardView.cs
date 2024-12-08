@@ -1,32 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using MazeRunners;
 
-public class BoardMB : MonoBehaviour
+public class BoardView : MonoBehaviour
 {
     public GameObject tilePrefab;
     public GameObject obstaclePrefab;
     public GameObject trapPrefab;
     public GameObject exitPrefab;
 
-    private Board board;
     private GameObject[,] tileObjects;
 
-    public int boardSize = 10;
-
-    private void Start()
+    public void InitializeView(Board board)
     {
-        board = new Board(boardSize);
+        int boardSize = board.Size;
         tileObjects = new GameObject[boardSize, boardSize];
-        GenerateVisualBoard();
+        GenerateVisualBoard(board);
     }
 
-    private void GenerateVisualBoard()
+    private void GenerateVisualBoard(Board board)
     {
-        for (int x = 0; x < boardSize; x++)
+        for (int x = 0; x < board.Size; x++)
         {
-            for (int y = 0; y < boardSize; y++)
+            for (int y = 0; y < board.Size; y++)
             {
                 Tile tile = board.GetTileAtPosition(x, y);
                 GameObject prefab = GetPrefabForTile(tile);
