@@ -30,7 +30,6 @@ public class GameManager : MonoBehaviour
 
     public bool AssignMovieToPlayer(Movies movie)
     {
-
         if (selectedMovies.Contains(movie))
         {
             Debug.LogError($"Movie {movie} is already selected. Choose a different one.");
@@ -59,7 +58,7 @@ public class GameManager : MonoBehaviour
         if (currentPlayerIndex >= MaxPlayers || currentPlayerIndex >= PlayerCount + 1)
         {
             Debug.Log("All players have selected movies.");
-            currentPlayerIndex = PlayerCount; 
+            currentPlayerIndex = PlayerCount;
         }
     }
 

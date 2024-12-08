@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using MazeRunners;
+using System.Collections.Generic;
 
 namespace MazeRunners
 {
     public class MovieSelectionModel
     {
-        public List<Movies> AvailableMovies { get; private set; }
-        public Dictionary<int, Movies> PlayerMovieSelections { get; private set; }
+        private List<Movies> availableMovies;
 
         public MovieSelectionModel()
         {
-            AvailableMovies = new List<Movies>
+            availableMovies = new List<Movies>
             {
                 Movies.Ponyo,
                 Movies.HowlsMovingCastle,
@@ -21,20 +21,24 @@ namespace MazeRunners
                 Movies.PorcoRosso,
                 Movies.Arietty
             };
-            PlayerMovieSelections = new Dictionary<int, Movies>();
         }
 
         public bool IsMovieAvailable(Movies movie)
         {
-            return AvailableMovies.Contains(movie);
+            return availableMovies.Contains(movie);
         }
 
         public void AssignMovieToPlayer(int playerId, Movies movie)
         {
-            if (!IsMovieAvailable(movie)) return;
+            if (!IsMovieAvailable(movie))
+                return;
 
-            AvailableMovies.Remove(movie);
-            PlayerMovieSelections[playerId] = movie;
+            availableMovies.Remove(movie);
+        }
+
+        public bool CanSelectMovie()
+        {
+            return GameManager.Instance.PlayerCount < GameManager.MaxPlayers;
         }
     }
 }
