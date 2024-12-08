@@ -1,5 +1,5 @@
 
-
+using System;
 using MazeRunners;
 using UnityEngine;
 public class Piece
@@ -8,24 +8,46 @@ public class Piece
     public string Name { get; protected set; }
     public int Speed { get; set; }
     public int Cooldown { get; set; }
-    public int CurrentCooldown { get; set; }
+    private int currentCooldown = 0;
     public (int x, int y) Position { get; set; }
-  //  public Movie Movie { get; private set; }
+
+    public Func<Context, bool> Ability { get; private set; }	
 
     private int tilesMovedThisTurn;
 
-    public Piece (string name, int speed, int cooldown)
+    public Piece (string name, int speed, int cooldown, Func<Context, bool> ability)
     {
         Name = name;
         Speed = speed;
         Cooldown = cooldown;
-        CurrentCooldown = 0;
-        //Movie = movie;
+        Ability = ability;
     }
 
-    public virtual void UseAbility()
+    public bool CanUseAbility => currentCooldown == 0;
+
+    public bool UseAbility(Context context)
     {
-        Debug.Log($"{Name} used their ability!");
+        if (!CanUseAbility)
+        {
+            Debug.Log($"{Name} ability is on cooldown for {currentCooldown} more turn(s).");
+            return false;
+        }
+
+        if (Ability?.Invoke(context) == true)
+        {
+            Debug.Log($"{Name} used ability.");
+            ActivateAbility();
+            return true;
+        }
+
+        Debug.LogWarning($"{Name} ability failed.");
+        return false;
+       
+    }
+
+    public void ReduceCooldown()
+    {
+        if (currentCooldown > 0) currentCooldown--;
     }
 
      public void ResetTurn()
@@ -46,17 +68,12 @@ public class Piece
 
     public void UpdateCooldown()
     {
-        if (CurrentCooldown > 0) CurrentCooldown--;
-    }
-
-    public bool CanUseAbility()
-    {
-        return CurrentCooldown == 0;
+        if (currentCooldown > 0) currentCooldown--;
     }
 
     protected void ActivateAbility()
     {
-        CurrentCooldown = Cooldown;
+        currentCooldown = Cooldown;
     }
 
 }

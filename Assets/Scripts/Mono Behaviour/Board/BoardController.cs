@@ -6,12 +6,15 @@ public class BoardController : MonoBehaviour
     private Board board;
     private BoardView boardView;
 
-    private void Start()
+    private Context gameContext;
+
+    private void Start()          //to-do: i want to take this away, but when i do the board doesnt show up on scene
     {
         Initialize();
+        InitializeContext();
     }
 
-    private void Initialize()
+    public void Initialize()
     {
         board = new Board(boardSize); 
         boardView = GetComponent<BoardView>();
@@ -24,6 +27,12 @@ public class BoardController : MonoBehaviour
         {
             Debug.LogError("BoardView is not assigned or is not in the same GameObject.");
         }
+    }
+
+    private void InitializeContext()
+    {
+        
+        //to - do
     }
 
 }

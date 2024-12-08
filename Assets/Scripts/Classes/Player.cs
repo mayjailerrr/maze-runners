@@ -1,96 +1,106 @@
-using System.Collections.Generic;
 using MazeRunners;
+using System.Collections.Generic;
 using UnityEngine;
 public class Player
 {
-    public int ID { get; private set; }
-    public List<Piece> Pieces { get; private set; }
+    public int ID { get; }
+    public string Name { get; private set; }
+    public IReadOnlyList<Piece> Pieces => _pieces.AsReadOnly(); 
+    public int ExitsReached { get; private set; }
 
-    public Player (int id)
+    private List<Piece> _pieces;
+
+    public Player(int id, string name = "Player")
     {
         ID = id;
-        Pieces = new List<Piece>();
+        Name = name;
+        _pieces = new List<Piece>();
     }
 
-    public void AssignPieces(List<Piece> pieces)
+    public void AssignPieces(IEnumerable<Piece> pieces)
     {
-        if (pieces == null || pieces.Count == 0)
+        if (pieces == null)
         {
-            Debug.LogError("Cannot assign an empty or null piece list of pieces.");
+            Debug.LogError($"Player {ID}: Cannot assign a null list of pieces.");
             return;
         }
 
+        _pieces.Clear();
         foreach (var piece in pieces)
         {
-            if (piece != null)
-            {
-                Pieces.Add(piece);
-            }
+            if (piece != null) _pieces.Add(piece);
         }
 
-        Debug.Log($"Assigned {pieces.Count} pieces to Player {ID}.");
+        Debug.Log($"Player {ID}: Assigned {_pieces.Count} pieces.");
     }
 
     public Piece ChoosePiece(int index)
     {
-        if (index >= 0 && index < Pieces.Count)
+        if (index < 0 || index >= _pieces.Count)
         {
-            return Pieces[index];
+            Debug.LogWarning($"Player {ID}: Invalid piece index {index}.");
+            return null;
         }
 
-        Debug.LogWarning($"Invalid piece index {index} chosen by Player {ID}.");
-        return null;
+        return _pieces[index];
     }
 
-    public void MovePiece(Piece piece, int newX, int newY, Board board)
+    public bool MovePiece(Piece piece, int newX, int newY, Board board)
     {
-        if (piece == null)
-        {
-            Debug.LogError("Cannot move a null piece.");
-            return;
-        }
-
-        if (!Pieces.Contains(piece))
-        {
-            Debug.LogError($"Piece {piece.Name} does not belong to Player {ID}.");
-            return;
-        }
+        if (!ValidatePieceOwnership(piece))
+            return false;
 
         if (board.IsValidMove(piece, newX, newY))
         {
             piece.Move(newX, newY);
-            Debug.Log($"Player {ID} moved piece {piece.Name} to ({newX}, {newY}).");
+            Debug.Log($"Player {ID}: Moved piece {piece.Name} to ({newX}, {newY}).");
+            return true;
         }
-        else
+
+        Debug.LogWarning($"Player {ID}: Invalid move for piece {piece.Name} to ({newX}, {newY}).");
+        return false;
+    }
+
+    public bool UsePieceAbility(Piece piece, Context context)
+    {
+        if (!ValidatePieceOwnership(piece))
+            return false;
+
+        if (piece.CanUseAbility)
         {
-            Debug.LogWarning($"Invalid move for piece {piece.Name} to ({newX}, {newY}).");
+            return piece.UseAbility(context);
+        }
+
+        Debug.LogWarning($"Player {ID}: Ability of piece {piece.Name} is on cooldown.");
+        return false;
+    }
+
+    public void ReachExit()
+    {
+        ExitsReached++;
+        Debug.Log($"Player {ID}: Reached an exit! Total exits: {ExitsReached}");
+
+        // GameManager/GameSession
+        if (ExitsReached >= 3)
+        {
+            Debug.Log($"Player {ID}: Wins the game!");
         }
     }
 
-    public void UsePieceAbility(Piece piece)
+    private bool ValidatePieceOwnership(Piece piece)
     {
         if (piece == null)
         {
-            Debug.LogError("Cannot use ability on a null piece.");
-            return;
+            Debug.LogError($"Player {ID}: Cannot perform action on a null piece.");
+            return false;
         }
 
-        if (!Pieces.Contains(piece))
+        if (!_pieces.Contains(piece))
         {
-            Debug.LogError($"Piece {piece.Name} does not belong to Player {ID}.");
-            return;
+            Debug.LogError($"Player {ID}: The piece {piece.Name} does not belong to this player.");
+            return false;
         }
 
-        if (piece.CanUseAbility())
-        {
-            piece.UseAbility();
-            Debug.Log($"Player {ID} used {piece.Name}'s ability.");
-        }
-        else
-        {
-            Debug.LogWarning($"{piece.Name}'s ability is still on cooldown for Player {ID}.");
-        }
+        return true;
     }
-
 }
-

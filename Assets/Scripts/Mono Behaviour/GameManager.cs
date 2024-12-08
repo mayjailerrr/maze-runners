@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     private List<Movies> selectedMovies = new List<Movies>();
 
     public int PlayerCount => players.Count;
+    public BoardController BoardController { get; private set; }
+    public TurnManager TurnManager { get; private set; }
 
     private void Awake()
     {
@@ -21,6 +23,16 @@ public class GameManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+    }
+
+    private void Start()
+    {
+        BoardController = FindObjectOfType<BoardController>();
+
+        if (BoardController == null)
+        {
+            Debug.LogError("BoardController not found in scene.");
+        }
     }
 
     public int GetCurrentPlayerIndex()
@@ -51,6 +63,25 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
+    public bool CanStartGame()
+    {
+        return PlayerCount >= MinPlayers && selectedMovies.Count == PlayerCount;
+    }
+
+    public void StartGame()
+    {
+        if (!CanStartGame())
+        {
+            Debug.LogError("Cannot start game. Not enough players or movies selected.");
+            return;
+        }
+
+        TurnManager = new TurnManager(new List<Player>(players.Values));
+        BoardController.Initialize();
+       // TurnManager.StartTurn();    //to-do
+        Debug.Log("Game started!");
+    }
+
     public void NextPlayer()
     {
       
@@ -62,8 +93,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public bool CanStartGame()
+    public void EndGame(Player winner)
     {
-        return PlayerCount >= MinPlayers && selectedMovies.Count == PlayerCount;
+        Debug.Log($"Player {winner.ID} wins the game!");
+        //to-do
     }
+
+    
 }

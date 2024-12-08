@@ -3,10 +3,10 @@ using MazeRunners;
 using UnityEngine;
 using System;
 
+
 public class Board
 {
     public int Size { get; private set; }
-
     public Tile[,] grid;
 
     public Board(int size)
@@ -184,6 +184,15 @@ public class Board
 
     }
 
+    public bool IsValidMove(Piece piece, int targetX, int targetY)
+    {
+        if (!IsWithinBounds(targetX, targetY)) return false;
+
+        Tile targetTile = GetTileAtPosition(targetX, targetY);
+
+        return !targetTile.IsOccupied && !(targetTile is ObstacleTile);
+    }
+
     private void PlaceTiles<T>(int count, Func<int, int, bool> canPlace, Func<int, int, T> createTile) where T : Tile
     {
         System.Random random = new System.Random();
@@ -219,6 +228,7 @@ public class Board
         int exitCount = 2; 
         PlaceTiles(exitCount, CanPlaceTrapOrExit, (x, y) => new ExitTile(x, y));
     }
+
 
 }
 

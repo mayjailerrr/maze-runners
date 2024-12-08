@@ -2,34 +2,34 @@ using System.Collections.Generic;
 using MazeRunners;
 public class Context
 {
-    public Board Board { get; private set; }
-    public Player CurrentPlayer { get; private set; }
-    public Player EnemyPlayer { get; private set; }
-    public List<Tile> CurrentPosition { get; private set; }
-    public Tile CurrentTile { get; private set; }
+    public Board Board { get; set; }
+    public Piece CurrentPiece { get; set; }
+    public Player CurrentPlayer { get; set; }
+    public Tile CurrentTile { get; set; }
 
-    public Context(Player currentPlayer, Player currentEnemy)
+   public Context(Board board, Player currentPlayer, Piece currentPiece = null, Tile currentTile = null)
     {
-       // this.Board = Board.Instance;
-        this.CurrentPlayer = currentPlayer;
-        this.EnemyPlayer = currentEnemy;
-        this.CurrentPosition = new List<Tile>();
-        this.CurrentTile = null;
-        //this.CurrentTile = Utils.BaseTile;
+        if (board == null)
+        {
+            throw new System.ArgumentNullException(nameof(board), "Board cannot be null in Context.");
+        }
+
+        Board = board;
+        CurrentPlayer = currentPlayer;
+        CurrentPiece = currentPiece;
+        CurrentTile = currentTile;
     }
 
-    public Context UpdatePlayerInstance(List<Tile> position, Tile tile)
-    {
-        this.CurrentPosition = position;
-     //   this.CurrentCard = card;
 
-        return this;
+    public void UpdateTileAndPosition(Tile tile)
+    {
+        CurrentTile = tile;
     }
 
-    //extra
-    public void ResetForNewTurn()
+    public void ResetContextForNewTurn(Player player)
     {
-        this.CurrentTile = null;
-        this.CurrentPosition.Clear();
+        CurrentPlayer = player;
+        CurrentPiece = null;
+        CurrentTile = null;
     }
 }
