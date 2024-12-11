@@ -1,19 +1,17 @@
 using MazeRunners;
 using UnityEngine;
-public class FreezeTrap : Trap
+public class FreezeTrap : ITrapEffect
 {
     public int FreezeTurns { get; private set; } = 1;
 
     public FreezeTrap()
     {
-        Name = "Freeze Trap";
-        Description = "This trap freezes the piece that step on it for 1 turn.";
-        IsReusable = false;
+       
     }
 
-    public override void Activate(Piece piece)
+    public void ApplyEffect(Piece piece)
     {
-        piece.CurrentCooldown += FreezeTurns;
+      //  piece.currentCooldown += FreezeTurns;
         Debug.Log($"{piece.Name} is frozen for {FreezeTurns} turns by a Freeze Trap!");
     }
 }

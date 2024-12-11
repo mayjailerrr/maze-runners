@@ -2,6 +2,7 @@
 using System;
 using MazeRunners;
 using UnityEngine;
+
 public class Piece
 {
 

@@ -4,26 +4,21 @@ using MazeRunners;
 public class TrapTile : Tile
 {
 
-    public Trap TrapEffect { get; private set; }
-    public bool IsTriggered { get; private set; } = false;
-
-    public TrapTile(int x, int y, Trap trapEffect) : base(x, y)
+    public ITrapEffect TrapEffect { get; private set; }
+  
+    public TrapTile(int x, int y, ITrapEffect trapEffect) : base(x, y)
     {
         TrapEffect = trapEffect;
     }
 
     public void ActivateTrap(Piece piece)
     {
-        if (!IsTriggered)
-        {
-            TrapEffect.Activate(piece);
-            IsTriggered = true;
-        }
+        TrapEffect?.ApplyEffect(piece);
     }
 
-    public void ResetTrap()
-    {
-        IsTriggered = false;
-        TrapEffect.Reset();
-    }
+    // public void ResetTrap()
+    // {
+    //     IsTriggered = false;
+    //     TrapEffect.Reset();
+    // }
 }

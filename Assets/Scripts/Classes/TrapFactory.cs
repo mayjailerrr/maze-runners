@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public static class TrapFactory
 {
-    private static readonly List<Func<Trap>> TrapGenerators = new List<Func<Trap>>()
+    private static readonly List<Func<ITrapEffect>> TrapGenerators = new List<Func<ITrapEffect>>()
     {
         () => new FreezeTrap(),
         () => new DamageTrap(),
@@ -12,7 +12,7 @@ public static class TrapFactory
 
     private static readonly Random Random = new Random();
 
-    public static Trap CreateRandomTrap()
+    public static ITrapEffect CreateRandomTrap()
     {
         int index = Random.Next(TrapGenerators.Count);
         return TrapGenerators[index]();

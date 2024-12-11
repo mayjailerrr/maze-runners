@@ -49,6 +49,6 @@ public class RenderTextureButton : MonoBehaviour, IPointerEnterHandler, IPointer
         // Apply changes to the MaterialPropertyBlock
         propertyBlock.SetTexture("_MainTex", texture);
         propertyBlock.SetFloat("_Darkness", darkness);
-        rawImageRenderer.SetPropertyBlock(propertyBlock);
+        //rawImageRenderer.SetPropertyBlock(propertyBlock);
     }
 }

@@ -190,7 +190,7 @@ public class Board
 
         Tile targetTile = GetTileAtPosition(targetX, targetY);
 
-        return !targetTile.IsOccupied && !(targetTile is ObstacleTile);
+        return !(targetTile is null) && !(targetTile is ObstacleTile);
     }
 
     private void PlaceTiles<T>(int count, Func<int, int, bool> canPlace, Func<int, int, T> createTile) where T : Tile

@@ -6,6 +6,7 @@ public class Context
     public Piece CurrentPiece { get; set; }
     public Player CurrentPlayer { get; set; }
     public Tile CurrentTile { get; set; }
+    public TurnManager TurnManager { get; private set; }
 
    public Context(Board board, Player currentPlayer, Piece currentPiece = null, Tile currentTile = null)
     {
@@ -18,6 +19,11 @@ public class Context
         CurrentPlayer = currentPlayer;
         CurrentPiece = currentPiece;
         CurrentTile = currentTile;
+    }
+
+    public void SetTurnManager(TurnManager turnManager)
+    {
+        TurnManager = turnManager;
     }
 
 

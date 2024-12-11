@@ -2,6 +2,8 @@
 using UnityEngine;
 using MazeRunners;
 using System.Collections.Generic;
+using System.Linq;
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
@@ -16,6 +18,8 @@ public class GameManager : MonoBehaviour
     public int PlayerCount => players.Count;
     public BoardController BoardController { get; private set; }
     public TurnManager TurnManager { get; private set; }
+   
+    public Context GameContext { get; private set; }
 
     private void Awake()
     {
@@ -76,10 +80,17 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        TurnManager = new TurnManager(new List<Player>(players.Values));
-        BoardController.Initialize();
-       // TurnManager.StartTurn();    //to-do
+        Board board = new Board(10);
+        Player initialPlayer = players.Values.First(); 
+       
+        GameContext = new Context(board, initialPlayer);
+        TurnManager = new TurnManager(new List<Player>(players.Values), GameContext);
+       
+
+        BoardController.ExternalInitialize(board, BoardController.GetComponent<BoardView>(), TurnManager, GameContext);
+     
         Debug.Log("Game started!");
+        TurnManager.StartTurn(); 
     }
 
     public void NextPlayer()
@@ -96,7 +107,7 @@ public class GameManager : MonoBehaviour
     public void EndGame(Player winner)
     {
         Debug.Log($"Player {winner.ID} wins the game!");
-        //to-do
+        //to-do: collect the objects from th movies
     }
 
     

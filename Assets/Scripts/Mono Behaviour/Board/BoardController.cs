@@ -5,19 +5,15 @@ public class BoardController : MonoBehaviour
     public int boardSize = 10;
     private Board board;
     private BoardView boardView;
-
+    private TurnManager turnManager;
     private Context gameContext;
 
-    private void Start()          //to-do: i want to take this away, but when i do the board doesnt show up on scene
+    public void ExternalInitialize(Board board, BoardView boardView, TurnManager turnManager, Context context)
     {
-        Initialize();
-        InitializeContext();
-    }
-
-    public void Initialize()
-    {
-        board = new Board(boardSize); 
-        boardView = GetComponent<BoardView>();
+        this.board = board;
+        this.boardView = boardView;
+        this.turnManager = turnManager;
+        this.gameContext = context;
 
         if (boardView != null)
         {
@@ -29,10 +25,55 @@ public class BoardController : MonoBehaviour
         }
     }
 
-    private void InitializeContext()
+
+    private void Update()
     {
+        if (Input.anyKeyDown)
+        {
+            HandlePlayerInput();
+        }
+    }
+
+    private void HandlePlayerInput()
+    {
+        Vector2 direction = GetInputDirection();
+        if (direction == Vector2.zero) return;
+
         
-        //to - do
+        Player currentPlayer = gameContext.CurrentPlayer;
+        Piece activePiece = gameContext.CurrentPiece;
+
+        if (activePiece == null)
+        {
+            Debug.LogWarning("No active piece selected.");
+            return;
+        }
+
+        int newX = activePiece.Position.Item1 + (int)direction.x;
+        int newY = activePiece.Position.Item2 + (int)direction.y;
+
+        if (board.IsValidMove(activePiece, newX, newY))
+        {
+            activePiece.Move(newX, newY);
+            gameContext.UpdateTileAndPosition(board.GetTileAtPosition(newX, newY)); 
+            boardView.UpdatePiecePosition(activePiece); 
+            Debug.Log($"Piece {activePiece.Name} moved to ({newX}, {newY})");
+            turnManager.NextTurn();
+            gameContext.ResetContextForNewTurn(turnManager.GetCurrentPlayer());
+        }
+        else
+        {
+            Debug.LogWarning("Invalid move.");
+        }
+    }
+
+    private Vector2 GetInputDirection()
+    {
+        if (Input.GetKeyDown(KeyCode.W)) return Vector2.up;
+        if (Input.GetKeyDown(KeyCode.A)) return Vector2.left;
+        if (Input.GetKeyDown(KeyCode.S)) return Vector2.down;
+        if (Input.GetKeyDown(KeyCode.D)) return Vector2.right;
+        return Vector2.zero;
     }
 
 }

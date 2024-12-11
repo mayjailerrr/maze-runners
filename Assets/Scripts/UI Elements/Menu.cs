@@ -6,10 +6,7 @@ using UnityEngine.SceneManagement;
 public class Menu : MonoBehaviour
 {
     public static bool AISelected = true;
-    public void Play()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
+
     public void Exit()
     {
         Debug.Log("Saliendo...");

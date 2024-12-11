@@ -43,4 +43,19 @@ public class BoardView : MonoBehaviour
 
         return tilePrefab;
     }
+
+    public void UpdatePiecePosition(Piece piece)
+    {
+        PieceView pieceView = GetPieceView(piece);
+        if (pieceView != null)
+        {
+            Vector3 newPosition = new Vector3(piece.Position.x, piece.Position.y, 0);
+            pieceView.AnimateMove(newPosition);
+        }
+    }
+
+    private PieceView GetPieceView(Piece piece)
+    {
+        return FindObjectOfType<PieceView>();
+    }
 }
