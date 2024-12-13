@@ -7,8 +7,23 @@ using System;
 public class Board
 {
     public int Size { get; private set; }
-    public Tile[,] grid;
 
+    public Tile[,] grid;
+    private List<Piece> pieces = new List<Piece>();
+
+    public void AddPiece(Piece piece)
+    {
+        if (piece != null)
+        {
+            pieces.Add(piece);
+        }
+    }
+
+    public IEnumerable<Piece> GetAllPieces()
+    {
+        return pieces;
+    }
+    
     public Board(int size)
     {
         Size = size;

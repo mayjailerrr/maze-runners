@@ -16,8 +16,10 @@ public class GameManager : MonoBehaviour
     private List<Movies> selectedMovies = new List<Movies>();
 
     public int PlayerCount => players.Count;
+    private Board board;
     public BoardController BoardController { get; private set; }
     public TurnManager TurnManager { get; private set; }
+    public BoardView BoardView { get; set; }
    
     public Context GameContext { get; private set; }
 
@@ -58,19 +60,11 @@ public class GameManager : MonoBehaviour
             players.Add(currentPlayerIndex, newPlayer);
         }
 
-        Player currentPlayer = players[currentPlayerIndex];
-        List<Piece> pieces = PieceFactory.CreatePieces(movie);
-        currentPlayer.AssignPieces(pieces);
         selectedMovies.Add(movie);
 
         Debug.Log($"Player {currentPlayerIndex + 1} selected {movie}.");
         return true;
-    }
-
-    public bool CanStartGame()
-    {
-        return PlayerCount >= MinPlayers && selectedMovies.Count == PlayerCount;
-    }
+    } 
 
     public void StartGame()
     {
@@ -80,18 +74,41 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        Board board = new Board(10);
-        Player initialPlayer = players.Values.First(); 
-       
+        board = new Board(10);
+
+    
+        foreach (var playerEntry in players)
+        {
+            Player player = playerEntry.Value;
+            Movies selectedMovie = selectedMovies[player.ID];
+            List<Piece> pieces = PieceFactory.CreatePieces(selectedMovie);
+            player.AssignPieces(pieces);
+
+            
+            foreach (var piece in pieces)
+            {
+                board.AddPiece(piece); 
+            }
+        }
+
+        Player initialPlayer = players.Values.First();  
+
         GameContext = new Context(board, initialPlayer);
         TurnManager = new TurnManager(new List<Player>(players.Values), GameContext);
-       
 
         BoardController.ExternalInitialize(board, BoardController.GetComponent<BoardView>(), TurnManager, GameContext);
-     
+
         Debug.Log("Game started!");
-        TurnManager.StartTurn(); 
+        TurnManager.StartTurn();
     }
+
+
+
+    public bool CanStartGame()
+    {
+        return PlayerCount >= MinPlayers && selectedMovies.Count == PlayerCount;
+    }
+
 
     public void NextPlayer()
     {

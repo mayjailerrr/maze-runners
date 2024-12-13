@@ -4,14 +4,14 @@ public class BoardController : MonoBehaviour
 {
     public int boardSize = 10;
     private Board board;
-    private BoardView boardView;
+    public BoardView BoardView;
     private TurnManager turnManager;
     private Context gameContext;
 
     public void ExternalInitialize(Board board, BoardView boardView, TurnManager turnManager, Context context)
     {
         this.board = board;
-        this.boardView = boardView;
+        this.BoardView = boardView;
         this.turnManager = turnManager;
         this.gameContext = context;
 
@@ -23,8 +23,12 @@ public class BoardController : MonoBehaviour
         {
             Debug.LogError("BoardView is not assigned or is not in the same GameObject.");
         }
-    }
 
+        GameObject piecePrefab = Resources.Load<GameObject>("Prefabs/Piece");
+
+        BoardView.InitializePieces(board.GetAllPieces());
+
+    }
 
     private void Update()
     {
@@ -56,7 +60,7 @@ public class BoardController : MonoBehaviour
         {
             activePiece.Move(newX, newY);
             gameContext.UpdateTileAndPosition(board.GetTileAtPosition(newX, newY)); 
-            boardView.UpdatePiecePosition(activePiece); 
+            BoardView.UpdatePiecePosition(activePiece); 
             Debug.Log($"Piece {activePiece.Name} moved to ({newX}, {newY})");
             turnManager.NextTurn();
             gameContext.ResetContextForNewTurn(turnManager.GetCurrentPlayer());

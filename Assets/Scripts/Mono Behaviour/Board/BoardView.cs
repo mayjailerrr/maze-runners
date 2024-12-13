@@ -1,5 +1,6 @@
 using UnityEngine;
 using MazeRunners;
+using System.Collections.Generic;
 
 public class BoardView : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class BoardView : MonoBehaviour
     public GameObject exitPrefab;
 
     private GameObject[,] tileObjects;
+
+    public GameObject piecePrefab;
+    private Dictionary<Piece, GameObject> pieceGameObjects = new Dictionary<Piece, GameObject>();
 
     public void InitializeView(Board board)
     {
@@ -46,11 +50,31 @@ public class BoardView : MonoBehaviour
 
     public void UpdatePiecePosition(Piece piece)
     {
-        PieceView pieceView = GetPieceView(piece);
-        if (pieceView != null)
+        if (pieceGameObjects.TryGetValue(piece, out GameObject pieceGO))
         {
-            Vector3 newPosition = new Vector3(piece.Position.x, piece.Position.y, 0);
-            pieceView.AnimateMove(newPosition);
+            Vector3 newPosition = new Vector3(piece.Position.Item1, piece.Position.Item2, 0);
+            pieceGO.transform.position = newPosition;
+        }
+        else
+        {
+            Debug.LogError($"No GameObject found for piece {piece.Name}.");
+        }
+    }
+
+    public void InitializePieces(IEnumerable<Piece> pieces)
+    {
+        foreach (var piece in pieces)
+        {
+            if (pieceGameObjects.ContainsKey(piece))
+            {
+                Debug.LogWarning($"Piece {piece.Name} already has a GameObject.");
+                continue;
+            }
+
+            GameObject pieceGO = Instantiate(piecePrefab, new Vector3(piece.Position.Item1, piece.Position.Item2, 0), Quaternion.identity, transform);
+            pieceGO.name = piece.Name;
+
+            pieceGameObjects.Add(piece, pieceGO);
         }
     }
 
