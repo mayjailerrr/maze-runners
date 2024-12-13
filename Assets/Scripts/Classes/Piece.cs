@@ -16,6 +16,8 @@ public class Piece
 
     private int tilesMovedThisTurn;
 
+    public bool HasMoved { get; private set; }
+
     public Piece (string name, int speed, int cooldown, Func<Context, bool> ability)
     {
         Name = name;
@@ -54,6 +56,7 @@ public class Piece
      public void ResetTurn()
     {
         tilesMovedThisTurn = 0;
+        HasMoved = false;
     }
 
     public bool CanMoveMoreTiles() => tilesMovedThisTurn < Speed;
@@ -64,6 +67,8 @@ public class Piece
         Position = (newX, newY);
         tilesMovedThisTurn++;
         Debug.Log($"{Name} moved to ({newX}, {newY})");
+
+        HasMoved = true;
 
     }
 
@@ -76,6 +81,8 @@ public class Piece
     {
         currentCooldown = Cooldown;
     }
+
+    
 
 }
 

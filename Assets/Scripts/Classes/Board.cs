@@ -23,6 +23,45 @@ public class Board
     {
         return pieces;
     }
+
+    public void PlacePiecesRandomly(IEnumerable<Piece> piecesToPlace)
+    {
+        System.Random random = new System.Random();
+        List<Tile> neutralTiles = new List<Tile>();
+
+
+        for (int x = 0; x < Size; x++)
+        {
+            for (int y = 0; y < Size; y++)
+            {
+                Tile tile = grid[x, y];
+                if (!(tile is ObstacleTile) && !(tile is TrapTile) && !(tile is ExitTile))
+                {
+                    neutralTiles.Add(tile);
+                }
+            }
+        }
+
+        foreach (Piece piece in piecesToPlace)
+        {
+            if (neutralTiles.Count == 0)
+            {
+                Debug.LogError("No more neutral tiles available to place pieces.");
+                return;
+            }
+
+            int randomIndex = random.Next(neutralTiles.Count);
+            Tile selectedTile = neutralTiles[randomIndex];
+            neutralTiles.RemoveAt(randomIndex);
+
+           
+            piece.Position = (selectedTile.Position.x, selectedTile.Position.y);
+            AddPiece(piece);
+
+            Debug.Log($"Piece {piece.Name} placed at ({selectedTile.Position.x}, {selectedTile.Position.y}).");
+        }
+    }
+
     
     public Board(int size)
     {

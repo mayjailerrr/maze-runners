@@ -29,13 +29,33 @@ public class Context
 
     public void UpdateTileAndPosition(Tile tile)
     {
-        CurrentTile = tile;
+        // if (CurrentPiece != null)
+        // {
+        //     CurrentPiece.CurrentTile = tile;
+        // }
     }
 
-    public void ResetContextForNewTurn(Player player)
+    public void ResetContextForNewTurn(Player newPlayer)
     {
-        CurrentPlayer = player;
+        CurrentPlayer = newPlayer;
         CurrentPiece = null;
-        CurrentTile = null;
+
+        foreach (var piece in CurrentPlayer.Pieces)
+        {
+            piece.ResetTurn();
+        }
+    }
+
+    public bool AllPiecesMoved()
+    {
+        foreach (var piece in CurrentPlayer.Pieces)
+        {
+            if (!piece.HasMoved)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

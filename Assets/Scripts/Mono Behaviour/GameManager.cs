@@ -84,11 +84,7 @@ public class GameManager : MonoBehaviour
             List<Piece> pieces = PieceFactory.CreatePieces(selectedMovie);
             player.AssignPieces(pieces);
 
-            
-            foreach (var piece in pieces)
-            {
-                board.AddPiece(piece); 
-            }
+            board.PlacePiecesRandomly(pieces);
         }
 
         Player initialPlayer = players.Values.First();  

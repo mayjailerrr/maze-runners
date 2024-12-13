@@ -23,7 +23,7 @@ public class TurnManager
 
         this.players = players;
         this.gameContext = context;
-        this.gameContext.ResetContextForNewTurn(GetCurrentPlayer());
+        StartTurn();
     }
 
     public Player GetCurrentPlayer()
@@ -34,15 +34,22 @@ public class TurnManager
     public void NextTurn()
     {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
-        Player nextPlayer = GetCurrentPlayer();
 
-        gameContext.ResetContextForNewTurn(nextPlayer);
-        Debug.Log($"It's now Player {players[currentPlayerIndex].ID}'s turn!");
+        StartTurn();
     }
 
     public void StartTurn()
     {
         Player currentPlayer = GetCurrentPlayer();
+
+        gameContext.ResetContextForNewTurn(currentPlayer);
+
+        foreach (var piece in currentPlayer.Pieces)
+        {
+                piece.ResetTurn();
+                piece.ReduceCooldown();
+        }
+
         Debug.Log($"Player {currentPlayer.ID + 1}, it's your turn!");
 
 
@@ -62,9 +69,18 @@ public class TurnManager
                     return false;
                 }
 
+                if (!piece.CanMoveMoreTiles())
+                {
+                    Debug.LogWarning($"{piece.Name} has no moves left this turn.");
+                    return false;
+                }
+
                 if (currentPlayer.MovePiece(piece, targetX, targetY, board))
                 {
-                    NextTurn();
+                    if (AllPiecesMoved(currentPlayer))
+                    {
+                        NextTurn();
+                    }
                     return true;
                 }
                 return false;
@@ -87,5 +103,17 @@ public class TurnManager
                 Debug.LogWarning($"Invalid action type: {actionType}");
                 return false;
         }
+    }
+
+     private bool AllPiecesMoved(Player player)
+    {
+        foreach (var piece in player.Pieces)
+        {
+            if (piece.CanMoveMoreTiles())
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

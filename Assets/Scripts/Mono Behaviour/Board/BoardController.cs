@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class BoardController : MonoBehaviour
 {
@@ -7,6 +8,9 @@ public class BoardController : MonoBehaviour
     public BoardView BoardView;
     private TurnManager turnManager;
     private Context gameContext;
+
+    private int selectedPieceIndex = 0;
+    private bool isInitialized = false;
 
     public void ExternalInitialize(Board board, BoardView boardView, TurnManager turnManager, Context context)
     {
@@ -27,11 +31,14 @@ public class BoardController : MonoBehaviour
         GameObject piecePrefab = Resources.Load<GameObject>("Prefabs/Piece");
 
         BoardView.InitializePieces(board.GetAllPieces());
+        isInitialized = true;
 
     }
 
     private void Update()
     {
+        if (!isInitialized) return;
+
         if (Input.anyKeyDown)
         {
             HandlePlayerInput();
@@ -40,34 +47,33 @@ public class BoardController : MonoBehaviour
 
     private void HandlePlayerInput()
     {
-        Vector2 direction = GetInputDirection();
-        if (direction == Vector2.zero) return;
-
-        
         Player currentPlayer = gameContext.CurrentPlayer;
-        Piece activePiece = gameContext.CurrentPiece;
+        List<Piece> pieces = new List<Piece>(currentPlayer.Pieces);
 
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            CycleThroughPieces(pieces);
+            return;
+        }
+
+        Piece activePiece = pieces[selectedPieceIndex];
         if (activePiece == null)
         {
             Debug.LogWarning("No active piece selected.");
             return;
         }
 
-        int newX = activePiece.Position.Item1 + (int)direction.x;
-        int newY = activePiece.Position.Item2 + (int)direction.y;
 
-        if (board.IsValidMove(activePiece, newX, newY))
+        Vector2 direction = GetInputDirection();
+        if (direction != Vector2.zero)
         {
-            activePiece.Move(newX, newY);
-            gameContext.UpdateTileAndPosition(board.GetTileAtPosition(newX, newY)); 
-            BoardView.UpdatePiecePosition(activePiece); 
-            Debug.Log($"Piece {activePiece.Name} moved to ({newX}, {newY})");
-            turnManager.NextTurn();
-            gameContext.ResetContextForNewTurn(turnManager.GetCurrentPlayer());
+            TryMovePiece(activePiece, direction);
+            return; 
         }
-        else
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.LogWarning("Invalid move.");
+            TryUsePieceAbility(activePiece);
         }
     }
 
@@ -79,5 +85,62 @@ public class BoardController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D)) return Vector2.right;
         return Vector2.zero;
     }
+
+    private void CycleThroughPieces(List<Piece> pieces)
+    {
+        selectedPieceIndex = (selectedPieceIndex + 1) % pieces.Count;
+        Piece selectedPiece = pieces[selectedPieceIndex];
+        gameContext.CurrentPiece = selectedPiece;
+
+        // to-do: highlight the selected piece visually 
+        //BoardView.HighlightPiece(selectedPiece);
+
+        Debug.Log($"Selected piece: {selectedPiece.Name}");
+    }
+
+    private void TryMovePiece(Piece piece, Vector2 direction)
+    {
+        int newX = piece.Position.Item1 + (int)direction.x;
+        int newY = piece.Position.Item2 + (int)direction.y;
+
+        if (board.IsValidMove(piece, newX, newY))
+        {
+            piece.Move(newX, newY);
+            gameContext.UpdateTileAndPosition(board.GetTileAtPosition(newX, newY));
+            BoardView.UpdatePiecePosition(piece);
+
+            Debug.Log($"Piece {piece.Name} moved to ({newX}, {newY}).");
+
+            if (gameContext.AllPiecesMoved())
+            {
+                turnManager.NextTurn();
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"Invalid move for piece {piece.Name} to ({newX}, {newY}).");
+        }
+    }
+
+    private void TryUsePieceAbility(Piece piece)
+    {
+        if (piece.CanUseAbility)
+        {
+            bool success = piece.UseAbility(gameContext);
+            if (success)
+            {
+                Debug.Log($"Piece {piece.Name} used its ability!");
+                if (gameContext.AllPiecesMoved())
+                {
+                    turnManager.NextTurn();
+                }
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"Ability of piece {piece.Name} is on cooldown.");
+        }
+    }
+
 
 }
