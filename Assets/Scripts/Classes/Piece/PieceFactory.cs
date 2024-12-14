@@ -12,7 +12,7 @@ public static class PieceFactory
         {
             case Movies.Ponyo:
                 pieces.Add(new Piece("Ponyo", 4, 3, null));
-                pieces.Add(new Piece("Sosuke", 2, 1, null));
+                pieces.Add(new Piece("Sosuke", 2, 1, PieceAbilities.GetAbility(AbilityName.SpeedBoost)));
                 pieces.Add(new Piece("Granmamare", 5, 3, null));
                 break;
 

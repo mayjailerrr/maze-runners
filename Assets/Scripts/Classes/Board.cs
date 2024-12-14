@@ -62,6 +62,34 @@ public class Board
         }
     }
 
+    public Tile GetRandomTile()
+    {
+        List<Tile> neutralTiles = new List<Tile>();
+
+        for (int x = 0; x < Size; x++)
+        {
+            for (int y = 0; y < Size; y++)
+            {
+                Tile tile = grid[x, y];
+                if (!(tile is ObstacleTile) && !(tile is TrapTile) && !(tile is ExitTile))
+                {
+                    neutralTiles.Add(tile);
+                }
+            }
+        }
+
+        if (neutralTiles.Count == 0)
+        {
+            Debug.LogError("No neutral tiles available.");
+            return null;
+        }
+
+        System.Random random = new System.Random();
+        int randomIndex = random.Next(neutralTiles.Count);
+        return neutralTiles[randomIndex];
+    }
+
+
     
     public Board(int size)
     {

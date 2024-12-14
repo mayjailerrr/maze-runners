@@ -17,8 +17,8 @@ public enum Movies
 
 public enum AbilityName
 {
-    ForestSpirit,
-    ShapeShift,
+    Teleport,
+    SpeedBoost,
     EtherealShield,
     SwiftWind,
     IllusoryEcho

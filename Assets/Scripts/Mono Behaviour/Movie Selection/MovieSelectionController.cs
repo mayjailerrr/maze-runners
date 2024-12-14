@@ -1,7 +1,5 @@
 using UnityEngine;
 using MazeRunners;
-using UnityEngine;
-using MazeRunners;
 
 public class MovieSelectionController : MonoBehaviour
 {

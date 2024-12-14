@@ -1,6 +1,5 @@
-public interface IHasAbility
+public interface IAbility
 {
-    // IHasHabilidad: Para fichas que tienen habilidades especiales.
-
-    // Métodos: UseHabilidad(), CheckCooldown()
+    bool Execute(Context context);
+    string Description { get; }
 }

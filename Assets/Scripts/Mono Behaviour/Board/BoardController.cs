@@ -79,10 +79,10 @@ public class BoardController : MonoBehaviour
 
     private Vector2 GetInputDirection()
     {
-        if (Input.GetKeyDown(KeyCode.W)) return Vector2.up;
-        if (Input.GetKeyDown(KeyCode.A)) return Vector2.left;
-        if (Input.GetKeyDown(KeyCode.S)) return Vector2.down;
-        if (Input.GetKeyDown(KeyCode.D)) return Vector2.right;
+        if (Input.GetKeyDown(KeyCode.W)) return Vector2.left; //up
+        if (Input.GetKeyDown(KeyCode.A)) return Vector2.down; //left
+        if (Input.GetKeyDown(KeyCode.S)) return Vector2.right;  //down
+        if (Input.GetKeyDown(KeyCode.D)) return Vector2.up; //right
         return Vector2.zero;
     }
 
@@ -100,6 +100,12 @@ public class BoardController : MonoBehaviour
 
     private void TryMovePiece(Piece piece, Vector2 direction)
     {
+        if (!piece.CanMoveMoreTiles())
+        {
+            Debug.LogWarning($"Piece {piece.Name} has no moves left this turn.");
+            return;
+        }
+        
         int newX = piece.Position.Item1 + (int)direction.x;
         int newY = piece.Position.Item2 + (int)direction.y;
 
@@ -108,8 +114,6 @@ public class BoardController : MonoBehaviour
             piece.Move(newX, newY);
             gameContext.UpdateTileAndPosition(board.GetTileAtPosition(newX, newY));
             BoardView.UpdatePiecePosition(piece);
-
-            Debug.Log($"Piece {piece.Name} moved to ({newX}, {newY}).");
 
             if (gameContext.AllPiecesMoved())
             {
@@ -129,7 +133,6 @@ public class BoardController : MonoBehaviour
             bool success = piece.UseAbility(gameContext);
             if (success)
             {
-                Debug.Log($"Piece {piece.Name} used its ability!");
                 if (gameContext.AllPiecesMoved())
                 {
                     turnManager.NextTurn();

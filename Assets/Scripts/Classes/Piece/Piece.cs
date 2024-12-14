@@ -12,18 +12,18 @@ public class Piece
     private int currentCooldown = 0;
     public (int x, int y) Position { get; set; }
 
-    public Func<Context, bool> Ability { get; private set; }	
+    public IAbility Ability { get; private set; }	
 
-    private int tilesMovedThisTurn;
-
+    private int movesRemaining;
     public bool HasMoved { get; private set; }
 
-    public Piece (string name, int speed, int cooldown, Func<Context, bool> ability)
+    public Piece (string name, int speed, int cooldown, IAbility ability)
     {
         Name = name;
         Speed = speed;
         Cooldown = cooldown;
         Ability = ability;
+        ResetTurn();
     }
 
     public bool CanUseAbility => currentCooldown == 0;
@@ -36,10 +36,12 @@ public class Piece
             return false;
         }
 
-        if (Ability?.Invoke(context) == true)
+        if (Ability?.Execute(context) == true)
         {
-            Debug.Log($"{Name} used ability.");
+            Debug.Log($"Piece {Name} used its ability!");
             ActivateAbility();
+
+            ResetTurn();
             return true;
         }
 
@@ -55,21 +57,21 @@ public class Piece
 
      public void ResetTurn()
     {
-        tilesMovedThisTurn = 0;
+        movesRemaining = Speed;
         HasMoved = false;
     }
 
-    public bool CanMoveMoreTiles() => tilesMovedThisTurn < Speed;
+    public bool CanMoveMoreTiles() => movesRemaining >0 ;
 
   
     public void Move(int newX, int newY)
     {
         Position = (newX, newY);
-        tilesMovedThisTurn++;
-        Debug.Log($"{Name} moved to ({newX}, {newY})");
-
+        movesRemaining--;
         HasMoved = true;
-
+        
+        Debug.Log($"{Name} moved to ({newX}, {newY})");
+        Debug.Log($"Speed: {Speed}, Moves Remaining: {movesRemaining}");
     }
 
     public void UpdateCooldown()
