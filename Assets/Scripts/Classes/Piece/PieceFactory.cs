@@ -11,9 +11,9 @@ public static class PieceFactory
         switch (movie)
         {
             case Movies.Ponyo:
-                pieces.Add(new Piece("Ponyo", 4, 3, null));
-                pieces.Add(new Piece("Sosuke", 2, 1, PieceAbilities.GetAbility(AbilityName.SpeedBoost)));
-                pieces.Add(new Piece("Granmamare", 5, 3, null));
+                pieces.Add(new Piece("Ponyo", 10, 3, null));
+                pieces.Add(new Piece("Sosuke", 10, 1, PieceAbilities.GetAbility(AbilityName.SpeedBoost)));
+                pieces.Add(new Piece("Granmamare", 10, 3, null));
                 break;
 
             case Movies.HowlsMovingCastle:

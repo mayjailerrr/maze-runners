@@ -2,6 +2,7 @@
 using System;
 using MazeRunners;
 using UnityEngine;
+using System.Linq;
 
 public class Piece
 {
@@ -12,7 +13,7 @@ public class Piece
     private int currentCooldown = 0;
     public (int x, int y) Position { get; set; }
 
-    public IAbility Ability { get; private set; }	
+    public IAbility Ability { get; private set; }
 
     private int movesRemaining;
     public bool HasMoved { get; private set; }
@@ -50,6 +51,7 @@ public class Piece
        
     }
 
+
     public void ReduceCooldown()
     {
         if (currentCooldown > 0) currentCooldown--;
@@ -71,7 +73,6 @@ public class Piece
         HasMoved = true;
         
         Debug.Log($"{Name} moved to ({newX}, {newY})");
-        Debug.Log($"Speed: {Speed}, Moves Remaining: {movesRemaining}");
     }
 
     public void UpdateCooldown()
@@ -83,9 +84,7 @@ public class Piece
     {
         currentCooldown = Cooldown;
     }
-
     
-
 }
 
 

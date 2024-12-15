@@ -8,9 +8,14 @@ public static class PieceAbilities
     {
         { AbilityName.Teleport, new TeleportAbility() }, 
         { AbilityName.SpeedBoost, new SpeedBoostAbility() }, 
-        // { AbilityName.EtherealShield, ReducesDamageFromDamageTrapsForTwoTurns },
-        // { AbilityName.SwiftWind, AugmentSpeedForOneTurn }, 
-        // { AbilityName.IllusoryEcho, CreateCloneAndDistractEnemyOneTurn }
+        { AbilityName.Bomb, new BombAbility() }, 
+        { AbilityName.Freeze, new FreezeAbility() }, 
+        { AbilityName.WallBuilder, new WallBuilderAbility() }, 
+        { AbilityName.WallDestroyer, new WallDestroyerAbility() }, 
+        { AbilityName.Shield, new ShieldAbility() }, 
+        { AbilityName.Clone, new CloneAbility() }, 
+        { AbilityName.Invisibility, new InvisibilityAbility() }, 
+        { AbilityName.Absorb, new AbsorbAbilitiesAbility() }
     };
 
     public static IAbility GetAbility(AbilityName abilityName)

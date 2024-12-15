@@ -1,7 +1,7 @@
 
 using MazeRunners;
 using System;
-public delegate bool Ability(Player player, Piece ficha);
+using System.Collections.Generic;
 
 public enum Movies
 {
@@ -17,10 +17,20 @@ public enum Movies
 
 public enum AbilityName
 {
+
     Teleport,
     SpeedBoost,
-    EtherealShield,
-    SwiftWind,
-    IllusoryEcho
+
+    //offensives
+    Bomb,
+    Freeze, 
+    WallBuilder, 
+    WallDestroyer,
+
+    //defensives
+    Shield,
+    Clone,
+    Invisibility,
+    Absorb,
 
 }
