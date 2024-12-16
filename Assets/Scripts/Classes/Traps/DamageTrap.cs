@@ -1,18 +1,18 @@
-using MazeRunners;
-using UnityEngine;
+// using MazeRunners;
+// using UnityEngine;
 
-public class DamageTrap : ITrapEffect
-{
-    public int Damage { get; private set; } = 1;
+// public class DamageTrap : ITrapEffect
+// {
+//     public int Damage { get; private set; } = 1;
 
-    public DamageTrap()
-    {
+//     public DamageTrap()
+//     {
     
-    }
+//     }
 
-    public void ApplyEffect(Piece piece)
-    {
-       // piece.Health -= Damage;
-        Debug.Log($"{piece.Name} takes {Damage} damage from a Damage Trap!");
-    }
-}
+//     public void ApplyEffect(Piece piece)
+//     {
+//        // piece.Health -= Damage;
+//         Debug.Log($"{piece.Name} takes {Damage} damage from a Damage Trap!");
+//     }
+// }

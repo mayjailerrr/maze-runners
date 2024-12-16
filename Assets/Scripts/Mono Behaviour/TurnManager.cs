@@ -14,6 +14,7 @@ public class TurnManager
     private List<Player> players;
     private Context gameContext;
 
+   private readonly Dictionary<Piece, List<TemporaryEffect>> activeEffects = new();
     public TurnManager(List<Player> players, Context context)
     {
         if (players == null || players.Count < 2)
@@ -40,6 +41,8 @@ public class TurnManager
 
     public void StartTurn()
     {
+        UpdateTemporaryEffects();
+
         Player currentPlayer = GetCurrentPlayer();
 
         gameContext.ResetContextForNewTurn(currentPlayer);
@@ -52,10 +55,39 @@ public class TurnManager
 
         Debug.Log($"Player {currentPlayer.ID + 1}, it's your turn!");
 
-
-        //to-do: add logic for preparing the player, remark the pieces or add information
+       
     }
 
+    public void ApplyTemporaryEffect(Piece piece, string property, int modifiedValue, int duration)
+    {
+        if (!activeEffects.ContainsKey(piece))
+        {
+            activeEffects[piece] = new List<TemporaryEffect>();
+        }
+
+        var effect = new TemporaryEffect(piece, property, modifiedValue, duration);
+        activeEffects[piece].Add(effect);
+
+        effect.Apply();
+    }
+
+    public void UpdateTemporaryEffects()
+    {
+        foreach (var (piece, effects) in activeEffects)
+        {
+            for (int i = effects.Count - 1; i >= 0; i--)
+            {
+                var effect = effects[i];
+                effect.DecrementDuration();
+
+                if (effect.HasExpired)
+                {
+                    effect.Revert();
+                    effects.RemoveAt(i);
+                }
+            }
+        }
+    }
     public bool PerformAction(ActionType actionType, Piece piece, Board board, int targetX = 0, int targetY = 0, Context context = null)
     {
         var currentPlayer = GetCurrentPlayer();
@@ -116,4 +148,7 @@ public class TurnManager
         }
         return true;
     }
+
+    
+    
 }
