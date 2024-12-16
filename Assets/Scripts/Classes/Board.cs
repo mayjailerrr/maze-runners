@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using MazeRunners;
 using UnityEngine;
 using System;
+using System.Linq;
 
 
 public class Board
@@ -10,6 +11,7 @@ public class Board
 
     public Tile[,] grid;
     private List<Piece> pieces = new List<Piece>();
+    private List<Collectible> collectibles;
 
     public void AddPiece(Piece piece)
     {
@@ -35,7 +37,7 @@ public class Board
             for (int y = 0; y < Size; y++)
             {
                 Tile tile = grid[x, y];
-                if (!(tile is ObstacleTile) && !(tile is TrapTile) && !(tile is ExitTile))
+                if (!(tile is ObstacleTile) && !(tile is TrapTile) && !(tile is CollectibleTile))
                 {
                     neutralTiles.Add(tile);
                 }
@@ -71,7 +73,7 @@ public class Board
             for (int y = 0; y < Size; y++)
             {
                 Tile tile = grid[x, y];
-                if (!(tile is ObstacleTile) && !(tile is TrapTile) && !(tile is ExitTile))
+                if (!(tile is ObstacleTile) && !(tile is TrapTile) && !(tile is CollectibleTile))
                 {
                     neutralTiles.Add(tile);
                 }
@@ -88,12 +90,11 @@ public class Board
         int randomIndex = random.Next(neutralTiles.Count);
         return neutralTiles[randomIndex];
     }
-
-
     
-    public Board(int size)
+    public Board(int size, List<Collectible> collectibles)
     {
         Size = size;
+        this.collectibles = collectibles;
         grid = new Tile[size, size];
         GenerateBoard();
     }
@@ -104,7 +105,7 @@ public class Board
         PlaceObstacles();
         PlaceTraps();
         EnsureReachability();
-        PlaceExits();
+        PlaceCollectibles(collectibles);
     }
 
     private void CreateEmptyGrid()
@@ -120,7 +121,7 @@ public class Board
 
     private bool CanPlaceTile(int x, int y, Func<Tile, bool> additionalChecks = null)
     {
-        if (grid[x, y] is ObstacleTile || grid[x, y] is TrapTile || grid[x, y] is ExitTile)
+        if (grid[x, y] is ObstacleTile || grid[x, y] is TrapTile || grid[x, y] is CollectibleTile)
             return false;
 
         if (additionalChecks != null && !additionalChecks(grid[x, y]))
@@ -141,7 +142,7 @@ public class Board
         });
     }
 
-    private bool CanPlaceTrapOrExit(int x, int y)
+    private bool CanPlaceTrapOrCollectible(int x, int y)
     {
         return CanPlaceTile(x, y, tile =>
         {
@@ -211,7 +212,7 @@ public class Board
         {
             for (int y = 0; y < Size; y++)
             {
-                if (!visited[x, y] && !(grid[x, y] is ExitTile))
+                if (!visited[x, y] && !(grid[x, y] is CollectibleTile))
                 {
                     grid[x, y] = new Tile(x, y);
                 }
@@ -302,16 +303,29 @@ public class Board
     public void PlaceTraps()
     {
         int trapCount = (int)(Size * Size * 0.1f);
-        PlaceTiles(trapCount, CanPlaceTrapOrExit, (x, y) => new TrapTile(x, y, TrapFactory.CreateRandomTrap()));
+        var predefinedTraps = TrapFactory.GetPredefinedTraps(trapCount).ToList();
+        System.Random random = new System.Random();
+
+        PlaceTiles(trapCount, CanPlaceTrapOrCollectible, (x, y) => 
+        {
+            var trapEffect = predefinedTraps[random.Next(predefinedTraps.Count)];
+            return new TrapTile(x, y, trapEffect);
+        });
     }
 
-    public void PlaceExits()
+   public void PlaceCollectibles(List<Collectible> collectibles)
     {
-        int exitCount = 2; 
-        PlaceTiles(exitCount, CanPlaceTrapOrExit, (x, y) => new ExitTile(x, y));
+        Debug.Log($"Placing {collectibles.Count} collectibles.");
+        foreach (var collectible in collectibles)
+        {
+            PlaceTiles(1, 
+                (x, y) => CanPlaceTile(x, y), 
+                (x, y) => {
+                    Debug.Log($"Placing collectible: {collectible.Name} at ({x}, {y}).");
+                    return new CollectibleTile(x, y, collectible);
+                });
+        }
     }
-
-
 }
 
 

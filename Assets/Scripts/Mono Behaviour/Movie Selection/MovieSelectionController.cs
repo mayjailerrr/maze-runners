@@ -34,5 +34,6 @@ public class MovieSelectionController : MonoBehaviour
 
         GameManager.Instance.NextPlayer();
     }
+
 }
 

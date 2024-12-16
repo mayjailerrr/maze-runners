@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using MazeRunners;
 
 public class BoardController : MonoBehaviour
 {
@@ -112,14 +113,33 @@ public class BoardController : MonoBehaviour
         if (board.IsValidMove(piece, newX, newY))
         {
             piece.Move(newX, newY);
+
+            Tile targetTile = board.GetTileAtPosition(newX, newY);
+          
             gameContext.UpdateTileAndPosition(board.GetTileAtPosition(newX, newY));
             BoardView.UpdatePiecePosition(piece);
+
+            if (targetTile is TrapTile trapTile)
+            {
+                trapTile.ActivateTrap(piece, turnManager);
+            }
+
+            else if (targetTile is CollectibleTile collectibleTile)
+            {
+                collectibleTile.Interact(piece, gameContext.CurrentPlayer);
+                if (gameContext.CurrentPlayer.HasCollectedAllObjects())
+                {
+                    Debug.Log($"Player {gameContext.CurrentPlayer.ID} wins!");
+                    //EndGame(player);
+                }
+            }
 
             if (gameContext.AllPiecesMoved())
             {
                 turnManager.NextTurn();
             }
         }
+
         else
         {
             Debug.LogWarning($"Invalid move for piece {piece.Name} to ({newX}, {newY}).");

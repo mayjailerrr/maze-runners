@@ -9,8 +9,7 @@ public class MovieSelectionView : MonoBehaviour
 
     private void Update()
     {
-        // Deshabilita los botones si se alcanzó el límite de jugadores
-        bool shouldDisable = GameManager.Instance.PlayerCount >= GameManager.MaxPlayers;
+        bool shouldDisable = GameManager.Instance.PlayerCount >= 4;
         foreach (var button in movieButtons)
         {
             button.interactable = !shouldDisable;

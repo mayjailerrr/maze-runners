@@ -6,15 +6,17 @@ public class Player
     public int ID { get; }
     public string Name { get; private set; }
     public IReadOnlyList<Piece> Pieces => _pieces.AsReadOnly(); 
-    public int ExitsReached { get; private set; }
-
     private List<Piece> _pieces;
+
+    public List<Collectible> AssignedObjects { get; private set; }
+    public HashSet<Collectible> CollectedObjects { get; private set; }
 
     public Player(int id, string name = "Player")
     {
         ID = id;
         Name = name;
         _pieces = new List<Piece>();
+        CollectedObjects = new HashSet<Collectible>();
     }
 
     public void AssignPieces(IEnumerable<Piece> pieces)
@@ -75,18 +77,6 @@ public class Player
         return false;
     }
 
-    public void ReachExit()
-    {
-        ExitsReached++;
-        Debug.Log($"Player {ID}: Reached an exit! Total exits: {ExitsReached}");
-
-        // GameManager/GameSession
-        if (ExitsReached >= 3)
-        {
-            Debug.Log($"Player {ID}: Wins the game!");
-        }
-    }
-
     private bool ValidatePieceOwnership(Piece piece)
     {
         if (piece == null)
@@ -102,6 +92,25 @@ public class Player
         }
 
         return true;
+    }
+
+    public void AssignObjects(List<Collectible> objects)
+    {
+        AssignedObjects = objects;
+    }
+
+    public bool HasCollectedAllObjects()
+    {
+        return CollectedObjects.Count == AssignedObjects.Count;
+    }
+
+    public void CollectObject(Collectible collectible)
+    {
+        if (AssignedObjects.Contains(collectible))
+        {
+            CollectedObjects.Add(collectible);
+            Debug.Log($"Player {ID} collected {collectible.Name}!");
+        }
     }
 
 }

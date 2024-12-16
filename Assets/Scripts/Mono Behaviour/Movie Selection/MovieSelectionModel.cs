@@ -38,7 +38,8 @@ namespace MazeRunners
 
         public bool CanSelectMovie()
         {
-            return GameManager.Instance.PlayerCount < GameManager.MaxPlayers;
+            return GameManager.Instance.PlayerCount < 4;
         }
+
     }
 }

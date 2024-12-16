@@ -7,7 +7,7 @@ public class BoardView : MonoBehaviour
     public GameObject tilePrefab;
     public GameObject obstaclePrefab;
     public GameObject trapPrefab;
-    public GameObject exitPrefab;
+    public GameObject collectiblePrefab;
 
     private GameObject[,] tileObjects;
 
@@ -43,7 +43,7 @@ public class BoardView : MonoBehaviour
     {
         if (tile is ObstacleTile) return obstaclePrefab;
         if (tile is TrapTile) return trapPrefab;
-        if (tile is ExitTile) return exitPrefab;
+        if (tile is CollectibleTile) return collectiblePrefab;
 
         return tilePrefab;
     }

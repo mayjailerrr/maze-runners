@@ -8,27 +8,30 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    public static int MaxPlayers = 4;
-    public static int MinPlayers = 2;
-
-    private int currentPlayerIndex = 0;
-    private Dictionary<int, Player> players = new Dictionary<int, Player>();
-    private List<Movies> selectedMovies = new List<Movies>();
+    public List<Collectible> playersCollectibles = new List<Collectible>();
 
     public int PlayerCount => players.Count;
+    private Dictionary<int, Player> players = new Dictionary<int, Player>();
+    private List<Movies> selectedMovies = new List<Movies>();
+    public Context GameContext { get; private set; }
+
     private Board board;
     public BoardController BoardController { get; private set; }
     public TurnManager TurnManager { get; private set; }
+   
+
+    private int currentPlayerIndex = 0;
+      
+   
+   
     public BoardView BoardView { get; set; }
    
-    public Context GameContext { get; private set; }
-
+  
     private void Awake()
     {
         if (Instance == null)
             Instance = this;
-        else
-            Destroy(gameObject);
+        else  Destroy(gameObject);
     }
 
     private void Start()
@@ -54,15 +57,12 @@ public class GameManager : MonoBehaviour
             return false;
         }
 
-        if (!players.ContainsKey(currentPlayerIndex))
-        {
-            Player newPlayer = new Player(currentPlayerIndex);
-            players.Add(currentPlayerIndex, newPlayer);
-        }
+        var player = GetOrCreatePlayer();
+        AssignMovieToPlayer(movie, player);
 
         selectedMovies.Add(movie);
-
         Debug.Log($"Player {currentPlayerIndex + 1} selected {movie}.");
+        
         return true;
     } 
 
@@ -74,43 +74,74 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        board = new Board(10);
+        GenerateAllCollectibles();
+        InitializeBoard();
+        InitializeTurnManager();
 
-    
+        BoardController.ExternalInitialize(board, BoardController.GetComponent<BoardView>(), TurnManager, GameContext); 
+
+        TurnManager.StartTurn();
+    }
+
+    public bool CanStartGame() => PlayerCount >= 2 && PlayerCount <= 4 && selectedMovies.Count == PlayerCount;
+   
+    private Player GetOrCreatePlayer()
+    {
+        if (!players.ContainsKey(players.Count))
+            players[players.Count] = new Player(players.Count);
+
+        return players[players.Count - 1];
+    }
+
+    private void AssignMovieToPlayer(Movies movie, Player player)
+    {
+        player.AssignPieces(PieceFactory.CreatePieces(movie));
+        player.AssignObjects(CollectibleFactory.CreateCollectibles(movie));
+    }
+
+    private void InitializeBoard()
+    {
+        board = new Board(10, playersCollectibles);
+
+        foreach(var playerEntry in players)
+        {
+            Player player = playerEntry.Value;
+            Movies selectedMovie = selectedMovies[player.ID];
+            
+            player.AssignPieces(PieceFactory.CreatePieces(selectedMovie));
+            board.PlacePiecesRandomly(player.Pieces);
+        }
+
+        Player initialPlayer = players.Values.First();
+        GameContext = new Context(board, initialPlayer);  
+    }
+
+    private void GenerateAllCollectibles()
+    {
         foreach (var playerEntry in players)
         {
             Player player = playerEntry.Value;
             Movies selectedMovie = selectedMovies[player.ID];
-            List<Piece> pieces = PieceFactory.CreatePieces(selectedMovie);
-            player.AssignPieces(pieces);
 
-            board.PlacePiecesRandomly(pieces);
+            List<Collectible> collectibles = CollectibleFactory.CreateCollectibles(selectedMovie);
+
+            player.AssignObjects(collectibles);
+
+            playersCollectibles.AddRange(collectibles);
         }
-
-        Player initialPlayer = players.Values.First();  
-
-        GameContext = new Context(board, initialPlayer);
-        TurnManager = new TurnManager(new List<Player>(players.Values), GameContext);
-
-        BoardController.ExternalInitialize(board, BoardController.GetComponent<BoardView>(), TurnManager, GameContext);
-
-        Debug.Log("Game started!");
-        TurnManager.StartTurn();
     }
 
 
-
-    public bool CanStartGame()
+    private void InitializeTurnManager()
     {
-        return PlayerCount >= MinPlayers && selectedMovies.Count == PlayerCount;
+        TurnManager = new TurnManager(new List<Player>(players.Values), GameContext);
     }
-
 
     public void NextPlayer()
     {
       
         currentPlayerIndex++;
-        if (currentPlayerIndex >= MaxPlayers || currentPlayerIndex >= PlayerCount + 1)
+        if (currentPlayerIndex >= 4 || currentPlayerIndex >= PlayerCount + 1)
         {
             Debug.Log("All players have selected movies.");
             currentPlayerIndex = PlayerCount;
