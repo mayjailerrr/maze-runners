@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using UnityEngine.UI;
 using MazeRunners;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +19,9 @@ public class GameManager : MonoBehaviour
     private Board board;
     public BoardController BoardController { get; private set; }
     public TurnManager TurnManager { get; private set; }
+    public Button endTurnButton;
+    private EndTurnHandler endTurnHandler;
    
-
     private int currentPlayerIndex = 0;
       
    
@@ -84,6 +86,7 @@ public class GameManager : MonoBehaviour
         GenerateAllCollectibles();
         InitializeBoard();
         InitializeTurnManager();
+        InitializeEndTurnButton();
 
         BoardController.ExternalInitialize(board, BoardController.GetComponent<BoardView>(), TurnManager, GameContext); 
 
@@ -142,6 +145,17 @@ public class GameManager : MonoBehaviour
     private void InitializeTurnManager()
     {
         TurnManager = new TurnManager(new List<Player>(players.Values), GameContext);
+    }
+
+     private void InitializeEndTurnButton()
+    {
+        endTurnHandler = endTurnButton.GetComponent<EndTurnHandler>();
+        if (endTurnHandler == null)
+        {
+            endTurnHandler = endTurnButton.gameObject.AddComponent<EndTurnHandler>();
+        }
+
+        endTurnHandler.Initialize(TurnManager);
     }
 
     public void NextPlayer()

@@ -501,7 +501,7 @@ GameObject:
   - component: {fileID: 32555912}
   - component: {fileID: 32555916}
   m_Layer: 5
-  m_Name: Pass
+  m_Name: EndTurn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -613,7 +613,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 32555916}
         m_TargetAssemblyTypeName: EndTurnHandler, Assembly-CSharp
-        m_MethodName: TryEndTurn
+        m_MethodName: OnPassButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -643,6 +643,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 471347887890d294eb08c8db86788945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  endTurnButton: {fileID: 32555914}
 --- !u!1 &51642083
 GameObject:
   m_ObjectHideFlags: 0
@@ -2186,6 +2187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 244ad68aa210ddf4c99538376ced9bc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  endTurnButton: {fileID: 32555914}
 --- !u!1 &258414542
 GameObject:
   m_ObjectHideFlags: 0
@@ -8484,7 +8486,7 @@ GameObject:
   - component: {fileID: 1444197207}
   - component: {fileID: 1444197206}
   m_Layer: 5
-  m_Name: next
+  m_Name: endturn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
