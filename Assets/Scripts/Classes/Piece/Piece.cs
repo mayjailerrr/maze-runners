@@ -12,7 +12,8 @@ public class Piece
     public int Cooldown { get; set; }
     private int currentCooldown = 0;
     public (int x, int y) Position { get; set; }
-
+    
+    public bool HasUsedAbility { get; private set; }
     public IAbility Ability { get; private set; }
 
     private int movesRemaining;
@@ -41,6 +42,7 @@ public class Piece
         {
             Debug.Log($"Piece {Name} used its ability!");
             ActivateAbility();
+            HasUsedAbility = true;
 
             ResetTurn();
             return true;
@@ -60,10 +62,10 @@ public class Piece
      public void ResetTurn()
     {
         movesRemaining = Speed;
-        HasMoved = false;
+        HasUsedAbility = false;
     }
 
-    public bool CanMoveMoreTiles() => movesRemaining >0 ;
+    public bool CanMoveMoreTiles() => movesRemaining > 0;
 
   
     public void Move(int newX, int newY)

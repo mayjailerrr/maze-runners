@@ -1,12 +1,15 @@
 using MazeRunners;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 public class Player
 {
     public int ID { get; }
     public string Name { get; private set; }
     public IReadOnlyList<Piece> Pieces => _pieces.AsReadOnly(); 
     private List<Piece> _pieces;
+
+    private bool abilityUsed;
 
     public List<Collectible> AssignedObjects { get; private set; }
     public HashSet<Collectible> CollectedObjects { get; private set; }
@@ -55,7 +58,6 @@ public class Player
         if (board.IsValidMove(piece, newX, newY))
         {
             piece.Move(newX, newY);
-            Debug.Log($"Player {ID}: Moved piece {piece.Name} to ({newX}, {newY}).");
             return true;
         }
 
@@ -70,11 +72,20 @@ public class Player
 
         if (piece.CanUseAbility)
         {
+            abilityUsed = true;
             return piece.UseAbility(context);
         }
 
-        Debug.LogWarning($"Player {ID}: Ability of piece {piece.Name} is on cooldown.");
-        return false;
+        else 
+        {
+            Debug.LogWarning($"Player {ID}: Ability of piece {piece.Name} is on cooldown.");
+            return false;
+        }
+    }
+
+    public bool HasUsedAbility()
+    {
+        return abilityUsed;
     }
 
     private bool ValidatePieceOwnership(Piece piece)
@@ -111,6 +122,23 @@ public class Player
             CollectedObjects.Add(collectible);
             Debug.Log($"Player {ID} collected {collectible.Name}!");
         }
+    }
+
+     public bool HasMovedAtLeastOnePiece()
+    {
+        return _pieces.Any(piece => piece.HasMoved);
+    }
+
+    public void ResetTurn()
+    {
+        abilityUsed = false;
+
+        foreach (var piece in _pieces)
+        {
+            piece.ResetTurn();
+        }
+
+        Debug.Log($"Player {ID}: Turn has been reset.");
     }
 
 }

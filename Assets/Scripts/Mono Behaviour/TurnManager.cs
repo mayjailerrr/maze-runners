@@ -1,6 +1,7 @@
 using UnityEngine;
 using MazeRunners;
 using System.Collections.Generic;
+using System.Linq;
 
 public enum ActionType
 {
@@ -14,7 +15,11 @@ public class TurnManager
     private List<Player> players;
     private Context gameContext;
 
-   private readonly Dictionary<Piece, List<TemporaryEffect>> activeEffects = new();
+    private readonly Dictionary<Piece, List<TemporaryEffect>> activeEffects = new();
+   
+    private bool hasMovedPiece = false;
+    private bool hasUsedAbility = false;
+   
     public TurnManager(List<Player> players, Context context)
     {
         if (players == null || players.Count < 2)
@@ -32,19 +37,13 @@ public class TurnManager
         return players[currentPlayerIndex];
     }
 
-    public void NextTurn()
-    {
-        currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
-
-        StartTurn();
-    }
-
     public void StartTurn()
     {
         UpdateTemporaryEffects();
 
         Player currentPlayer = GetCurrentPlayer();
 
+        currentPlayer.ResetTurn();
         gameContext.ResetContextForNewTurn(currentPlayer);
 
         foreach (var piece in currentPlayer.Pieces)
@@ -57,6 +56,17 @@ public class TurnManager
 
        
     }
+
+    public void NextTurn()
+    {
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
+        gameContext.CurrentPlayer = players[currentPlayerIndex];
+
+        StartTurn();
+
+        Debug.Log($"Turn changed to player {gameContext.CurrentPlayer.ID + 1}.");
+    }
+
 
     public void ApplyTemporaryEffect(Piece piece, string property, int modifiedValue, int duration)
     {
@@ -88,19 +98,32 @@ public class TurnManager
             }
         }
     }
+
+    public bool CanPerformAction(ActionType actionType)
+    {
+        if (actionType == ActionType.Move && hasMovedPiece)
+        {
+            Debug.LogWarning("Cannot move more than once per turn.");
+            return false;
+        }
+
+        if (actionType == ActionType.UseAbility && hasUsedAbility)
+        {
+            Debug.LogWarning("Cannot use an ability more than once per turn.");
+            return false;
+        }
+
+        return true;
+    }
     public bool PerformAction(ActionType actionType, Piece piece, Board board, int targetX = 0, int targetY = 0, Context context = null)
     {
+        if (!CanPerformAction(actionType))  return false;
+       
         var currentPlayer = GetCurrentPlayer();
 
         switch (actionType)
         {
             case ActionType.Move:
-                if (board == null)
-                {
-                    Debug.LogError("Board is null. Cannot perform Move action.");
-                    return false;
-                }
-
                 if (!piece.CanMoveMoreTiles())
                 {
                     Debug.LogWarning($"{piece.Name} has no moves left this turn.");
@@ -109,24 +132,21 @@ public class TurnManager
 
                 if (currentPlayer.MovePiece(piece, targetX, targetY, board))
                 {
-                    if (AllPiecesMoved(currentPlayer))
-                    {
-                        NextTurn();
-                    }
+                    CheckPieceExhausted();
                     return true;
                 }
                 return false;
 
             case ActionType.UseAbility:
-                if (context == null)
+                if (currentPlayer.HasUsedAbility())
                 {
-                    Debug.LogError("Context is required to use an ability.");
+                    Debug.LogWarning("Cannot use more than one ability per turn.");
                     return false;
                 }
 
-                if (currentPlayer.UsePieceAbility(piece, context))
+                if (piece.HasUsedAbility)
                 {
-                    NextTurn();
+                    CheckPieceExhausted();
                     return true;
                 }
                 return false;
@@ -137,18 +157,14 @@ public class TurnManager
         }
     }
 
-     private bool AllPiecesMoved(Player player)
+    public void CheckPieceExhausted()
     {
-        foreach (var piece in player.Pieces)
-        {
-            if (piece.CanMoveMoreTiles())
-            {
-                return false;
-            }
-        }
-        return true;
-    }
+        Player currentPlayer = GetCurrentPlayer();
 
-    
-    
+        if (currentPlayer.Pieces.Any(p => !p.CanMoveMoreTiles()) && currentPlayer.HasUsedAbility())
+        {
+            Debug.Log($"Player {currentPlayer.ID + 1}: At least one piece is exhausted and ability used. Ending turn.");
+            NextTurn();
+        }
+    }
 }

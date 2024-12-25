@@ -74,7 +74,7 @@ public class BoardController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            TryUsePieceAbility(activePiece);
+            TryUsePieceAbility(currentPlayer, activePiece, gameContext);
         }
     }
 
@@ -112,32 +112,27 @@ public class BoardController : MonoBehaviour
 
         if (board.IsValidMove(piece, newX, newY))
         {
-            piece.Move(newX, newY);
-
-            Tile targetTile = board.GetTileAtPosition(newX, newY);
-          
-            gameContext.UpdateTileAndPosition(board.GetTileAtPosition(newX, newY));
-            BoardView.UpdatePiecePosition(piece);
-
-            if (targetTile is TrapTile trapTile)
+            if (turnManager.PerformAction(ActionType.Move, piece, board, newX, newY, gameContext))
             {
-                trapTile.ActivateTrap(piece, turnManager);
-            }
+                Tile targetTile = board.GetTileAtPosition(newX, newY);
+                gameContext.UpdateTileAndPosition(board.GetTileAtPosition(newX, newY));
+                BoardView.UpdatePiecePosition(piece);
 
-            else if (targetTile is CollectibleTile collectibleTile)
-            {
-                collectibleTile.Interact(piece, gameContext.CurrentPlayer);
-                if (gameContext.CurrentPlayer.HasCollectedAllObjects())
+                if (targetTile is TrapTile trapTile)
                 {
-                    Debug.Log($"Player {gameContext.CurrentPlayer.ID} wins!");
-                    //EndGame(player);
+                    trapTile.ActivateTrap(piece, turnManager);
                 }
-            }
 
-            if (gameContext.AllPiecesMoved())
-            {
-                turnManager.NextTurn();
-            }
+                else if (targetTile is CollectibleTile collectibleTile)
+                {
+                    collectibleTile.Interact(piece, gameContext.CurrentPlayer);
+                    if (gameContext.CurrentPlayer.HasCollectedAllObjects())
+                    {
+                        Debug.Log($"Player {gameContext.CurrentPlayer.ID} wins!");
+                        //EndGame(player);
+                    }
+                }
+            }   
         }
 
         else
@@ -146,18 +141,11 @@ public class BoardController : MonoBehaviour
         }
     }
 
-    private void TryUsePieceAbility(Piece piece)
+    private void TryUsePieceAbility(Player player, Piece piece, Context context)
     {
-        if (piece.CanUseAbility)
-        {
-            bool success = piece.UseAbility(gameContext);
-            if (success)
-            {
-                if (gameContext.AllPiecesMoved())
-                {
-                    turnManager.NextTurn();
-                }
-            }
+        if (player.UsePieceAbility(piece, gameContext))
+        {  
+            turnManager.CheckPieceExhausted();
         }
         else
         {
