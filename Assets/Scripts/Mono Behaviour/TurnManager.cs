@@ -64,7 +64,7 @@ public class TurnManager
 
         StartTurn();
 
-        Debug.Log($"Turn changed to player {gameContext.CurrentPlayer.ID + 1}.");
+        Debug.Log($"Turn changed to player {currentPlayerIndex + 1}.");
     }
 
 

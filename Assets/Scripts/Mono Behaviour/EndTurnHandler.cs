@@ -27,8 +27,7 @@ public class EndTurnHandler : MonoBehaviour
             Debug.LogError("TurnManager is not assigned.");
             return;
         }
-
-        var currentPlayer = turnManager.GetCurrentPlayer();
+        
         turnManager.NextTurn();
     }
 }

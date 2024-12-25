@@ -128,8 +128,7 @@ public class BoardController : MonoBehaviour
                     collectibleTile.Interact(piece, gameContext.CurrentPlayer);
                     if (gameContext.CurrentPlayer.HasCollectedAllObjects())
                     {
-                        Debug.Log($"Player {gameContext.CurrentPlayer.ID} wins!");
-                        //EndGame(player);
+                        GameManager.Instance.EndGame(gameContext.CurrentPlayer);
                     }
                 }
             }   

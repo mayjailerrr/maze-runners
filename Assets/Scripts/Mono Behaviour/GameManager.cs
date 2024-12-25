@@ -171,8 +171,11 @@ public class GameManager : MonoBehaviour
 
     public void EndGame(Player winner)
     {
-        Debug.Log($"Player {winner.ID} wins the game!");
-        //to-do: collect the objects from th movies
+        Debug.Log($"Player {winner.ID + 1} wins the game!");
+        // to - do:
+        // show message with winner
+        // restart game or go back to main menu
+        // optional: show all players' stats
     }
 
     

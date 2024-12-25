@@ -120,7 +120,7 @@ public class Player
         if (AssignedObjects.Contains(collectible))
         {
             CollectedObjects.Add(collectible);
-            Debug.Log($"Player {ID} collected {collectible.Name}!");
+            Debug.Log($"Player {ID + 1} collected {collectible.Name}!");
         }
     }
 
@@ -137,8 +137,6 @@ public class Player
         {
             piece.ResetTurn();
         }
-
-        Debug.Log($"Player {ID}: Turn has been reset.");
     }
 
 }
