@@ -15,6 +15,7 @@ public class Piece
     
     public bool HasUsedAbility { get; private set; }
     public IAbility Ability { get; private set; }
+    public PieceView View { get; set; }
 
     private int movesRemaining;
     public bool HasMoved { get; private set; }
@@ -85,6 +86,19 @@ public class Piece
     protected void ActivateAbility()
     {
         currentCooldown = Cooldown;
+    }
+
+    public string GetDirection(Vector2 newPosition)
+    {
+        Vector2 current = new Vector2(Position.Item1, Position.Item2);
+        Vector2 direction = newPosition - current;
+
+        if (direction == Vector2.up) return "Up";
+        if (direction == Vector2.down) return "Down";
+        if (direction == Vector2.left) return "Left";
+        if (direction == Vector2.right) return "Right";
+
+        return "Idle";
     }
     
 }

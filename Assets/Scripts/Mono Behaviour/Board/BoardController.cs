@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using MazeRunners;
+using System.Collections;
 
 public class BoardController : MonoBehaviour
 {
@@ -118,6 +119,14 @@ public class BoardController : MonoBehaviour
                 gameContext.UpdateTileAndPosition(board.GetTileAtPosition(newX, newY));
                 BoardView.UpdatePiecePosition(piece);
 
+                PieceView pieceView = BoardView.GetPieceView(piece);
+
+                Vector3 startPos = pieceView.transform.position;
+                Vector3 targetPos = BoardView.GetTilePosition(newX, newY);
+
+                StartCoroutine(AnimatePieceMovement(pieceView, startPos, targetPos, direction));
+
+
                 if (targetTile is TrapTile trapTile)
                 {
                     trapTile.ActivateTrap(piece, turnManager);
@@ -151,6 +160,25 @@ public class BoardController : MonoBehaviour
             Debug.LogWarning($"Ability of piece {piece.Name} is on cooldown.");
         }
     }
+
+    private IEnumerator AnimatePieceMovement(PieceView pieceView, Vector3 startPos, Vector3 targetPos, Vector2 direction)
+    {
+        float duration = 0.2f; 
+        float elapsed = 0f;
+
+        pieceView.UpdateAnimation(direction, true); 
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            pieceView.transform.position = Vector3.Lerp(startPos, targetPos, elapsed / duration);
+            yield return null;
+        }
+
+        pieceView.SyncPosition(targetPos); 
+        pieceView.UpdateAnimation(direction, false); 
+    }
+
 
 
 }

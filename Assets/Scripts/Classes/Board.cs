@@ -235,7 +235,7 @@ public class Board
         return null; 
     }
 
-    private IEnumerable<Tile> GetNeighbours(Tile tile)
+    public IEnumerable<Tile> GetNeighbours(Tile tile)
     {
         int x = tile.Position.x;
         int y = tile.Position.y;
