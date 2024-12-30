@@ -57,7 +57,7 @@ public class Board
             neutralTiles.RemoveAt(randomIndex);
 
            
-            piece.Position = (selectedTile.Position.x, selectedTile.Position.y);
+            piece.UpdatePosition((selectedTile.Position.x, selectedTile.Position.y));
             AddPiece(piece);
 
             Debug.Log($"Piece {piece.Name} placed at ({selectedTile.Position.x}, {selectedTile.Position.y}).");

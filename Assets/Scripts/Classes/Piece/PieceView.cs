@@ -1,43 +1,53 @@
 using UnityEngine;
+using System.Collections;
 
 public class PieceView : MonoBehaviour
 {
     private Animator animator;
-    private Vector2 lastDirection = Vector2.right; 
-    private Vector3 lastPosition;
+    private Vector2 lastDirection = Vector2.right;
+    private RectTransform rectTransform;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        lastPosition = transform.position;
+         rectTransform = GetComponent<RectTransform>();
+        if (animator == null)
+        {
+            Debug.LogError("Animator is not assigned in PieceView.");
+        }
+
     }
 
     public void UpdateAnimation(Vector2 direction, bool isMoving)
     {
-        if (isMoving)
+        if (animator == null) return;
+
+      
+        if (isMoving && direction != Vector2.zero)
         {
-            lastDirection = direction; 
+            lastDirection = direction.normalized; 
+        }
+        
+        
+        animator.SetFloat("Horizontal", lastDirection.x);
+        animator.SetFloat("Vertical", lastDirection.y);
+        animator.SetBool("IsMoving", isMoving);
+    }
+
+    public void MoveTo(Vector3 targetPosition)
+    {
+        StartCoroutine(MoveSmoothly(targetPosition));
+    }
+
+    private IEnumerator MoveSmoothly(Vector3 targetPosition)
+    {
+        float speed = 5f; 
+        while (Vector2.Distance(rectTransform.anchoredPosition, targetPosition) > 0.01f)
+        {
+            rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, targetPosition, speed * Time.deltaTime);
+            yield return null;
         }
 
-        float speed = isMoving ? 1f : 0f;
-
-        animator.SetFloat("Direction", direction.x); 
-        animator.SetFloat("Speed", speed);        
-    }
-
-    public void SyncPosition(Vector3 targetPosition)
-    {
-        lastPosition = targetPosition;
-        transform.position = targetPosition;
-    }
-
-    public Vector3 GetLastPosition()
-    {
-        return lastPosition;
-    }
-
-    public Vector2 GetLastDirection()
-    {
-        return lastDirection;
+         rectTransform.anchoredPosition = targetPosition; 
     }
 }

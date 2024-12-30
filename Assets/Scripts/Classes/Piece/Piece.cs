@@ -12,6 +12,7 @@ public class Piece
     public int Cooldown { get; set; }
     private int currentCooldown = 0;
     public (int x, int y) Position { get; set; }
+    public (int x, int y)? PreviousPosition { get; private set; }
     
     public bool HasUsedAbility { get; private set; }
     public IAbility Ability { get; private set; }
@@ -26,7 +27,15 @@ public class Piece
         Speed = speed;
         Cooldown = cooldown;
         Ability = ability;
+        Position = (0, 0);
+        PreviousPosition = null;
         ResetTurn();
+    }
+
+    public void UpdatePosition((int x, int y) newPosition)
+    {
+        PreviousPosition = Position; 
+        Position = newPosition; 
     }
 
     public bool CanUseAbility => currentCooldown == 0;

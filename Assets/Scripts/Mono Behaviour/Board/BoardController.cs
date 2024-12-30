@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using MazeRunners;
 using System.Collections;
+using UnityEngine.UI;
 
 public class BoardController : MonoBehaviour
 {
@@ -34,7 +35,6 @@ public class BoardController : MonoBehaviour
 
         BoardView.InitializePieces(board.GetAllPieces());
         isInitialized = true;
-
     }
 
     private void Update()
@@ -111,21 +111,17 @@ public class BoardController : MonoBehaviour
         int newX = piece.Position.Item1 + (int)direction.x;
         int newY = piece.Position.Item2 + (int)direction.y;
 
-        if (board.IsValidMove(piece, newX, newY))
+        bool isMoving = board.IsValidMove(piece, newX, newY);
+        if (isMoving)
         {
             if (turnManager.PerformAction(ActionType.Move, piece, board, newX, newY, gameContext))
             {
                 Tile targetTile = board.GetTileAtPosition(newX, newY);
                 gameContext.UpdateTileAndPosition(board.GetTileAtPosition(newX, newY));
+                piece.UpdatePosition((newX, newY));
                 BoardView.UpdatePiecePosition(piece);
 
-                PieceView pieceView = BoardView.GetPieceView(piece);
-
-                Vector3 startPos = pieceView.transform.position;
-                Vector3 targetPos = BoardView.GetTilePosition(newX, newY);
-
-                StartCoroutine(AnimatePieceMovement(pieceView, startPos, targetPos, direction));
-
+                 piece.View.UpdateAnimation(direction, true);
 
                 if (targetTile is TrapTile trapTile)
                 {
@@ -145,6 +141,7 @@ public class BoardController : MonoBehaviour
 
         else
         {
+            piece.View.UpdateAnimation(Vector2.zero, false);
             Debug.LogWarning($"Invalid move for piece {piece.Name} to ({newX}, {newY}).");
         }
     }
@@ -175,7 +172,7 @@ public class BoardController : MonoBehaviour
             yield return null;
         }
 
-        pieceView.SyncPosition(targetPos); 
+       // pieceView.SyncPosition(targetPos); 
         pieceView.UpdateAnimation(direction, false); 
     }
 

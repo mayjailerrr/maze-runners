@@ -147,12 +147,33 @@ public class BoardView : MonoBehaviour
 
         return "empty";
     }
+    
     public void UpdatePiecePosition(Piece piece)
     {
-        Vector2 newPosition = new Vector2(piece.Position.Item1, piece.Position.Item2);
-        string direction = piece.GetDirection(newPosition);
-        piece.View.MoveTo(newPosition, direction);
+        PieceView pieceView = piece.View;
+        if (pieceView == null)
+        {
+            Debug.LogWarning($"PieceView not found for piece: {piece.Name}");
+            return;
+        }
+
+        Vector2 targetPosition = GetTilePosition(piece.Position.Item1, piece.Position.Item2);
+        pieceView.MoveTo(targetPosition);
+
+        Vector2 direction = CalculateDirection(piece);
+        bool isMoving = direction != Vector2.zero;
+
+        pieceView.UpdateAnimation(direction, isMoving);
     }
+
+    private Vector2 CalculateDirection(Piece piece)
+    {
+        (int oldX, int oldY) = piece.PreviousPosition.Value; 
+        (int newX, int newY) = piece.Position;
+
+        return new Vector2(newX - oldX, newY - oldY);
+    }
+
 
     public void InitializePieces(IEnumerable<Piece> pieces)
     {
