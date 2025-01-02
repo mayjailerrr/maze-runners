@@ -4,6 +4,9 @@ Shader "UI/RoundedRawImage"
     {
         _MainTex ("Texture", 2D) = "white" {}
         _Radius ("Corner Radius", Range(0, 1)) = 0.1
+        _Stencil ("Stencil Reference", Float) = 0
+        _StencilComp ("Stencil Comparison", Float) = 8
+        _StencilOp ("Stencil Operation", Float) = 0
     }
     SubShader
     {
@@ -11,6 +14,13 @@ Shader "UI/RoundedRawImage"
         Blend SrcAlpha OneMinusSrcAlpha
         Pass
         {
+            Stencil
+            {
+                Ref [_Stencil]
+                Comp [_StencilComp]
+                Pass replace
+            }
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag

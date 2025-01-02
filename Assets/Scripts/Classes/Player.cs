@@ -57,7 +57,7 @@ public class Player
 
         if (board.IsValidMove(piece, newX, newY))
         {
-            piece.Move(newX, newY);
+            piece.Move(newX, newY, board);
             return true;
         }
 

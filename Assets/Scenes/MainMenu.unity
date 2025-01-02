@@ -4541,6 +4541,106 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1482f45b1b4b08a4cba266abf92e9a95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &803616462
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 803616463}
+  - component: {fileID: 803616466}
+  - component: {fileID: 803616464}
+  - component: {fileID: 803616468}
+  - component: {fileID: 803616469}
+  m_Layer: 5
+  m_Name: PieceBoard
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &803616463
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 803616462}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 791651763}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 300, y: 0}
+  m_SizeDelta: {x: 1000, y: 1000}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &803616464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 803616462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 042753241b57a2f41b4f9e00a7a6d99c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilePrefab: {fileID: 3109402955476414337, guid: ff4ca147b7e7041499ca04ae33ed95b6, type: 3}
+  piecePrefab: {fileID: 1734017783239383874, guid: c24fd54f3f37e7141ac74e107ce2cf6b, type: 3}
+  boardParent: {fileID: 803616463}
+  boardSize: 10
+  tileSize: 1
+--- !u!222 &803616466
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 803616462}
+  m_CullTransparentMesh: 1
+--- !u!114 &803616468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 803616462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b9e49a5b615fb54a87be02d11c128fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &803616469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 803616462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 100, y: 100}
+  m_Spacing: {x: 0, y: 0}
+  m_Constraint: 0
+  m_ConstraintCount: 10
 --- !u!1 &804797700
 GameObject:
   m_ObjectHideFlags: 0
@@ -5393,6 +5493,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4231361146574399301, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1748365311}
+    - targetCorrespondingSourceObject: {fileID: 4231361146574399301, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 803616463}
     - targetCorrespondingSourceObject: {fileID: 4231361146574399301, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 32555910}
@@ -10547,7 +10650,7 @@ GameObject:
   - component: {fileID: 1748365319}
   - component: {fileID: 1748365320}
   m_Layer: 5
-  m_Name: Board
+  m_Name: TileBoard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10610,7 +10713,6 @@ MonoBehaviour:
   obstaclePrefab: {fileID: 3109402955476414337, guid: 5beef71f5522c3d43a3f809f6d111aa3, type: 3}
   trapPrefab: {fileID: 3109402955476414337, guid: 40a9be7a1c4ddaa4f87c1e1ed347baef, type: 3}
   collectiblePrefab: {fileID: 3109402955476414337, guid: 90f6129e2ad69924f8cc909b1a4ba3b8, type: 3}
-  piecePrefab: {fileID: 1734017783239383874, guid: c24fd54f3f37e7141ac74e107ce2cf6b, type: 3}
 --- !u!114 &1748365319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10648,7 +10750,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boardSize: 10
-  BoardView: {fileID: 0}
 --- !u!1 &1755385939
 GameObject:
   m_ObjectHideFlags: 0

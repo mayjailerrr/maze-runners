@@ -28,10 +28,6 @@ public class BoardView : MonoBehaviour
     public GameObject collectiblePrefab;
 
     private GameObject[,] tileObjects;
-
-    public GameObject piecePrefab;
-    private Dictionary<Piece, GameObject> pieceGameObjects = new Dictionary<Piece, GameObject>();
-
     private Dictionary<string, Sprite> tileSprites;
 
     private void Awake()
@@ -59,7 +55,7 @@ public class BoardView : MonoBehaviour
     }
 
 
-    public void InitializeView(Board board)
+    public void InitializeTileBoardView(Board board)
     {
         int boardSize = board.Size;
         tileObjects = new GameObject[boardSize, boardSize];
@@ -147,56 +143,4 @@ public class BoardView : MonoBehaviour
 
         return "empty";
     }
-    
-    public void UpdatePiecePosition(Piece piece)
-    {
-        PieceView pieceView = piece.View;
-        if (pieceView == null)
-        {
-            Debug.LogWarning($"PieceView not found for piece: {piece.Name}");
-            return;
-        }
-
-        Vector2 targetPosition = GetTilePosition(piece.Position.Item1, piece.Position.Item2);
-        pieceView.MoveTo(targetPosition);
-
-        Vector2 direction = CalculateDirection(piece);
-        bool isMoving = direction != Vector2.zero;
-
-        pieceView.UpdateAnimation(direction, isMoving);
-    }
-
-    private Vector2 CalculateDirection(Piece piece)
-    {
-        (int oldX, int oldY) = piece.PreviousPosition.Value; 
-        (int newX, int newY) = piece.Position;
-
-        return new Vector2(newX - oldX, newY - oldY);
-    }
-
-
-    public void InitializePieces(IEnumerable<Piece> pieces)
-    {
-         foreach (var piece in pieces)
-        {
-            GameObject pieceObject = Instantiate(piecePrefab, transform);
-            PieceView pieceView = pieceObject.GetComponent<PieceView>();
-            piece.View = pieceView; 
-            pieceObject.transform.position = new Vector2(piece.Position.Item1, piece.Position.Item2);
-        
-        }
-    }
-
-    public PieceView GetPieceView(Piece piece)
-    {
-        return FindObjectOfType<PieceView>();
-    }
-
-    public Vector3 GetTilePosition(int x, int y)
-    {
-        float tileSize = 1f;
-
-        return new Vector3(x * tileSize, y * tileSize, 0f); 
-    }
-
 }

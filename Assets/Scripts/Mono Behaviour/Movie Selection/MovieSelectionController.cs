@@ -7,7 +7,6 @@ public class MovieSelectionController : MonoBehaviour
 
    private void Start()
     {
-        Debug.Log("MovieSelectionController Start executed.");
         model = new MovieSelectionModel();
     }
 

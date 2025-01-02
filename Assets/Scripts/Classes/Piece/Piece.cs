@@ -78,9 +78,14 @@ public class Piece
     public bool CanMoveMoreTiles() => movesRemaining > 0;
 
   
-    public void Move(int newX, int newY)
+    public void Move(int newX, int newY, Board board)
     {
+        if (board == null) throw new ArgumentNullException(nameof(board));
+
+        board.PieceGrid[Position.x, Position.y] = null;
         Position = (newX, newY);
+        board.PieceGrid[newX, newY] = this;
+
         movesRemaining--;
         HasMoved = true;
         
@@ -102,10 +107,10 @@ public class Piece
         Vector2 current = new Vector2(Position.Item1, Position.Item2);
         Vector2 direction = newPosition - current;
 
-        if (direction == Vector2.up) return "Up";
-        if (direction == Vector2.down) return "Down";
-        if (direction == Vector2.left) return "Left";
-        if (direction == Vector2.right) return "Right";
+        if (direction == Vector2.up) return "Right";
+        if (direction == Vector2.down) return "Left";
+        if (direction == Vector2.left) return "Up";
+        if (direction == Vector2.right) return "Down";
 
         return "Idle";
     }

@@ -9,15 +9,43 @@ public class Board
 {
     public int Size { get; private set; }
 
-    public Tile[,] grid;
+    public Tile[,] TileGrid;
+    public Piece[,] PieceGrid;
     private List<Piece> pieces = new List<Piece>();
     private List<Collectible> collectibles;
+
+     public Board(int size, List<Collectible> collectibles)
+    {
+        Size = size;
+        this.collectibles = collectibles;
+        TileGrid = new Tile[size, size];
+        PieceGrid = new Piece[size, size];
+        GenerateBoard();
+    }
+
+    public Piece GetPieceAtPosition(int x, int y)
+    {
+        if (IsWithinBounds(x, y))
+        {
+            return PieceGrid[x, y];
+        }
+        return null;
+    }
+
+    public Tile GetTileAtPosition(int x, int y)
+    {
+        if (IsWithinBounds(x, y)) return TileGrid[x, y];
+
+        return null;
+
+    }
 
     public void AddPiece(Piece piece)
     {
         if (piece != null)
         {
             pieces.Add(piece);
+            PieceGrid[piece.Position.x, piece.Position.y] = piece;
         }
     }
 
@@ -36,7 +64,7 @@ public class Board
         {
             for (int y = 0; y < Size; y++)
             {
-                Tile tile = grid[x, y];
+                Tile tile = TileGrid[x, y];
                 if (!(tile is ObstacleTile) && !(tile is TrapTile) && !(tile is CollectibleTile))
                 {
                     neutralTiles.Add(tile);
@@ -72,7 +100,7 @@ public class Board
         {
             for (int y = 0; y < Size; y++)
             {
-                Tile tile = grid[x, y];
+                Tile tile = TileGrid[x, y];
                 if (!(tile is ObstacleTile) && !(tile is TrapTile) && !(tile is CollectibleTile))
                 {
                     neutralTiles.Add(tile);
@@ -90,41 +118,43 @@ public class Board
         int randomIndex = random.Next(neutralTiles.Count);
         return neutralTiles[randomIndex];
     }
-    
-    public Board(int size, List<Collectible> collectibles)
+
+    public void MovePiece(Piece piece, int targetX, int targetY)
     {
-        Size = size;
-        this.collectibles = collectibles;
-        grid = new Tile[size, size];
-        GenerateBoard();
+        if (IsValidMove(piece, targetX, targetY))
+        {
+            PieceGrid[piece.Position.x, piece.Position.y] = null;
+            PieceGrid[targetX, targetY] = piece;
+            piece.UpdatePosition((targetX, targetY));
+        }
     }
 
     public void GenerateBoard()
     {
-        CreateEmptyGrid();
+        CreateEmptyTileGrid();
         PlaceObstacles();
         PlaceTraps();
         EnsureReachability();
         PlaceCollectibles(collectibles);
     }
 
-    private void CreateEmptyGrid()
+    private void CreateEmptyTileGrid()
     {
         for (int x = 0; x < Size; x++)
         {
             for (int y = 0; y < Size; y++)
             {
-                grid[x, y] = new Tile(x, y);
+                TileGrid[x, y] = new Tile(x, y);
             }
         }
     }
 
     private bool CanPlaceTile(int x, int y, Func<Tile, bool> additionalChecks = null)
     {
-        if (grid[x, y] is ObstacleTile || grid[x, y] is TrapTile || grid[x, y] is CollectibleTile)
+        if (TileGrid[x, y] is ObstacleTile || TileGrid[x, y] is TrapTile || TileGrid[x, y] is CollectibleTile)
             return false;
 
-        if (additionalChecks != null && !additionalChecks(grid[x, y]))
+        if (additionalChecks != null && !additionalChecks(TileGrid[x, y]))
             return false;
 
         return true;
@@ -134,10 +164,10 @@ public class Board
     {
         return CanPlaceTile(x, y, tile =>
         {
-            Tile originalTile = grid[tile.Position.x, tile.Position.y];
-            grid[tile.Position.x, tile.Position.y] = new ObstacleTile(tile.Position.x, tile.Position.y);
+            Tile originalTile = TileGrid[tile.Position.x, tile.Position.y];
+            TileGrid[tile.Position.x, tile.Position.y] = new ObstacleTile(tile.Position.x, tile.Position.y);
             bool isReachable = CheckMazeConnectivity();
-            grid[tile.Position.x, tile.Position.y] = originalTile;
+            TileGrid[tile.Position.x, tile.Position.y] = originalTile;
             return isReachable;
         });
     }
@@ -187,13 +217,13 @@ public class Board
         Tile startTile = GetFirstNonObstacleTile();
         if (startTile == null) return false;
 
-        bool[,] visited = PerformBFS(startTile, tile => !(grid[tile.Position.x, tile.Position.y] is ObstacleTile));
+        bool[,] visited = PerformBFS(startTile, tile => !(TileGrid[tile.Position.x, tile.Position.y] is ObstacleTile));
 
         for (int x = 0; x < Size; x++)
         {
             for (int y = 0; y < Size; y++)
             {
-                if (!(grid[x, y] is ObstacleTile) && !visited[x, y])
+                if (!(TileGrid[x, y] is ObstacleTile) && !visited[x, y])
                     return false;
             }
         }
@@ -212,9 +242,9 @@ public class Board
         {
             for (int y = 0; y < Size; y++)
             {
-                if (!visited[x, y] && !(grid[x, y] is CollectibleTile))
+                if (!visited[x, y] && !(TileGrid[x, y] is CollectibleTile))
                 {
-                    grid[x, y] = new Tile(x, y);
+                    TileGrid[x, y] = new Tile(x, y);
                 }
             }
         }
@@ -226,9 +256,9 @@ public class Board
         {
             for (int y = 0; y < Size; y++)
             {
-                if (!(grid[x, y] is ObstacleTile))
+                if (!(TileGrid[x, y] is ObstacleTile))
                 {
-                    return grid[x, y];
+                    return TileGrid[x, y];
                 }
             }
         }
@@ -249,7 +279,7 @@ public class Board
 
             if (IsWithinBounds(nx, ny))
             {
-                yield return grid[nx, ny];
+                yield return TileGrid[nx, ny];
             }
         }
     }
@@ -259,13 +289,6 @@ public class Board
         return x >= 0 && x < Size && y >= 0 && y < Size;
     }
 
-    public Tile GetTileAtPosition(int x, int y)
-    {
-        if (IsWithinBounds(x, y)) return grid[x, y];
-
-        return null;
-
-    }
 
     public bool IsValidMove(Piece piece, int targetX, int targetY)
     {
@@ -290,7 +313,7 @@ public class Board
                 y = random.Next(0, Size);
             } while (!canPlace(x, y));
 
-            grid[x, y] = createTile(x, y);
+            TileGrid[x, y] = createTile(x, y);
         }
     }
 

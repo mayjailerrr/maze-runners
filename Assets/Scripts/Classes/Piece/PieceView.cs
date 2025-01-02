@@ -10,7 +10,7 @@ public class PieceView : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-         rectTransform = GetComponent<RectTransform>();
+        rectTransform = GetComponent<RectTransform>();
         if (animator == null)
         {
             Debug.LogError("Animator is not assigned in PieceView.");

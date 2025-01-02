@@ -23,10 +23,9 @@ public class GameManager : MonoBehaviour
     private EndTurnHandler endTurnHandler;
    
     private int currentPlayerIndex = 0;
-      
-   
-   
     public BoardView BoardView { get; set; }
+    public PieceGridView PieceGridView { get; set; }
+    public PieceController PieceController { get; set; }
    
   
     private void Awake()
@@ -88,7 +87,10 @@ public class GameManager : MonoBehaviour
         InitializeTurnManager();
         InitializeEndTurnButton();
 
-        BoardController.ExternalInitialize(board, BoardController.GetComponent<BoardView>(), TurnManager, GameContext); 
+        BoardController.ExternalInitialize(board, BoardController.GetComponent<BoardView>()); 
+       
+        InitializePieceGridView();
+        InitializePieceController();
 
         TurnManager.StartTurn();
     }
@@ -124,6 +126,7 @@ public class GameManager : MonoBehaviour
 
         Player initialPlayer = players.Values.First();
         GameContext = new Context(board, initialPlayer);  
+
     }
 
     private void GenerateAllCollectibles()
@@ -156,6 +159,38 @@ public class GameManager : MonoBehaviour
         }
 
         endTurnHandler.Initialize(TurnManager);
+    }
+
+    private void InitializePieceController()
+    {
+        if (PieceController == null)
+        {
+            PieceController = FindObjectOfType<PieceController>();
+            if (PieceController == null)
+            {
+                Debug.LogError("PieceController not found in the scene.");
+            }
+            else
+            {
+                PieceController.InitializePieceController(board, TurnManager, GameContext, PieceGridView);
+            }
+        }
+    }
+
+    private void InitializePieceGridView()
+    {
+        if (PieceGridView == null)
+        {
+            PieceGridView = FindObjectOfType<PieceGridView>();
+            if (PieceGridView == null)
+            {
+                Debug.LogError("PieceGridView not found in the scene.");
+            }
+            else
+            {
+                PieceGridView.InitializeGrid(board);
+            }
+        }
     }
 
     public void NextPlayer()
