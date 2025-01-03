@@ -15,7 +15,7 @@ public class Piece
     public (int x, int y)? PreviousPosition { get; private set; }
     
     public bool HasUsedAbility { get; private set; }
-    public IAbility Ability { get; private set; }
+    public IAbility Ability { get; set; }
     public PieceView View { get; set; }
 
     private int movesRemaining;

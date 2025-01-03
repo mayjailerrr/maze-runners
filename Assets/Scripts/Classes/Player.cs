@@ -6,7 +6,7 @@ public class Player
 {
     public int ID { get; }
     public string Name { get; private set; }
-    public IReadOnlyList<Piece> Pieces => _pieces.AsReadOnly(); 
+    public List<Piece> Pieces => _pieces; 
     private List<Piece> _pieces;
 
     private bool abilityUsed;

@@ -91,6 +91,7 @@ public class GameManager : MonoBehaviour
        
         InitializePieceGridView();
         InitializePieceController();
+        GameContext.SetTurnManager(TurnManager);
 
         TurnManager.StartTurn();
     }

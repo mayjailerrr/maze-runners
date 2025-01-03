@@ -11,15 +11,15 @@ public static class PieceFactory
         switch (movie)
         {
             case Movies.Ponyo:
-                pieces.Add(new Piece("Ponyo", 10, 3, null));
+                pieces.Add(new Piece("Ponyo", 10, 3, PieceAbilities.GetAbility(AbilityName.Absorb)));
                 pieces.Add(new Piece("Sosuke", 10, 1, PieceAbilities.GetAbility(AbilityName.SpeedBoost)));
                 pieces.Add(new Piece("Granmamare", 10, 3, null));
                 break;
 
             case Movies.HowlsMovingCastle:
-                pieces.Add(new Piece("Howl", 5, 4, null));
-                pieces.Add(new Piece("Sophie", 3, 1, null));
-                pieces.Add(new Piece("TurnipHead", 2, 1, null));
+                pieces.Add(new Piece("Howl", 5, 4,  PieceAbilities.GetAbility(AbilityName.Teleport)));
+                pieces.Add(new Piece("Sophie", 3, 1, PieceAbilities.GetAbility(AbilityName.Teleport)));
+                pieces.Add(new Piece("TurnipHead", 2, 1, PieceAbilities.GetAbility(AbilityName.Teleport)));
                 break;
 
             // case Movies.PrincessMononoke:

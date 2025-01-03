@@ -31,17 +31,14 @@ public class PieceGridView : MonoBehaviour
         {
             for (int y = 0; y < boardSize; y++)
             {
-                // Verificar si hay una ficha en esta posición
                 Piece piece = board.GetPieceAtPosition(x, y);
 
                 if (piece != null)
                 {
-                    // Colocar la ficha
                     PlacePiece(piece, x, y);
                 }
                 else
                 {
-                    // Colocar un prefab transparente en posiciones vacías
                     PlaceTransparentTile(x, y);
                 }
             }
@@ -54,12 +51,12 @@ public class PieceGridView : MonoBehaviour
         GameObject transparentTile = Instantiate(tilePrefab, position, Quaternion.identity, boardParent);
         transparentTile.name = $"Transparent Tile ({x}, {y})";
         
-        // Opcional: Cambiar el material o sprite a transparente si no está definido
-        SpriteRenderer renderer = transparentTile.GetComponent<SpriteRenderer>();
-        if (renderer != null)
-        {
-            renderer.color = new Color(1f, 1f, 1f, 0f); // Totalmente transparente
-        }
+        // // Opcional: Cambiar el material o sprite a transparente si no está definido
+        // SpriteRenderer renderer = transparentTile.GetComponent<SpriteRenderer>();
+        // if (renderer != null)
+        // {
+        //     renderer.color = new Color(1f, 1f, 1f, 0f); // Totalmente transparente
+        // }
     }
 
     public void PlacePiece(Piece piece, int x, int y)

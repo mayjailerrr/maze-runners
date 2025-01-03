@@ -37,6 +37,12 @@ public class TurnManager
         return players[currentPlayerIndex];
     }
 
+    public Player GetNextPlayer(Player currentPlayer)
+    {
+        int index = players.IndexOf(currentPlayer);
+        return players[(index + 1) % players.Count];
+    }
+
     public void StartTurn()
     {
         UpdateTemporaryEffects();
