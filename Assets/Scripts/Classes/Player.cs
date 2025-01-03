@@ -39,6 +39,17 @@ public class Player
         Debug.Log($"Player {ID}: Assigned {_pieces.Count} pieces.");
     }
 
+    public void AddPiece(Piece piece)
+    {
+        if (piece == null)
+        {
+            Debug.LogError($"Player {ID}: Cannot add a null piece.");
+            return;
+        }
+
+        _pieces.Add(piece);
+    }
+
     public Piece ChoosePiece(int index)
     {
         if (index < 0 || index >= _pieces.Count)

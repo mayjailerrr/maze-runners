@@ -223,6 +223,7 @@ GameObject:
   - component: {fileID: 2158053}
   - component: {fileID: 2158056}
   - component: {fileID: 2158057}
+  - component: {fileID: 2158058}
   m_Layer: 5
   m_Name: Totoro
   m_TagString: Untagged
@@ -352,6 +353,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1482f45b1b4b08a4cba266abf92e9a95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2158058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2158051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70469934e765fdb48a5e6932ee4ea8cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rawImage: {fileID: 2158056}
+  normalTexture: {fileID: 8400000, guid: 4f6ac10732e717e449ea9e3b624abe3b, type: 2}
+  hoverTexture: {fileID: 8400000, guid: 4ce6a5f788d6ddc41946a9fcccb50530, type: 2}
+  pressedTexture: {fileID: 8400000, guid: 4f6ac10732e717e449ea9e3b624abe3b, type: 2}
+  darkenLevel: 0.5
 --- !u!1 &5080095
 GameObject:
   m_ObjectHideFlags: 0
@@ -1010,6 +1028,7 @@ GameObject:
   - component: {fileID: 86225658}
   - component: {fileID: 86225660}
   - component: {fileID: 86225661}
+  - component: {fileID: 86225662}
   m_Layer: 5
   m_Name: Arietty
   m_TagString: Untagged
@@ -1139,6 +1158,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1482f45b1b4b08a4cba266abf92e9a95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &86225662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 86225656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70469934e765fdb48a5e6932ee4ea8cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rawImage: {fileID: 86225660}
+  normalTexture: {fileID: 8400000, guid: 2110cb26b2af93443b7c91b94189fc21, type: 2}
+  hoverTexture: {fileID: 8400000, guid: cb481d388f49beb46bc22c3ecfbe9521, type: 2}
+  pressedTexture: {fileID: 8400000, guid: 2110cb26b2af93443b7c91b94189fc21, type: 2}
+  darkenLevel: 0.5
 --- !u!1 &111715339
 GameObject:
   m_ObjectHideFlags: 0
@@ -2228,11 +2264,11 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 258414542}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 3fdc8ac3bcc42c343bb8d3746d602438, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: c9f5d80a41cb64f4fbd66fd15d5ad456, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 8400000, guid: d320f7522730fc4479a4aecf3c3d8410, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: 0e5c04e2eec1e824894dc9cb4523cbf6, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>
@@ -2242,12 +2278,14 @@ VideoPlayer:
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 1
   m_AudioOutputMode: 2
-  m_TargetAudioSources: []
-  m_DirectAudioVolumes: []
+  m_TargetAudioSources:
+  - {fileID: 0}
+  m_DirectAudioVolumes:
+  - 1
   m_Url: 
-  m_EnabledAudioTracks: 
-  m_DirectAudioMutes: 
-  m_ControlledAudioTrackCount: 0
+  m_EnabledAudioTracks: 01
+  m_DirectAudioMutes: 01
+  m_ControlledAudioTrackCount: 1
   m_PlayOnAwake: 1
   m_SkipOnDrop: 1
   m_Looping: 1
@@ -4595,7 +4633,6 @@ MonoBehaviour:
   tilePrefab: {fileID: 3109402955476414337, guid: ff4ca147b7e7041499ca04ae33ed95b6, type: 3}
   piecePrefab: {fileID: 1734017783239383874, guid: c24fd54f3f37e7141ac74e107ce2cf6b, type: 3}
   boardParent: {fileID: 803616463}
-  boardSize: 10
   tileSize: 1
 --- !u!222 &803616466
 CanvasRenderer:
@@ -5058,6 +5095,7 @@ GameObject:
   - component: {fileID: 869744909}
   - component: {fileID: 869744912}
   - component: {fileID: 869744913}
+  - component: {fileID: 869744914}
   m_Layer: 5
   m_Name: Kikis
   m_TagString: Untagged
@@ -5187,6 +5225,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1482f45b1b4b08a4cba266abf92e9a95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &869744914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869744907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70469934e765fdb48a5e6932ee4ea8cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rawImage: {fileID: 869744912}
+  normalTexture: {fileID: 8400000, guid: d320f7522730fc4479a4aecf3c3d8410, type: 2}
+  hoverTexture: {fileID: 8400000, guid: 0e5c04e2eec1e824894dc9cb4523cbf6, type: 2}
+  pressedTexture: {fileID: 8400000, guid: d320f7522730fc4479a4aecf3c3d8410, type: 2}
+  darkenLevel: 0.5
 --- !u!1 &877575303
 GameObject:
   m_ObjectHideFlags: 0
@@ -5980,11 +6035,11 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1032074875}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 363639af7d112064da1f5935e5cd7c75, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 89d913e3eab93b5458ef8486162eaa66, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 8400000, guid: acfea2ed760f64e4eb5302c2606a436b, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: b2e8b6acf14e473449c04fc3e938cdf1, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>
@@ -5994,12 +6049,14 @@ VideoPlayer:
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 1
   m_AudioOutputMode: 2
-  m_TargetAudioSources: []
-  m_DirectAudioVolumes: []
+  m_TargetAudioSources:
+  - {fileID: 0}
+  m_DirectAudioVolumes:
+  - 1
   m_Url: 
-  m_EnabledAudioTracks: 
-  m_DirectAudioMutes: 
-  m_ControlledAudioTrackCount: 0
+  m_EnabledAudioTracks: 01
+  m_DirectAudioMutes: 01
+  m_ControlledAudioTrackCount: 1
   m_PlayOnAwake: 1
   m_SkipOnDrop: 1
   m_Looping: 1
@@ -6046,11 +6103,11 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1034448244}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 4da952a813355674dbe5676bba70356b, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: e22bab02445bb8e4ca43d39088d21e1f, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 8400000, guid: 4f6ac10732e717e449ea9e3b624abe3b, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: 4ce6a5f788d6ddc41946a9fcccb50530, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>
@@ -6060,12 +6117,14 @@ VideoPlayer:
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 1
   m_AudioOutputMode: 2
-  m_TargetAudioSources: []
-  m_DirectAudioVolumes: []
+  m_TargetAudioSources:
+  - {fileID: 0}
+  m_DirectAudioVolumes:
+  - 1
   m_Url: 
-  m_EnabledAudioTracks: 
-  m_DirectAudioMutes: 
-  m_ControlledAudioTrackCount: 0
+  m_EnabledAudioTracks: 01
+  m_DirectAudioMutes: 01
+  m_ControlledAudioTrackCount: 1
   m_PlayOnAwake: 1
   m_SkipOnDrop: 1
   m_Looping: 1
@@ -6668,11 +6727,11 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1136209778}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 66bbbb6dd25c7bc4ea51288c6225efcf, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 8cbf3476e28932d44b71b1a05735aa42, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 8400000, guid: 0289bff726d46ab4f814fb4346d31ac3, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: 256491eae282d8f448758fc7d8eaae07, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>
@@ -6682,12 +6741,14 @@ VideoPlayer:
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 1
   m_AudioOutputMode: 2
-  m_TargetAudioSources: []
-  m_DirectAudioVolumes: []
+  m_TargetAudioSources:
+  - {fileID: 0}
+  m_DirectAudioVolumes:
+  - 1
   m_Url: 
-  m_EnabledAudioTracks: 
-  m_DirectAudioMutes: 
-  m_ControlledAudioTrackCount: 0
+  m_EnabledAudioTracks: 01
+  m_DirectAudioMutes: 01
+  m_ControlledAudioTrackCount: 1
   m_PlayOnAwake: 1
   m_SkipOnDrop: 1
   m_Looping: 1
@@ -7367,6 +7428,7 @@ GameObject:
   - component: {fileID: 1197148640}
   - component: {fileID: 1197148643}
   - component: {fileID: 1197148644}
+  - component: {fileID: 1197148645}
   m_Layer: 5
   m_Name: Chihiro
   m_TagString: Untagged
@@ -7496,6 +7558,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1482f45b1b4b08a4cba266abf92e9a95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1197148645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197148638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70469934e765fdb48a5e6932ee4ea8cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rawImage: {fileID: 1197148643}
+  normalTexture: {fileID: 8400000, guid: acfea2ed760f64e4eb5302c2606a436b, type: 2}
+  hoverTexture: {fileID: 8400000, guid: b2e8b6acf14e473449c04fc3e938cdf1, type: 2}
+  pressedTexture: {fileID: 8400000, guid: acfea2ed760f64e4eb5302c2606a436b, type: 2}
+  darkenLevel: 0.5
 --- !u!1 &1197438785
 GameObject:
   m_ObjectHideFlags: 0
@@ -7968,6 +8047,7 @@ GameObject:
   - component: {fileID: 1338973538}
   - component: {fileID: 1338973541}
   - component: {fileID: 1338973542}
+  - component: {fileID: 1338973543}
   m_Layer: 5
   m_Name: Mononoke
   m_TagString: Untagged
@@ -8097,6 +8177,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1482f45b1b4b08a4cba266abf92e9a95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1338973543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338973536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70469934e765fdb48a5e6932ee4ea8cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rawImage: {fileID: 1338973541}
+  normalTexture: {fileID: 8400000, guid: d173cddfa8d70ec4483905bc0b3e6e4d, type: 2}
+  hoverTexture: {fileID: 8400000, guid: 6d60e3f811c99194096a6de0c690e87f, type: 2}
+  pressedTexture: {fileID: 8400000, guid: d173cddfa8d70ec4483905bc0b3e6e4d, type: 2}
+  darkenLevel: 0.5
 --- !u!1 &1402380355
 GameObject:
   m_ObjectHideFlags: 0
@@ -9332,7 +9429,7 @@ VideoPlayer:
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 8400000, guid: f65e8e128ec15cc48a43aae06ab91d84, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: c8853ec1cd983f445b2dabdfbe585564, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>
@@ -9597,6 +9694,8 @@ GameObject:
   - component: {fileID: 1589364833}
   - component: {fileID: 1589364836}
   - component: {fileID: 1589364837}
+  - component: {fileID: 1589364839}
+  - component: {fileID: 1589364838}
   m_Layer: 5
   m_Name: Howl
   m_TagString: Untagged
@@ -9726,6 +9825,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1482f45b1b4b08a4cba266abf92e9a95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1589364838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589364831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70469934e765fdb48a5e6932ee4ea8cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rawImage: {fileID: 1589364836}
+  normalTexture: {fileID: 8400000, guid: 0289bff726d46ab4f814fb4346d31ac3, type: 2}
+  hoverTexture: {fileID: 8400000, guid: 256491eae282d8f448758fc7d8eaae07, type: 2}
+  pressedTexture: {fileID: 8400000, guid: 0289bff726d46ab4f814fb4346d31ac3, type: 2}
+  darkenLevel: 0.5
+--- !u!114 &1589364839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589364831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 1
 --- !u!1 &1594332669 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7795897774734860104, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
@@ -10017,6 +10146,7 @@ GameObject:
   - component: {fileID: 1669214271}
   - component: {fileID: 1669214274}
   - component: {fileID: 1669214275}
+  - component: {fileID: 1669214276}
   m_Layer: 5
   m_Name: Porco
   m_TagString: Untagged
@@ -10146,6 +10276,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1482f45b1b4b08a4cba266abf92e9a95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1669214276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1669214269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70469934e765fdb48a5e6932ee4ea8cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rawImage: {fileID: 1669214274}
+  normalTexture: {fileID: 8400000, guid: f65e8e128ec15cc48a43aae06ab91d84, type: 2}
+  hoverTexture: {fileID: 8400000, guid: c8853ec1cd983f445b2dabdfbe585564, type: 2}
+  pressedTexture: {fileID: 8400000, guid: f65e8e128ec15cc48a43aae06ab91d84, type: 2}
+  darkenLevel: 0.5
 --- !u!1 &1669904871
 GameObject:
   m_ObjectHideFlags: 0
@@ -10790,11 +10937,11 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1755385939}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 88d43d748899fd347934386e17999326, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 52b87f19f1f97694f83de450945ae5fc, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 8400000, guid: d173cddfa8d70ec4483905bc0b3e6e4d, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: 6d60e3f811c99194096a6de0c690e87f, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>
@@ -10804,12 +10951,14 @@ VideoPlayer:
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 1
   m_AudioOutputMode: 2
-  m_TargetAudioSources: []
-  m_DirectAudioVolumes: []
+  m_TargetAudioSources:
+  - {fileID: 0}
+  m_DirectAudioVolumes:
+  - 1
   m_Url: 
-  m_EnabledAudioTracks: 
-  m_DirectAudioMutes: 
-  m_ControlledAudioTrackCount: 0
+  m_EnabledAudioTracks: 01
+  m_DirectAudioMutes: 01
+  m_ControlledAudioTrackCount: 1
   m_PlayOnAwake: 1
   m_SkipOnDrop: 1
   m_Looping: 1
@@ -10860,7 +11009,7 @@ VideoPlayer:
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 8400000, guid: 2110cb26b2af93443b7c91b94189fc21, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: cb481d388f49beb46bc22c3ecfbe9521, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>

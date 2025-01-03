@@ -3,18 +3,18 @@ using System;
 
 public class TemporaryEffect
 {
-    private readonly Piece piece;
-    private readonly string propertyName;
-    private readonly int originalValue;
-    private readonly int modifiedValue;
-    private int remainingTurns;
+    private readonly Piece _piece;
+    private readonly string _propertyName;
+    private readonly int _originalValue;
+    private readonly int _modifiedValue;
+    private int _remainingTurns;
 
-    public bool HasExpired => remainingTurns <= 0;
+    public bool HasExpired => _remainingTurns <= 0;
 
     public TemporaryEffect(Piece piece, string propertyName, int modifiedValue, int duration)
     {
-        this.piece = piece;
-        this.propertyName = propertyName;
+        _piece = piece;
+        _propertyName = propertyName;
 
         var property = piece.GetType().GetProperty(propertyName);
         if (property == null)
@@ -22,32 +22,32 @@ public class TemporaryEffect
             throw new ArgumentException($"Property '{propertyName}' not found in Piece.");
         }
 
-        originalValue = (int)property.GetValue(piece);
-        this.modifiedValue = modifiedValue;
-        this.remainingTurns = duration;
+        _originalValue = (int)property.GetValue(piece);
+        _modifiedValue = modifiedValue;
+        _remainingTurns = duration;
     }
 
     public void Apply()
     {
-        SetPropertyValue(modifiedValue);
+        SetPropertyValue(_modifiedValue);
     }
 
     public void Revert()
     {
-        SetPropertyValue(originalValue);
+        SetPropertyValue(_originalValue);
     }
 
     public void DecrementDuration()
     {
-        remainingTurns--;
+        _remainingTurns--;
     }
 
     private void SetPropertyValue(int value)
     {
-        var property = piece.GetType().GetProperty(propertyName);
+        var property = _piece.GetType().GetProperty(_propertyName);
         if (property != null)
         {
-            property.SetValue(piece, value);
+            property.SetValue(_piece, value);
         }
     }
 }

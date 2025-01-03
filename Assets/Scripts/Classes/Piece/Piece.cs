@@ -114,6 +114,14 @@ public class Piece
 
         return "Idle";
     }
+
+    public Piece Clone()
+    {
+        Piece piece = new Piece(Name + "_Clone", Speed, Cooldown, this.Ability);
+        piece.Position = Position;
+        piece.PreviousPosition = PreviousPosition;
+        return piece;
+    }
     
 }
 
