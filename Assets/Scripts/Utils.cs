@@ -26,6 +26,7 @@ public enum AbilityName
     Freeze, 
     WallBuilder, 
     WallDestroyer,
+    HealthDamage,
 
     //defensives
     Shield,

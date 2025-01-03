@@ -6,14 +6,17 @@ using System.Linq;
 
 public class Piece
 {
-
     public string Name { get; protected set; }
     public int Speed { get; set; }
     public int Cooldown { get; set; }
     private int currentCooldown = 0;
+   
     public (int x, int y) Position { get; set; }
     public (int x, int y)? PreviousPosition { get; private set; }
+    public (int x, int y)? InitialPosition { get; set; }
     
+    public int Health { get; set; } = 3;
+   
     public bool HasUsedAbility { get; private set; }
     public IAbility Ability { get; set; }
     public PieceView View { get; set; }
@@ -29,6 +32,7 @@ public class Piece
         Ability = ability;
         Position = (0, 0);
         PreviousPosition = null;
+        InitialPosition = null;
         ResetTurn();
     }
 
@@ -36,6 +40,11 @@ public class Piece
     {
         PreviousPosition = Position; 
         Position = newPosition; 
+    }
+
+    public void ResetPosition()
+    {
+        Position = InitialPosition.Value;
     }
 
     public bool CanUseAbility => currentCooldown == 0;
@@ -120,9 +129,22 @@ public class Piece
         Piece piece = new Piece(Name + "_Clone", Speed, Cooldown, this.Ability);
         piece.Position = Position;
         piece.PreviousPosition = PreviousPosition;
+        piece.Health = Health;
         return piece;
     }
     
+    public void TakeDamage(int damage)
+    {
+        Health -= damage;
+        Debug.Log($"{Name} took {damage} damage. Health is now {Health}.");
+
+        if (Health <= 0)
+        {
+            Health = 3;
+            Debug.Log($"{Name} health reached 0. Resetting to initial position.");
+            ResetPosition();
+        }
+    }
 }
 
 
