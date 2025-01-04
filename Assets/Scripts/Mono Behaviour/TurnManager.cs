@@ -15,7 +15,7 @@ public class TurnManager
     private List<Player> players;
     private Context gameContext;
 
-    private readonly Dictionary<Piece, List<TemporaryEffect>> activeEffects = new();
+    private readonly Dictionary<Piece, List<ITemporaryEffect>> activeEffects = new();
    
     private bool hasMovedPiece = false;
     private bool hasUsedAbility = false;
@@ -74,16 +74,14 @@ public class TurnManager
     }
 
 
-    public void ApplyTemporaryEffect(Piece piece, string property, int modifiedValue, int duration)
+    public void ApplyTemporaryEffect(ITemporaryEffect effect)
     {
-        if (!activeEffects.ContainsKey(piece))
+        if (!activeEffects.ContainsKey(effect.TargetPiece))
         {
-            activeEffects[piece] = new List<TemporaryEffect>();
+            activeEffects[effect.TargetPiece] = new List<ITemporaryEffect>();
         }
 
-        var effect = new TemporaryEffect(piece, property, modifiedValue, duration);
-        activeEffects[piece].Add(effect);
-
+        activeEffects[effect.TargetPiece].Add(effect);
         effect.Apply();
     }
 

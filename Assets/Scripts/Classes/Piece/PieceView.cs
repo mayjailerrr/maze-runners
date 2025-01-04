@@ -50,4 +50,25 @@ public class PieceView : MonoBehaviour
 
          rectTransform.anchoredPosition = targetPosition; 
     }
+
+    public void SetVisibility(bool isVisible)
+    {
+        if (gameObject != null)
+        {
+            gameObject.SetActive(isVisible);
+        }
+    }
+
+    public void ShowShield()
+    {
+        // Activar animación o efecto visual
+        Debug.Log("Shield effect activated!");
+    }
+
+    public void HideShield()
+    {
+        // Desactivar animación o efecto visual
+        Debug.Log("Shield effect deactivated!");
+    }
+
 }

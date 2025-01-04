@@ -22,16 +22,17 @@ public enum AbilityName
     SpeedBoost,
 
     //offensives
-    Bomb,
     Freeze, 
     WallBuilder, 
     WallDestroyer,
     HealthDamage,
+    WallBomb,
+    AbsorbAbility,
 
     //defensives
     Shield,
     Clone,
     Invisibility,
-    Absorb,
+    AbsorbDamage,
 
 }

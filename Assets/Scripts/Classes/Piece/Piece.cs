@@ -16,6 +16,29 @@ public class Piece
     public (int x, int y)? InitialPosition { get; set; }
     
     public int Health { get; set; } = 3;
+
+    private bool isShielded;
+    public bool IsShielded
+    {
+        get => isShielded;
+        set
+        {
+            isShielded = value;
+            if (isShielded) View.ShowShield();
+            else View.HideShield();
+        }
+    }
+    private bool _abilitiesBlocked = false;
+    public bool AbilitiesBlocked
+    {
+        get => _abilitiesBlocked;
+        set
+        {
+            _abilitiesBlocked = value;
+            Debug.Log($"{Name} abilities are now {(value ? "blocked" : "unblocked")}.");
+        }
+    }
+    public bool CanUseAbility => !_abilitiesBlocked && currentCooldown == 0;
    
     public bool HasUsedAbility { get; private set; }
     public IAbility Ability { get; set; }
@@ -47,8 +70,6 @@ public class Piece
         Position = InitialPosition.Value;
     }
 
-    public bool CanUseAbility => currentCooldown == 0;
-
     public bool UseAbility(Context context)
     {
         if (!CanUseAbility)
@@ -71,7 +92,6 @@ public class Piece
         return false;
        
     }
-
 
     public void ReduceCooldown()
     {
@@ -135,6 +155,12 @@ public class Piece
     
     public void TakeDamage(int damage)
     {
+        if (IsShielded)
+        {
+            Debug.Log($"{Name} is shielded and takes no damage!");
+            return;
+        } 
+
         Health -= damage;
         Debug.Log($"{Name} took {damage} damage. Health is now {Health}.");
 

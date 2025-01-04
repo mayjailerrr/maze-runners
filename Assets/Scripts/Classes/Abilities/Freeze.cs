@@ -18,7 +18,7 @@ public class FreezeAbility : IAbility
         }
 
         System.Random random = new System.Random();
-        selectedPieceIndex = random.Next(0, 3);
+        selectedPieceIndex = random.Next(0, nextPlayer.Pieces.Count);
 
         Piece targetPiece = nextPlayer.Pieces[selectedPieceIndex];
         Debug.Log($"Target piece: {targetPiece?.Name}");
@@ -32,9 +32,19 @@ public class FreezeAbility : IAbility
         int freezeTurns = 2;
         var turnManager = context.TurnManager;
 
-        turnManager.ApplyTemporaryEffect(targetPiece, "Speed", 0, freezeTurns);
+        var freezeMovementEffect = new PropertyTemporaryEffect(targetPiece, "Speed", 0, freezeTurns);
+        turnManager.ApplyTemporaryEffect(freezeMovementEffect);
+
+        var freezeAbilitiesEffect = new ActionTemporaryEffect(
+            targetPiece,
+            () => targetPiece.AbilitiesBlocked = true,
+            () => targetPiece.AbilitiesBlocked = false, 
+            freezeTurns
+        );
+        turnManager.ApplyTemporaryEffect(freezeAbilitiesEffect);
 
         Debug.Log($"Piece {targetPiece.Name} has been frozen for {freezeTurns} turns.");
+       
         return true;
     }
 }

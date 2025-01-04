@@ -8,14 +8,15 @@ public static class PieceAbilities
     {
         { AbilityName.Teleport, new TeleportAbility() }, 
         { AbilityName.SpeedBoost, new SpeedBoostAbility() }, 
-        { AbilityName.Bomb, new BombAbility() }, 
+        { AbilityName.AbsorbDamage, new AbsorbDamageAbility() }, 
+        { AbilityName.WallBomb, new WallBombAbility() },
         { AbilityName.Freeze, new FreezeAbility() }, 
         { AbilityName.WallBuilder, new WallBuilderAbility() }, 
         { AbilityName.WallDestroyer, new WallDestroyerAbility() }, 
         { AbilityName.Shield, new ShieldAbility() }, 
         { AbilityName.Clone, new CloneAbility() }, 
         { AbilityName.Invisibility, new InvisibilityAbility() }, 
-        { AbilityName.Absorb, new AbsorbAbilitiesAbility() },
+        { AbilityName.AbsorbAbility, new AbsorbAbilitiesAbility() },
         { AbilityName.HealthDamage, new HealthDamageAbility() }
     };
 

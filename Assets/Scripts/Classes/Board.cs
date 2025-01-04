@@ -349,6 +349,15 @@ public class Board
                 });
         }
     }
+
+    public void ReplaceTile(int x, int y)
+    {
+        if (!IsWithinBounds(x, y))
+        {
+            Debug.LogError($"Position ({x}, {y}) is out of bounds.");
+            return;
+        }
+
+        TileGrid[x, y] = new Tile(x, y);
+    }
 }
-
-
