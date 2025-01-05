@@ -50,13 +50,6 @@ public class PieceGridView : MonoBehaviour
         Vector3 position = GetTilePosition(x, y);
         GameObject transparentTile = Instantiate(tilePrefab, position, Quaternion.identity, boardParent);
         transparentTile.name = $"Transparent Tile ({x}, {y})";
-        
-        // // Opcional: Cambiar el material o sprite a transparente si no está definido
-        // SpriteRenderer renderer = transparentTile.GetComponent<SpriteRenderer>();
-        // if (renderer != null)
-        // {
-        //     renderer.color = new Color(1f, 1f, 1f, 0f); // Totalmente transparente
-        // }
     }
 
     public void PlacePiece(Piece piece, int x, int y)

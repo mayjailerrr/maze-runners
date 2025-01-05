@@ -16,7 +16,7 @@ public class EndTurnHandler : MonoBehaviour
         }
         else
         {
-            Debug.LogError("El botón de fin de turno no está asignado.");
+            Debug.LogError("The button is not assigned.");
         }
     }
 

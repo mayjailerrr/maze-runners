@@ -4,11 +4,11 @@ using UnityEngine.EventSystems;
 
 public class RenderTextureButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    public RawImage rawImage;         // The RawImage of the button
-    public RenderTexture normalTexture;   // RenderTexture for default state
-    public RenderTexture hoverTexture;    // RenderTexture for hover state
-    public RenderTexture pressedTexture;  // RenderTexture for pressed state
-    public float darkenLevel = 0.5f;      // Darkness level for pressed state
+    public RawImage rawImage;         
+    public RenderTexture normalTexture;   
+    public RenderTexture hoverTexture;   
+    public RenderTexture pressedTexture;  
+    public float darkenLevel = 0.5f;    
 
     private MaterialPropertyBlock propertyBlock;
     private Renderer rawImageRenderer;
@@ -19,36 +19,32 @@ public class RenderTextureButton : MonoBehaviour, IPointerEnterHandler, IPointer
         if (rawImage == null)
             rawImage = GetComponent<RawImage>();
 
-        rawImage.texture = normalTexture; // Set the default texture
-        rawImageMaterial = rawImage.material; // Save the material
+        rawImage.texture = normalTexture; 
+        rawImageMaterial = rawImage.material;
 
-        // Get the Renderer and MaterialPropertyBlock
-      //  rawImageRenderer = rawImage.GetComponent<CanvasRenderer>();
         propertyBlock = new MaterialPropertyBlock();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        SetTextureAndDarkness(hoverTexture, 1.0f); // Hover with no darkness
+        SetTextureAndDarkness(hoverTexture, 1.0f); 
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        SetTextureAndDarkness(normalTexture, 1.0f); // Reset to normal
+        SetTextureAndDarkness(normalTexture, 1.0f); 
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        SetTextureAndDarkness(pressedTexture, darkenLevel); // Apply darkness
+        SetTextureAndDarkness(pressedTexture, darkenLevel); 
     }
 
     private void SetTextureAndDarkness(RenderTexture texture, float darkness)
     {
         rawImage.texture = texture;
 
-        // Apply changes to the MaterialPropertyBlock
         propertyBlock.SetTexture("_MainTex", texture);
         propertyBlock.SetFloat("_Darkness", darkness);
-        //rawImageRenderer.SetPropertyBlock(propertyBlock);
     }
 }

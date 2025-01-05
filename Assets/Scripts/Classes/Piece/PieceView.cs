@@ -61,13 +61,13 @@ public class PieceView : MonoBehaviour
 
     public void ShowShield()
     {
-        // Activar animación o efecto visual
+        //to-do: activate animation or visual effect
         Debug.Log("Shield effect activated!");
     }
 
     public void HideShield()
     {
-        // Desactivar animación o efecto visual
+        //to-do: deactivate animation or visual effect
         Debug.Log("Shield effect deactivated!");
     }
 

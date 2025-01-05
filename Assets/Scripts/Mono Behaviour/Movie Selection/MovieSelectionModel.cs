@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using MazeRunners;
-
 
 namespace MazeRunners
 {

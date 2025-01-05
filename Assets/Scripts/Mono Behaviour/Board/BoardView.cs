@@ -34,7 +34,6 @@ public class BoardView : MonoBehaviour
     {
         tileSprites = new Dictionary<string, Sprite>()
         {
-            // Sprites para Tile
             { "tile_corridor_horizontal", tileCorridorHorizontalSprite },
             { "tile_corridor_vertical", tileCorridorVerticalSprite },
             { "tile_corner_top_right", tileCornerTopRightSprite },
@@ -43,7 +42,6 @@ public class BoardView : MonoBehaviour
             { "tile_corner_bottom_left", tileCornerBottomLeftSprite },
             { "tile_empty", tileEmptySprite },
 
-            // Sprites para ObstacleTile
             { "obstacle_corridor_horizontal", obstacleCorridorHorizontalSprite },
             { "obstacle_corridor_vertical", obstacleCorridorVerticalSprite },
             { "obstacle_corner_top_right", obstacleCornerTopRightSprite },

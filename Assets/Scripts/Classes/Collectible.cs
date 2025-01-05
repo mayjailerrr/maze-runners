@@ -1,3 +1,5 @@
+using MazeRunners;
+
 public class Collectible
 {
     public string Name { get; }

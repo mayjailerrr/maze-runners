@@ -31,10 +31,7 @@ public class Context
 
     public void UpdateTileAndPosition(Tile tile)
     {
-        // if (CurrentPiece != null)
-        // {
-        //     CurrentPiece.CurrentTile = tile;
-        // }
+        CurrentTile = tile;
     }
 
     public void ResetContextForNewTurn(Player newPlayer)
