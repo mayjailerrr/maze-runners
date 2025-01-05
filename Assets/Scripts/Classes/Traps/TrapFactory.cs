@@ -7,15 +7,13 @@ public static class TrapFactory
    private static readonly List<ITrapEffect> predefinedTraps = new List<ITrapEffect>
     {
         new SlowTrap(2, 3),  
-        new SlowTrap(1, 2),    
-        // new DamageTrap(10),    
-        // new FreezeTrap(1),    
-        // new FreezeTrap(2),     
-        // new HealTrap(15),  
-        // new DamageTrap(5),     
-        // new SwapTrap(),        
-        // new DamageTrap(8),    
-        new SlowTrap(3, 1)     
+        new SlowTrap(1, 2),
+        new SlowTrap(3, 1),  
+        new DamageTrap(1), 
+        new DamageTrap(2),     
+        new DamageTrap(3),   
+        new FreezeTrap(1),    
+        new FreezeTrap(2),      
     };
 
     private static readonly Random random = new Random();
