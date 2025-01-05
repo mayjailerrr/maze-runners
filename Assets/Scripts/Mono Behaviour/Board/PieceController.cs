@@ -78,26 +78,22 @@ public class PieceController : MonoBehaviour
 
     private void TryMovePiece(Piece piece, Vector2 direction)
     {
-        if (piece == null)
-        {
-            Debug.LogError("Piece is null in TryMovePiece.");
-        }
-
-        if(board == null)
-        {
-            Debug.LogError("Board is null in TryMovePiece.");
-        }
-
-        if(PieceGridView == null)
-        {
-            Debug.LogError("PieceGridView is null in TryMovePiece.");
-        }
-
         if (!piece.CanMoveMoreTiles())
         {
             Debug.LogWarning($"Piece {piece.Name} has no moves left this turn.");
             return;
         }
+
+        string directionString = direction switch
+        {
+            Vector2 v when v == Vector2.up => "Up",
+            Vector2 v when v == Vector2.down => "Down",
+            Vector2 v when v == Vector2.left => "Left",
+            Vector2 v when v == Vector2.right => "Right",
+            _ => "Unknown"
+        };
+
+        gameContext.SetPlayerDirection(directionString);
 
         int newX = piece.Position.Item1 + (int)direction.x;
         int newY = piece.Position.Item2 + (int)direction.y;

@@ -17,7 +17,8 @@ public static class PieceAbilities
         { AbilityName.Clone, new CloneAbility() }, 
         { AbilityName.Invisibility, new InvisibilityAbility() }, 
         { AbilityName.AbsorbAbility, new AbsorbAbilitiesAbility() },
-        { AbilityName.HealthDamage, new HealthDamageAbility() }
+        { AbilityName.HealthDamage, new HealthDamageAbility() },
+        { AbilityName.RampartBuilder, new RampartBuilderAbility() }
     };
 
     public static IAbility GetAbility(AbilityName abilityName)

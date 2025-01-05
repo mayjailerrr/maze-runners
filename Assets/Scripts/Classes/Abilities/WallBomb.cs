@@ -34,7 +34,7 @@ public class WallBombAbility : IAbility
                     {
                         if (tile is ObstacleTile || tile is TrapTile)
                         {
-                            board.ReplaceTile(targetX, targetY); 
+                            board.ReplaceTile(targetX, targetY, new Tile(targetX, targetY)); 
                         }
                         else if (tile is CollectibleTile)
                         {
@@ -42,6 +42,8 @@ public class WallBombAbility : IAbility
                         }
                     }
                 }
+
+                Debug.Log($"WallBomb destroyed wall at {targetX}, {targetY}");
             }
         }
 

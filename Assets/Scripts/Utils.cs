@@ -28,6 +28,7 @@ public enum AbilityName
     HealthDamage,
     WallBomb,
     AbsorbAbility,
+    RampartBuilder,
 
     //defensives
     Shield,

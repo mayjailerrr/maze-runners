@@ -9,8 +9,16 @@ public class SpeedBoostAbility : IAbility
 
     public bool Execute(Context context)
     {
-        context.CurrentPiece.Speed += 2;
-        Debug.Log($"Piece speed increased to {context.CurrentPiece.Speed}");
+        var targetPiece = context.CurrentPiece;
+        if (targetPiece == null)
+        {
+            Debug.LogError("No piece selected to clone.");
+            return false;
+        }
+
+        targetPiece.Speed += 2;
+        
+        Debug.Log($"Piece speed increased to {targetPiece.Speed}");
         return true;
     }
 }

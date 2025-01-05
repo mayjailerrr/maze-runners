@@ -7,8 +7,8 @@ public class Context
     public Player CurrentPlayer { get; set; }
     public Tile CurrentTile { get; set; }
     public TurnManager TurnManager { get; private set; }
-
-   public Context(Board board, Player currentPlayer, Piece currentPiece = null, Tile currentTile = null)
+    public string PlayerDirection { get; private set; }
+    public Context(Board board, Player currentPlayer, Piece currentPiece = null, Tile currentTile = null)
     {
         if (board == null)
         {
@@ -19,6 +19,8 @@ public class Context
         CurrentPlayer = currentPlayer;
         CurrentPiece = currentPiece;
         CurrentTile = currentTile;
+
+        PlayerDirection = "Up";
     }
 
     public void SetTurnManager(TurnManager turnManager)
@@ -44,6 +46,8 @@ public class Context
         {
             piece.ResetTurn();
         }
+
+        PlayerDirection = "Up";
     }
 
     public bool AllPiecesMoved()
@@ -57,5 +61,17 @@ public class Context
         }
 
         return true;
+    }
+
+     public void SetPlayerDirection(string direction)
+    {
+        if (direction == "Up" || direction == "Down" || direction == "Left" || direction == "Right")
+        {
+            PlayerDirection = direction;
+        }
+        else
+        {
+            throw new System.ArgumentException($"Invalid direction: {direction}");
+        }
     }
 }

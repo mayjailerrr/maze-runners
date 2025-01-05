@@ -350,7 +350,7 @@ public class Board
         }
     }
 
-    public void ReplaceTile(int x, int y)
+    public void ReplaceTile(int x, int y, Tile newTile)
     {
         if (!IsWithinBounds(x, y))
         {
@@ -358,6 +358,6 @@ public class Board
             return;
         }
 
-        TileGrid[x, y] = new Tile(x, y);
+        TileGrid[x, y] = newTile;
     }
 }
