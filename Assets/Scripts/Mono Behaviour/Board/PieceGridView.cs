@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class PieceGridView : MonoBehaviour
 {
@@ -70,25 +71,58 @@ public class PieceGridView : MonoBehaviour
 
     public void MovePiece(Piece piece, int newX, int newY)
     {
-        Vector3 newPosition = GetTilePosition(newX, newY);
+       // Vector3 newPosition = GetTilePosition(newX, newY);
 
-        GameObject pieceObject = pieces[piece.Position.x, piece.Position.y];
-        if (pieceObject != null)
-        {
-            pieceObject.transform.position = newPosition;
-            pieces[piece.Position.x, piece.Position.y] = null; 
-            pieces[newX, newY] = pieceObject; 
-        }
+        // GameObject pieceObject = pieces[piece.Position.x, piece.Position.y];
+        // if (pieceObject != null)
+        // {
+        //     // piece.View.MoveTo(newPosition);
+        //     pieceObject.transform.position = newPosition;
+        //     pieces[piece.Position.x, piece.Position.y] = null; 
+        //     pieces[newX, newY] = pieceObject; 
+        // }
+
+         Vector3 targetPosition = GetTilePosition(newX, newY);
+    piece.View.MoveTo(targetPosition);
+    piece.View.transform.position = targetPosition; 
     }
+
+    // private Vector3 GetTilePosition(int x, int y)
+    // {
+    //     float offsetX = -boardSize / 2.0f * tileSize; 
+    //     float offsetY = -boardSize / 2.0f * tileSize; 
+
+    //     float worldX = x * tileSize + offsetX + tileSize / 2;
+    //     float worldY = y * tileSize + offsetY + tileSize / 2;
+
+    //     return new Vector3(worldX, worldY, 0f);
+    // }
 
     private Vector3 GetTilePosition(int x, int y)
+{
+    float cellWidth = 100f; // Tamaño de las celdas en unidades
+    float cellHeight = 100f;
+    
+    // Calcula la posición local basada en el tablero
+    Vector3 localPosition = new Vector3(x * cellWidth, y * cellHeight, 0);
+
+    // Devuelve la posición local
+    return localPosition;
+}
+
+    public IEnumerator AnimatePieceMovement(GameObject pieceObject, Vector3 targetPosition, float duration)
     {
-        float offsetX = -boardSize / 2.0f * tileSize; 
-        float offsetY = -boardSize / 2.0f * tileSize; 
+        Vector3 startPosition = pieceObject.transform.position;
+        float elapsedTime = 0f;
 
-        float worldX = x * tileSize + offsetX + tileSize / 2;
-        float worldY = y * tileSize + offsetY + tileSize / 2;
+        while (elapsedTime < duration)
+        {
+            pieceObject.transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
 
-        return new Vector3(worldX, worldY, 0f);
+        pieceObject.transform.position = targetPosition;
     }
+
 }

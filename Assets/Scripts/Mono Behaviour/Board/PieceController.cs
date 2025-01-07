@@ -9,7 +9,7 @@ public class PieceController : MonoBehaviour
     private TurnManager turnManager;
     private Context gameContext;
     private Board board;
-    private PieceGridView PieceGridView;
+    private PieceGridView pieceGridView;
 
     private bool isInitialized = false;
 
@@ -18,7 +18,7 @@ public class PieceController : MonoBehaviour
         this.board = board;
         this.turnManager = turnManager;
         this.gameContext = context;
-        this.PieceGridView = pieceGridView;
+        this.pieceGridView = pieceGridView;
 
         isInitialized = true;
     }
@@ -61,8 +61,8 @@ public class PieceController : MonoBehaviour
     private Vector2 GetInputDirection()
     {
         if (Input.GetKeyDown(KeyCode.W)) return Vector2.left;
-        if (Input.GetKeyDown(KeyCode.A)) return Vector2.right;
-        if (Input.GetKeyDown(KeyCode.S)) return Vector2.down;
+        if (Input.GetKeyDown(KeyCode.A)) return Vector2.down;
+        if (Input.GetKeyDown(KeyCode.S)) return Vector2.right;
         if (Input.GetKeyDown(KeyCode.D)) return Vector2.up;
         return Vector2.zero;
     }
@@ -106,7 +106,8 @@ public class PieceController : MonoBehaviour
                 Tile targetTile = board.GetTileAtPosition(newX, newY);
                 gameContext.UpdateTileAndPosition(board.GetTileAtPosition(newX, newY));
                 piece.UpdatePosition((newX, newY));
-                //PieceGridView.UpdatePiecePosition(piece);
+
+                pieceGridView.MovePiece(piece, newX, newY);
 
                 if(piece.View == null)
                 {
@@ -114,7 +115,7 @@ public class PieceController : MonoBehaviour
                     return;
                 }
 
-                piece.View.UpdateAnimation(direction, true);
+               // piece.View.UpdateAnimation(direction, true);
 
                 if (targetTile is TrapTile trapTile)
                 {

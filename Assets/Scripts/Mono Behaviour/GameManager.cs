@@ -4,9 +4,12 @@ using UnityEngine.UI;
 using MazeRunners;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Tilemaps;
 
 public class GameManager : MonoBehaviour
 {
+    public Grid grid;
+    Vector2Int boardSize;
     public static GameManager Instance { get; private set; }
 
     public List<Collectible> playersCollectibles = new List<Collectible>();
@@ -42,7 +45,8 @@ public class GameManager : MonoBehaviour
        
     }
 
-    private void Start()
+
+    private void Update()
     {
         BoardController = FindObjectOfType<BoardController>();
 
@@ -51,6 +55,7 @@ public class GameManager : MonoBehaviour
             Debug.LogError("BoardController not found in scene.");
         }
     }
+
 
     public int GetCurrentPlayerIndex()
     {
@@ -173,7 +178,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                PieceController.InitializePieceController(board, TurnManager, GameContext, PieceGridView);
+              //  PieceController.InitializePieceController(board, TurnManager, GameContext, PieceGridView);
             }
         }
     }

@@ -15,6 +15,7 @@ public class PieceView : MonoBehaviour
         {
             Debug.LogError("Animator is not assigned in PieceView.");
         }
+        Debug.Log($"PieceView is child of {transform.parent.name}");
 
     }
 
@@ -48,7 +49,7 @@ public class PieceView : MonoBehaviour
             yield return null;
         }
 
-         rectTransform.anchoredPosition = targetPosition; 
+        rectTransform.anchoredPosition = targetPosition; 
     }
 
     public void SetVisibility(bool isVisible)

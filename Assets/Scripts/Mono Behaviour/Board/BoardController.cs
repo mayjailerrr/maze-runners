@@ -6,12 +6,12 @@ public class BoardController : MonoBehaviour
 {
     public int boardSize = 10;
     private Board board;
-    private BoardView BoardView;
+    private BoardView boardView;
 
     public void ExternalInitialize(Board board, BoardView boardView)
     {
         this.board = board;
-        this.BoardView = boardView;
+        this.boardView = boardView;
 
         if (boardView != null)
         {
