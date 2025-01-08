@@ -1,56 +1,40 @@
 using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
 
 public class PieceGridView : MonoBehaviour
 {
     [Header("Prefabs & Configuration")]
-    public GameObject tilePrefab; 
-    public GameObject piecePrefab; 
+    public GameObject piecePrefab;
     public Transform boardParent;
 
     [Header("Board Params")]
     private Board board;
     private int boardSize;
-    public float tileSize = 1.0f; 
+    public float tileSize = 1.0f;
 
-    private GameObject[,] tiles; 
-    private GameObject[,] pieces; 
+    private GameObject[,] pieces;
 
     public void InitializeGrid(Board board)
     {
         this.board = board;
         boardSize = board.Size;
-        tiles = new GameObject[boardSize, boardSize];
         pieces = new GameObject[boardSize, boardSize];
-        GenerateVisualBoard(board);
+        GeneratePieces();
     }
 
-    private void GenerateVisualBoard(Board board)
+    private void GeneratePieces()
     {
         for (int x = 0; x < boardSize; x++)
         {
             for (int y = 0; y < boardSize; y++)
             {
                 Piece piece = board.GetPieceAtPosition(x, y);
-
                 if (piece != null)
                 {
                     PlacePiece(piece, x, y);
                 }
-                else
-                {
-                    PlaceTransparentTile(x, y);
-                }
             }
         }
-    }
-
-    private void PlaceTransparentTile(int x, int y)
-    {
-        Vector3 position = GetTilePosition(x, y);
-        GameObject transparentTile = Instantiate(tilePrefab, position, Quaternion.identity, boardParent);
-        transparentTile.name = $"Transparent Tile ({x}, {y})";
     }
 
     public void PlacePiece(Piece piece, int x, int y)
@@ -71,46 +55,26 @@ public class PieceGridView : MonoBehaviour
 
     public void MovePiece(Piece piece, int newX, int newY)
     {
-       // Vector3 newPosition = GetTilePosition(newX, newY);
+        Vector3 targetPosition = GetTilePosition(newX, newY);
 
-        // GameObject pieceObject = pieces[piece.Position.x, piece.Position.y];
-        // if (pieceObject != null)
-        // {
-        //     // piece.View.MoveTo(newPosition);
-        //     pieceObject.transform.position = newPosition;
-        //     pieces[piece.Position.x, piece.Position.y] = null; 
-        //     pieces[newX, newY] = pieceObject; 
-        // }
+        pieces[piece.Position.Item1, piece.Position.Item2] = null;
+        pieces[newX, newY] = piece.View.gameObject;
 
-         Vector3 targetPosition = GetTilePosition(newX, newY);
-    piece.View.MoveTo(targetPosition);
-    piece.View.transform.position = targetPosition; 
+        StartCoroutine(AnimatePieceMovement(piece.View.gameObject, targetPosition, 0.5f));
     }
 
-    // private Vector3 GetTilePosition(int x, int y)
-    // {
-    //     float offsetX = -boardSize / 2.0f * tileSize; 
-    //     float offsetY = -boardSize / 2.0f * tileSize; 
-
-    //     float worldX = x * tileSize + offsetX + tileSize / 2;
-    //     float worldY = y * tileSize + offsetY + tileSize / 2;
-
-    //     return new Vector3(worldX, worldY, 0f);
-    // }
-
     private Vector3 GetTilePosition(int x, int y)
-{
-    float cellWidth = 100f; // Tamaño de las celdas en unidades
-    float cellHeight = 100f;
-    
-    // Calcula la posición local basada en el tablero
-    Vector3 localPosition = new Vector3(x * cellWidth, y * cellHeight, 0);
+    {
+        float offsetX = -boardSize / 2.0f * tileSize;
+        float offsetY = -boardSize / 2.0f * tileSize;
 
-    // Devuelve la posición local
-    return localPosition;
-}
+        float worldX = x * tileSize + offsetX + tileSize / 2;
+        float worldY = y * tileSize + offsetY + tileSize / 2;
 
-    public IEnumerator AnimatePieceMovement(GameObject pieceObject, Vector3 targetPosition, float duration)
+        return new Vector3(worldX, worldY, 0f);
+    }
+
+    private IEnumerator AnimatePieceMovement(GameObject pieceObject, Vector3 targetPosition, float duration)
     {
         Vector3 startPosition = pieceObject.transform.position;
         float elapsedTime = 0f;
@@ -124,5 +88,4 @@ public class PieceGridView : MonoBehaviour
 
         pieceObject.transform.position = targetPosition;
     }
-
 }
