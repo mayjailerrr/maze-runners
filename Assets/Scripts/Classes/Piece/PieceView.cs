@@ -6,6 +6,8 @@ public class PieceView : MonoBehaviour
     private Animator animator;
     private Vector2 lastDirection = Vector2.right;
     private RectTransform rectTransform;
+    private float moveSpeed = 2f;
+    public float moveDuration = 0.4f; 
 
     private void Awake()
     {
@@ -15,8 +17,7 @@ public class PieceView : MonoBehaviour
         {
             Debug.LogError("Animator is not assigned in PieceView.");
         }
-        Debug.Log($"PieceView is child of {transform.parent.name}");
-
+        
     }
 
     public void UpdateAnimation(Vector2 direction, bool isMoving)
@@ -35,21 +36,32 @@ public class PieceView : MonoBehaviour
         animator.SetBool("IsMoving", isMoving);
     }
 
-    public void MoveTo(Vector3 targetPosition)
+    public IEnumerator AnimateMovement(Vector3 targetPosition, System.Action onMovementComplete)
     {
-        StartCoroutine(MoveSmoothly(targetPosition));
-    }
+        Vector2 direction = (targetPosition - transform.position).normalized;
+        UpdateAnimation(direction, true);
 
+        yield return MoveSmoothly(targetPosition);
+
+        UpdateAnimation(Vector2.zero, false);
+
+        onMovementComplete?.Invoke();
+    }
+    
     private IEnumerator MoveSmoothly(Vector3 targetPosition)
     {
-        float speed = 5f; 
-        while (Vector2.Distance(rectTransform.anchoredPosition, targetPosition) > 0.01f)
+        float distance = Vector3.Distance(rectTransform.position, targetPosition);
+        float duration = moveDuration; 
+        float timeElapsed = 0f;
+
+        while (timeElapsed < duration)
         {
-            rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, targetPosition, speed * Time.deltaTime);
+            rectTransform.position = Vector3.Lerp(rectTransform.position, targetPosition, timeElapsed / duration);
+            timeElapsed += Time.deltaTime;
             yield return null;
         }
 
-        rectTransform.anchoredPosition = targetPosition; 
+        rectTransform.position = targetPosition;
     }
 
     public void SetVisibility(bool isVisible)

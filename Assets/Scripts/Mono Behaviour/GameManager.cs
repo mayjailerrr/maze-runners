@@ -178,7 +178,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-              //  PieceController.InitializePieceController(board, TurnManager, GameContext, PieceGridView);
+               PieceController.InitializePieceController(board, TurnManager, GameContext, PieceGridView);
             }
         }
     }
