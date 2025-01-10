@@ -11014,8 +11014,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 1808519776}
-  obstacleTile: {fileID: 0}
-  regularTile: {fileID: 0}
+  horizontalTile: {fileID: 0}
+  verticalTile: {fileID: 0}
+  obstacleTileBottom: {fileID: 0}
+  obstacleTileInterior: {fileID: 0}
 --- !u!114 &1748365320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11303,8 +11305,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 1808519776}
-  obstacleTile: {fileID: 11400000, guid: 01923399cd8eb3245908ae07528b71f1, type: 2}
-  regularTile: {fileID: 11400000, guid: 0846564c9f2612a4fa21cd6d40814bfd, type: 2}
+  horizontalTile: {fileID: 11400000, guid: 0846564c9f2612a4fa21cd6d40814bfd, type: 2}
+  verticalTile: {fileID: 11400000, guid: 4b1ec8164f48d184bad263bd1bcfba18, type: 2}
+  obstacleTileBottom: {fileID: 11400000, guid: 2509ca0a21f04d84ca058e25950b90be, type: 2}
+  obstacleTileInterior: {fileID: 11400000, guid: 54a1fbd65baf6484e87994d59fbcd37c, type: 2}
 --- !u!114 &1808519778
 MonoBehaviour:
   m_ObjectHideFlags: 0

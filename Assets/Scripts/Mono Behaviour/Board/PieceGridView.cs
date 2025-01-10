@@ -78,7 +78,7 @@ public class PieceGridView : MonoBehaviour
             PieceView pieceView = pieceObject.GetComponent<PieceView>();
             if (pieceView != null)
             {
-                pieceView.moveDuration = 2f; 
+                pieceView.moveDuration = 1.0f; 
 
                 StartCoroutine(MovePieceWithAnimation(pieceView, newTile.transform, newX, newY));
             }

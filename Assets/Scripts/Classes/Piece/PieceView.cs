@@ -7,7 +7,7 @@ public class PieceView : MonoBehaviour
     private Vector2 lastDirection = Vector2.right;
     private RectTransform rectTransform;
     private float moveSpeed = 2f;
-    public float moveDuration = 0.4f; 
+    public float moveDuration = 1.0f; 
 
     private void Awake()
     {
