@@ -97,17 +97,21 @@ public class PieceController : MonoBehaviour
 
         int newX = piece.Position.Item1 + (int)direction.x;
         int newY = piece.Position.Item2 + (int)direction.y;
-
-        pieceGridView.MovePiece(piece, newX, newY);
         
         bool isMoving = board.IsValidMove(piece, newX, newY);
+
+        Tile targetTile = board.GetTileAtPosition(newX, newY);
+        if (targetTile is ObstacleTile)
+        {
+            Debug.LogWarning("Movement blocked: The target tile is an obstacle.");
+            return;
+        }
+
         if (isMoving)
         {
             if (turnManager.PerformAction(ActionType.Move, piece, board, newX, newY, gameContext))
             {
-                Tile targetTile = board.GetTileAtPosition(newX, newY);
                 gameContext.UpdateTileAndPosition(board.GetTileAtPosition(newX, newY));
-
                 piece.UpdatePosition((newX, newY));
 
                 if(piece.View == null)
@@ -116,6 +120,7 @@ public class PieceController : MonoBehaviour
                     return;
                 }
 
+                pieceGridView.MovePiece(piece, newX, newY);
                 piece.View.UpdateAnimation(direction, true);
 
                 if (targetTile is TrapTile trapTile)

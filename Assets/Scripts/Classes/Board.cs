@@ -23,6 +23,7 @@ public class Board
         GenerateBoard();
     }
 
+
     public Piece GetPieceAtPosition(int x, int y)
     {
         if (IsWithinBounds(x, y))
@@ -44,8 +45,11 @@ public class Board
     {
         if (piece != null)
         {
+              Debug.Log($"Adding piece {piece.Name} to PieceGrid at ({piece.Position.x}, {piece.Position.y})");
             pieces.Add(piece);
             PieceGrid[piece.Position.x, piece.Position.y] = piece;
+           
+       
         }
     }
 
@@ -84,11 +88,9 @@ public class Board
             Tile selectedTile = neutralTiles[randomIndex];
             neutralTiles.RemoveAt(randomIndex);
 
-            piece.InitialPosition = (selectedTile.Position.x, selectedTile.Position.y);
-            piece.UpdatePosition((selectedTile.Position.x, selectedTile.Position.y));
+            piece.InitialPosition = (selectedTile.Position.y, selectedTile.Position.x);
+            piece.UpdatePosition((selectedTile.Position.y, selectedTile.Position.x));
             AddPiece(piece);
-
-            Debug.Log($"Piece {piece.Name} placed at ({selectedTile.Position.x}, {selectedTile.Position.y}).");
         }
     }
 

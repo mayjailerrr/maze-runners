@@ -40,8 +40,8 @@ public class PieceGridView : MonoBehaviour
                 }
             }
         }
-
     }
+
 
     private void CreateTile(int x, int y)
     {
@@ -65,7 +65,7 @@ public class PieceGridView : MonoBehaviour
         }
     }
 
-     public void MovePiece(Piece piece, int newX, int newY)
+    public void MovePiece(Piece piece, int newX, int newY)
     {
         boardParent.GetComponent<GridLayoutGroup>().enabled = false;
 
@@ -78,12 +78,13 @@ public class PieceGridView : MonoBehaviour
             PieceView pieceView = pieceObject.GetComponent<PieceView>();
             if (pieceView != null)
             {
-                pieceView.moveDuration = 1.0f; 
+                pieceView.moveDuration = 1.0f;
 
                 StartCoroutine(MovePieceWithAnimation(pieceView, newTile.transform, newX, newY));
             }
         }
     }
+
 
     private IEnumerator MovePieceWithAnimation(PieceView pieceView, Transform newParent, int newX, int newY)
     {
@@ -100,10 +101,18 @@ public class PieceGridView : MonoBehaviour
 
     private Vector3 GetTilePosition(int x, int y)
     {
+
+         return ConvertGridToWorldPosition(x, y);
+    }
+
+    private Vector3 ConvertGridToWorldPosition(int x, int y)
+    {
         float offsetX = -boardSize / 2.0f * tileSize; 
         float offsetY = -boardSize / 2.0f * tileSize; 
-        float worldX = x * tileSize + offsetX + tileSize / 2;
-        float worldY = y * tileSize + offsetY + tileSize / 2;
+        float worldX = x * tileSize + offsetX + tileSize / 2; 
+        float worldY = (boardSize - 1 - y) * tileSize + offsetY + tileSize / 2;
         return new Vector3(worldX, worldY, 0f);
     }
+
+
 }

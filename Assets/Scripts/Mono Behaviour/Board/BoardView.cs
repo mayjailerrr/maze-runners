@@ -33,17 +33,22 @@ public class BoardView : MonoBehaviour
                     TileBase tileToSet = DetermineWalkableTile(board, currentTile);
                     tilemap.SetTile(position, tileToSet);
                 }
+
+                Matrix4x4 rotationMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 0, 180));
+                tilemap.SetTransformMatrix(position, rotationMatrix);
+
             }
         }
+
     }
 
     private TileBase DetermineObstacleTile(Board board, MazeRunners.Tile tile)
     {
         var neighbors = board.GetNeighbours(tile);
 
-        bool hasBottomObstacle = neighbors.Any(n => n.Position.y < tile.Position.y && n is ObstacleTile);
+        bool hasTopObstacle = neighbors.Any(n => n.Position.y > tile.Position.y && n is ObstacleTile);
 
-        return hasBottomObstacle ? obstacleTileInterior : obstacleTileBottom;
+        return hasTopObstacle ? obstacleTileInterior : obstacleTileBottom;
     }
 
     private TileBase DetermineWalkableTile(Board board, MazeRunners.Tile tile)
@@ -52,8 +57,8 @@ public class BoardView : MonoBehaviour
 
         bool hasLeft = neighbors.Any(n => n.Position.x < tile.Position.x && !(n is ObstacleTile));
         bool hasRight = neighbors.Any(n => n.Position.x > tile.Position.x && !(n is ObstacleTile));
-        bool hasAbove = neighbors.Any(n => n.Position.y > tile.Position.y && !(n is ObstacleTile));
-        bool hasBelow = neighbors.Any(n => n.Position.y < tile.Position.y && !(n is ObstacleTile));
+        bool hasAbove = neighbors.Any(n => n.Position.y < tile.Position.y && !(n is ObstacleTile)); 
+        bool hasBelow = neighbors.Any(n => n.Position.y > tile.Position.y && !(n is ObstacleTile)); 
 
         if ((hasLeft && hasRight) && !(hasAbove || hasBelow))
             return horizontalTile;
@@ -62,6 +67,5 @@ public class BoardView : MonoBehaviour
 
         return horizontalTile; 
     }
-
 
 }
