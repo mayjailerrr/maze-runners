@@ -21,7 +21,36 @@ public class Board
         TileGrid = new Tile[size, size];
         PieceGrid = new Piece[size, size];
         GenerateBoard();
+        PrintGridsToConsole();
     }
+
+    public void PrintGridsToConsole()
+    {
+        Debug.Log("TileGrid:");
+        for (int y = 0; y < TileGrid.GetLength(1); y++)
+        {
+            string row = "";
+            for (int x = 0; x < TileGrid.GetLength(0); x++)
+            {
+                row += TileGrid[x, y]?.ToString() ?? "null";
+                row += "\t"; 
+            }
+            Debug.Log(row);
+        }
+
+        Debug.Log("PieceGrid:");
+        for (int y = 0; y < PieceGrid.GetLength(1); y++)
+        {
+            string row = "";
+            for (int x = 0; x < PieceGrid.GetLength(0); x++)
+            {
+                row += PieceGrid[x, y]?.ToString() ?? "null";
+                row += "\t"; 
+            }
+            Debug.Log(row);
+        }
+    }
+
 
 
     public Piece GetPieceAtPosition(int x, int y)

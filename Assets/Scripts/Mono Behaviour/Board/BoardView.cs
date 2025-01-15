@@ -1,71 +1,67 @@
 
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using System.Linq;
-
 
 public class BoardView : MonoBehaviour
 {
-    public Tilemap tilemap; 
-    public TileBase horizontalTile;
-    public TileBase verticalTile;
-    public TileBase obstacleTileBottom;
-    public TileBase obstacleTileInterior;
+    [Header("Tile Prefabs")]
+    public GameObject horizontalTilePrefab; 
+    public GameObject verticalTilePrefab; 
+    public GameObject interiorObstaclePrefab;
+    public GameObject bottomObstaclePrefab;
+    public GameObject trapPrefab;
+    public GameObject collectiblePrefab;
+
+    private GameObject[,] tileObjects;
 
     public void InitializeTileBoardView(Board board)
     {
-        tilemap.ClearAllTiles();
+        int boardSize = board.Size;
+        tileObjects = new GameObject[boardSize, boardSize];
+        GenerateVisualBoard(board);
+    }
 
+    private void GenerateVisualBoard(Board board)
+    {
         for (int x = 0; x < board.Size; x++)
         {
             for (int y = 0; y < board.Size; y++)
             {
-                Vector3Int position = new Vector3Int(x * 100, y * 100, 0);
                 MazeRunners.Tile currentTile = board.TileGrid[x, y];
+                GameObject prefab = GetPrefabForTile(board, currentTile, x, y);
 
-                if (currentTile is ObstacleTile)
+                if (prefab != null)
                 {
-                    TileBase tileToSet = DetermineObstacleTile(board, currentTile);
-                    tilemap.SetTile(position, tileToSet);
+                    GameObject tileGO = Instantiate(prefab, new Vector3(x, 0, y), Quaternion.identity, transform);
+                    tileObjects[x, y] = tileGO;
                 }
-                else
-                {
-                    TileBase tileToSet = DetermineWalkableTile(board, currentTile);
-                    tilemap.SetTile(position, tileToSet);
-                }
-
-                Matrix4x4 rotationMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 0, 180));
-                tilemap.SetTransformMatrix(position, rotationMatrix);
-
             }
         }
-
     }
 
-    private TileBase DetermineObstacleTile(Board board, MazeRunners.Tile tile)
+    private GameObject GetPrefabForTile(Board board, MazeRunners.Tile tile, int x, int y)
     {
-        var neighbors = board.GetNeighbours(tile);
+        if (tile is ObstacleTile)
+        {
+            var neighbors = board.GetNeighbours(tile);
+            bool hasTopObstacle = neighbors.Any(n => n.Position.y > tile.Position.y && n is ObstacleTile);
+            return hasTopObstacle ? interiorObstaclePrefab : bottomObstaclePrefab;
+        }
 
-        bool hasTopObstacle = neighbors.Any(n => n.Position.y > tile.Position.y && n is ObstacleTile);
+        if (tile is TrapTile) return trapPrefab;
+        if (tile is CollectibleTile) return collectiblePrefab;
 
-        return hasTopObstacle ? obstacleTileInterior : obstacleTileBottom;
-    }
-
-    private TileBase DetermineWalkableTile(Board board, MazeRunners.Tile tile)
-    {
-        var neighbors = board.GetNeighbours(tile);
-
-        bool hasLeft = neighbors.Any(n => n.Position.x < tile.Position.x && !(n is ObstacleTile));
-        bool hasRight = neighbors.Any(n => n.Position.x > tile.Position.x && !(n is ObstacleTile));
-        bool hasAbove = neighbors.Any(n => n.Position.y < tile.Position.y && !(n is ObstacleTile)); 
-        bool hasBelow = neighbors.Any(n => n.Position.y > tile.Position.y && !(n is ObstacleTile)); 
+        var tileNeighbors = board.GetNeighbours(tile);
+        bool hasLeft = tileNeighbors.Any(n => n.Position.x < x && !(n is ObstacleTile));
+        bool hasRight = tileNeighbors.Any(n => n.Position.x > x && !(n is ObstacleTile));
+        bool hasAbove = tileNeighbors.Any(n => n.Position.y > y && !(n is ObstacleTile));
+        bool hasBelow = tileNeighbors.Any(n => n.Position.y < y && !(n is ObstacleTile));
 
         if ((hasLeft && hasRight) && !(hasAbove || hasBelow))
-            return horizontalTile;
+            return horizontalTilePrefab;
         if ((hasAbove && hasBelow) && !(hasLeft || hasRight))
-            return verticalTile;
+            return verticalTilePrefab;
 
-        return horizontalTile; 
+        return horizontalTilePrefab; 
     }
-
 }
