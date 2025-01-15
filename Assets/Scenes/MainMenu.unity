@@ -2515,7 +2515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 244ad68aa210ddf4c99538376ced9bc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid: {fileID: 0}
+  collectibleViewManager: {fileID: 1085114989}
   endTurnButton: {fileID: 32555914}
 --- !u!114 &251077638
 MonoBehaviour:
@@ -5867,6 +5867,9 @@ PrefabInstance:
       addedObject: {fileID: 251077635}
     - targetCorrespondingSourceObject: {fileID: 4231361146574399301, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1085114988}
+    - targetCorrespondingSourceObject: {fileID: 4231361146574399301, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1853835933}
     - targetCorrespondingSourceObject: {fileID: 4231361146574399301, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
       insertIndex: -1
@@ -6301,7 +6304,7 @@ MonoBehaviour:
   interiorObstaclePrefab: {fileID: 3109402955476414337, guid: 0cf6b042e5de90f4288f8b91602761cc, type: 3}
   bottomObstaclePrefab: {fileID: 3109402955476414337, guid: 5beef71f5522c3d43a3f809f6d111aa3, type: 3}
   trapPrefab: {fileID: 3109402955476414337, guid: 656764c0a5f0e654da1f32ba9e222bec, type: 3}
-  collectiblePrefab: {fileID: 3109402955476414337, guid: 90f6129e2ad69924f8cc909b1a4ba3b8, type: 3}
+  collectiblePrefab: {fileID: 1517915318668118582, guid: d0d5731053a1ec84bbde6081423dec9c, type: 3}
 --- !u!114 &1007092594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6475,6 +6478,52 @@ VideoPlayer:
   m_WaitForFirstFrame: 1
   m_FrameReadyEventEnabled: 0
   m_VideoShaders: []
+--- !u!1 &1085114987
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1085114988}
+  - component: {fileID: 1085114989}
+  m_Layer: 0
+  m_Name: CollectibleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1085114988
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085114987}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 791651763}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1085114989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085114987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a74cb2baa12665343a482898cf86a613, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collectiblePrefab: {fileID: 1517915318668118582, guid: d0d5731053a1ec84bbde6081423dec9c, type: 3}
+  pieceGridView: {fileID: 1440439744}
 --- !u!1 &1092884899
 GameObject:
   m_ObjectHideFlags: 0
@@ -9141,6 +9190,7 @@ MonoBehaviour:
   tilePrefab: {fileID: 3109402955476414337, guid: ff4ca147b7e7041499ca04ae33ed95b6, type: 3}
   piecePrefabRegistry: {fileID: 11400000, guid: 1796d2db320163b418f5c533702c8285, type: 2}
   boardParent: {fileID: 1440439743}
+  collectibleViewManager: {fileID: 0}
   tileSize: 1
 --- !u!114 &1440439745
 MonoBehaviour:

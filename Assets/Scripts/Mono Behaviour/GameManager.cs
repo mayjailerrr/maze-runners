@@ -7,8 +7,6 @@ using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
-    public Grid grid;
-    Vector2Int boardSize;
     public static GameManager Instance { get; private set; }
 
     public List<Collectible> playersCollectibles = new List<Collectible>();
@@ -21,6 +19,9 @@ public class GameManager : MonoBehaviour
     private Board board;
     public BoardController BoardController { get; private set; }
     public TurnManager TurnManager { get; private set; }
+    
+    public CollectibleViewManager collectibleViewManager;
+    
     public Button endTurnButton;
     private EndTurnHandler endTurnHandler;
    
@@ -41,9 +42,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-       
     }
-
 
     private void Update()
     {
@@ -134,20 +133,47 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private void GenerateAllCollectibles()
+   private void GenerateAllCollectibles()
+{
+    foreach (var playerEntry in players)
     {
-        foreach (var playerEntry in players)
+        Player player = playerEntry.Value;
+        Movies selectedMovie = selectedMovies[player.ID];
+
+        // Crear los coleccionables basados en la película seleccionada
+        List<Collectible> collectibles = CollectibleFactory.CreateCollectibles(selectedMovie);
+
+        int collectibleIndex = 0;
+
+        foreach (var collectible in collectibles)
         {
-            Player player = playerEntry.Value;
-            Movies selectedMovie = selectedMovies[player.ID];
+            if (collectibleViewManager == null)
+            {
+                Debug.LogError("CollectibleViewManager not found in the scene.");
+                return;
+            }
 
-            List<Collectible> collectibles = CollectibleFactory.CreateCollectibles(selectedMovie);
+            if (collectible is null)
+            {
+                Debug.LogError("Collectible is null.");
+            }
+            // Delegar la creación visual al CollectibleViewManager sin parámetros extra
+            collectibleViewManager.CreateCollectibleVisual(collectible);
 
-            player.AssignObjects(collectibles);
-
-            playersCollectibles.AddRange(collectibles);
+            collectibleIndex++;  // Incrementamos el índice para colocar cada collectible en la siguiente posición
         }
+
+        // Asignar los coleccionables al jugador
+        player.AssignObjects(collectibles);
+
+        // Agregar los coleccionables a la lista global de coleccionables
+        playersCollectibles.AddRange(collectibles);
     }
+}
+
+
+
+
 
 
     private void InitializeTurnManager()
