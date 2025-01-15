@@ -37,7 +37,7 @@ public static class PieceFactory
             case Movies.SpiritedAway:
                 pieces.Add(new Piece("Chihiro", 3, 1, PieceAbilities.GetAbility(AbilityName.AbsorbDamage)));
                 pieces.Add(new Piece("Haku", 5, 3, PieceAbilities.GetAbility(AbilityName.Freeze)));
-                pieces.Add(new Piece("No-Face", 1, 1, PieceAbilities.GetAbility(AbilityName.Invisibility)));
+                pieces.Add(new Piece("NoFace", 1, 1, PieceAbilities.GetAbility(AbilityName.Invisibility)));
                 break;
 
             case Movies.MyNeighborTotoro:

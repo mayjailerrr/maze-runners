@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411acbf5b9bd2b34fb524d73e65dd0cd, type: 3}
+  m_Name: PiecesSO
+  m_EditorClassIdentifier: 
+  piecePrefabs:
+  - pieceName: Chihiro
+    prefab: {fileID: 1734017783239383874, guid: 2355db118184ce34cb914084a74f485f, type: 3}
+  - pieceName: Haku
+    prefab: {fileID: 1734017783239383874, guid: b6dddc653ea861d4e82eeee49bfc3b01, type: 3}
+  - pieceName: NoFace
+    prefab: {fileID: 1734017783239383874, guid: 7fad036f4bdb11441af8ae908e4e7d11, type: 3}
+  - pieceName: Howl
+    prefab: {fileID: 1734017783239383874, guid: eadc1b6b8460f9144901497d6d620c51, type: 3}
+  - pieceName: Sophie
+    prefab: {fileID: 1734017783239383874, guid: a1be0dc0d66e27d4da1493071c3aa0bf, type: 3}
+  - pieceName: TurnipHead
+    prefab: {fileID: 1734017783239383874, guid: 9859927a29644414fad46656e3f875d3, type: 3}
+  - pieceName: San
+    prefab: {fileID: 1734017783239383874, guid: 379aeec0cd605384990e1edb0374ba31, type: 3}
+  - pieceName: Ashitaka
+    prefab: {fileID: 1734017783239383874, guid: c44f3dda346e41e4aa7bc7f34de3507b, type: 3}
+  - pieceName: Eboshi
+    prefab: {fileID: 1734017783239383874, guid: bb79c31a8f047d441b4fe2e65c7a6ad3, type: 3}
+  - pieceName: Ponyo
+    prefab: {fileID: 1734017783239383874, guid: c24fd54f3f37e7141ac74e107ce2cf6b, type: 3}
+  - pieceName: Sosuke
+    prefab: {fileID: 1734017783239383874, guid: efaa6cb219c10cc4da873e9b66447be2, type: 3}
+  - pieceName: Granmamare
+    prefab: {fileID: 1734017783239383874, guid: 67cd88658a815ac47b07082bc4978b87, type: 3}
+  - pieceName: Mei
+    prefab: {fileID: 1734017783239383874, guid: 4fdcb1bf2dd0f1c46a6142ba8e7a5e90, type: 3}
+  - pieceName: Satsuki
+    prefab: {fileID: 1734017783239383874, guid: 9c87fa938959d4c458b8c1062829ab39, type: 3}
+  - pieceName: Totoro
+    prefab: {fileID: 1734017783239383874, guid: 3a8c8b37f1504f743b5a93e57355e6ff, type: 3}

@@ -6,7 +6,7 @@ public class PieceGridView : MonoBehaviour
 {
     [Header("Prefabs & Configuration")]
     public GameObject tilePrefab; 
-    public GameObject piecePrefab; 
+    public PiecePrefabRegistry piecePrefabRegistry; 
     public Transform boardParent; 
 
     [Header("Board Params")]
@@ -15,7 +15,6 @@ public class PieceGridView : MonoBehaviour
     public float tileSize = 1.0f;
     private GameObject[,] tiles; 
     private GameObject[,] pieces; 
-
     public void InitializeGrid(Board board)
     {
         this.board = board;
@@ -54,7 +53,15 @@ public class PieceGridView : MonoBehaviour
     public void PlacePiece(Piece piece, int x, int y)
     {
         GameObject tile = tiles[x, y];
-        GameObject pieceObject = Instantiate(piecePrefab, tile.transform.position, Quaternion.identity, tile.transform);
+        GameObject prefab = piecePrefabRegistry.GetPrefab(piece.Name);
+        
+        if (prefab == null)
+        {
+            Debug.LogError($"No prefab found for piece {piece.Name}. Skipping instantiation.");
+            return;
+        }
+
+        GameObject pieceObject = Instantiate(prefab, tile.transform.position, Quaternion.identity, tile.transform);
         pieceObject.name = $"Piece {piece.Name} ({x}, {y})";
         pieces[x, y] = pieceObject;
 
@@ -78,13 +85,12 @@ public class PieceGridView : MonoBehaviour
             PieceView pieceView = pieceObject.GetComponent<PieceView>();
             if (pieceView != null)
             {
-                pieceView.moveDuration = 1.0f;
+                pieceView.moveDuration = 0.3f;
 
                 StartCoroutine(MovePieceWithAnimation(pieceView, newTile.transform, newX, newY));
             }
         }
     }
-
 
     private IEnumerator MovePieceWithAnimation(PieceView pieceView, Transform newParent, int newX, int newY)
     {

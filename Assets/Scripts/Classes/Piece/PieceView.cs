@@ -6,8 +6,7 @@ public class PieceView : MonoBehaviour
     private Animator animator;
     private Vector2 lastDirection = Vector2.right;
     private RectTransform rectTransform;
-    private float moveSpeed = 2f;
-    public float moveDuration = 1.0f; 
+    public float moveDuration = 0.4f; 
 
     private void Awake()
     {
@@ -34,12 +33,16 @@ public class PieceView : MonoBehaviour
         animator.SetFloat("Horizontal", lastDirection.x);
         animator.SetFloat("Vertical", lastDirection.y);
         animator.SetBool("IsMoving", isMoving);
+
+         Debug.Log($"Ficha: {gameObject.name}, AnimationClip: {animator.GetCurrentAnimatorClipInfo(0)[0].clip.name}");
     }
 
     public IEnumerator AnimateMovement(Vector3 targetPosition, System.Action onMovementComplete)
     {
         Vector2 direction = (targetPosition - transform.position).normalized;
         UpdateAnimation(direction, true);
+
+         Debug.Log($"Ficha: {gameObject.name}, AnimationClip: {animator.GetCurrentAnimatorClipInfo(0)[0].clip.name}");
 
         yield return MoveSmoothly(targetPosition);
 
@@ -62,6 +65,7 @@ public class PieceView : MonoBehaviour
         }
 
         rectTransform.position = targetPosition;
+
     }
 
     public void SetVisibility(bool isVisible)

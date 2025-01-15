@@ -4,7 +4,6 @@ using UnityEngine.UI;
 using MazeRunners;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.Tilemaps;
 
 public class GameManager : MonoBehaviour
 {
