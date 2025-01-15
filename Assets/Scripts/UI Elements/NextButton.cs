@@ -7,6 +7,8 @@ public class NextButton : MonoBehaviour
 {
     public string mazeSceneName = "Game"; 
     public Button nextButton; 
+    public Canvas canvasComponent;
+
     private void Update()
     {
         if (nextButton != null)
@@ -15,15 +17,16 @@ public class NextButton : MonoBehaviour
         }
     }
 
-    public void LoadMazeScene()
+    void Start()
     {
-        if (GameManager.Instance.CanStartGame())
+        nextButton.onClick.AddListener(OnNextButtonPressed);
+    }
+
+    void OnNextButtonPressed()
+    {
+        if (canvasComponent != null)
         {
-            SceneManager.LoadScene(mazeSceneName);
-        }
-        else
-        {
-            Debug.LogWarning("The game cannot start yet. Make sure all players have selected a movie.");
+            canvasComponent.enabled = true; 
         }
     }
 

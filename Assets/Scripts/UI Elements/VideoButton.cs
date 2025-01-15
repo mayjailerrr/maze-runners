@@ -1,50 +1,93 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Video;
 
-public class RenderTextureButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class RenderTextureButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public RawImage rawImage;         
-    public RenderTexture normalTexture;   
-    public RenderTexture hoverTexture;   
-    public RenderTexture pressedTexture;  
-    public float darkenLevel = 0.5f;    
+    public RawImage rawImage;
+    public RenderTexture normalTexture;
+    public RenderTexture hoverTexture;
+    public VideoPlayer videoPlayer; 
+    public MusicPlayer musicPlayer; 
 
-    private MaterialPropertyBlock propertyBlock;
-    private Renderer rawImageRenderer;
-    private Material rawImageMaterial;
+    private static RenderTextureButton currentHoveredButton;
 
     void Start()
     {
         if (rawImage == null)
             rawImage = GetComponent<RawImage>();
 
-        rawImage.texture = normalTexture; 
-        rawImageMaterial = rawImage.material;
+        if (musicPlayer == null)
+            musicPlayer = FindObjectOfType<MusicPlayer>();
 
-        propertyBlock = new MaterialPropertyBlock();
+        if (videoPlayer != null)
+        {
+            videoPlayer.playOnAwake = false; 
+            videoPlayer.SetDirectAudioMute(0, true);
+        }
+
+        rawImage.texture = normalTexture;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        SetTextureAndDarkness(hoverTexture, 1.0f); 
+        if (currentHoveredButton != null && currentHoveredButton != this)
+        {
+            currentHoveredButton.PauseVideo();
+            currentHoveredButton.MuteVideo();
+        }
+
+        currentHoveredButton = this;
+
+        rawImage.texture = hoverTexture;
+        musicPlayer.PauseMusic();
+        UnmuteVideo();
+        PlayVideo();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        SetTextureAndDarkness(normalTexture, 1.0f); 
+        if (currentHoveredButton == this)
+        {
+            currentHoveredButton = null;
+        }
+
+        PauseVideo();
+        MuteVideo();
+        musicPlayer.ResumeMusic();
+        rawImage.texture = normalTexture;
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    private void PlayVideo()
     {
-        SetTextureAndDarkness(pressedTexture, darkenLevel); 
+        if (videoPlayer != null && !videoPlayer.isPlaying)
+        {
+            videoPlayer.Play(); 
+        }
     }
 
-    private void SetTextureAndDarkness(RenderTexture texture, float darkness)
+    private void PauseVideo()
     {
-        rawImage.texture = texture;
+        if (videoPlayer != null && videoPlayer.isPlaying)
+        {
+            videoPlayer.Pause();
+        }
+    }
 
-        propertyBlock.SetTexture("_MainTex", texture);
-        propertyBlock.SetFloat("_Darkness", darkness);
+    private void UnmuteVideo()
+    {
+        if (videoPlayer != null)
+        {
+            videoPlayer.SetDirectAudioMute(0, false);
+        }
+    }
+
+    private void MuteVideo()
+    {
+        if (videoPlayer != null)
+        {
+            videoPlayer.SetDirectAudioMute(0, true);
+        }
     }
 }
