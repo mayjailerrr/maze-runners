@@ -18,23 +18,23 @@ public static class CollectibleFactory
             case Movies.HowlsMovingCastle:
                 collectibles.Add(new Collectible("Calcifer", "The magical star Calcifer"));
                 collectibles.Add(new Collectible("Feather", "A feather from Howl"));
-                collectibles.Add(new Collectible("Magic Door", "A door to everywhere"));
+                collectibles.Add(new Collectible("MagicDoor", "A door to everywhere"));
                 break;
 
             case Movies.PrincessMononoke:
-                collectibles.Add(new Collectible("Crystal Dagger", "A dagger from Ashitaka"));
+                collectibles.Add(new Collectible("CrystalDagger", "A dagger from Ashitaka"));
                 collectibles.Add(new Collectible("Kodama", "A small tree spirit"));
-                collectibles.Add(new Collectible("Mononoke Mask", "A mask worn by San"));
+                collectibles.Add(new Collectible("MononokeMask", "A mask worn by San"));
                 break;
 
             case Movies.KikisDeliveryService:
                 collectibles.Add(new Collectible("Cage", "Inside there is a doll black cat or a real black cat?"));
                 collectibles.Add(new Collectible("Radio", "A radio from Kiki's dad"));
-                collectibles.Add(new Collectible("Red Shoes", "The iconic red shoes"));
+                collectibles.Add(new Collectible("RedShoes", "The iconic red shoes"));
                 break;
 
             case Movies.SpiritedAway:
-                collectibles.Add(new Collectible("Bath Tokens", "Tokens from the bathhouse"));
+                collectibles.Add(new Collectible("BathTokens", "Tokens from the bathhouse"));
                 collectibles.Add(new Collectible("Hairband", "A hairband from Zeniba"));
                 collectibles.Add(new Collectible("Susuwatari", "A soot sprite"));
                 break;
@@ -48,13 +48,13 @@ public static class CollectibleFactory
             case Movies.PorcoRosso:
                 collectibles.Add(new Collectible("Pilot Goggles", "Porco's goggles"));
                 collectibles.Add(new Collectible("Propeller", "A propeller from Porco's plane"));
-                collectibles.Add(new Collectible("Amelia's Scarf", "A scarf from Amelia's aviator outfit"));
+                collectibles.Add(new Collectible("AmeliaScarf", "A scarf from Amelia's aviator outfit"));
                 break;
 
             case Movies.Arietty:
                 collectibles.Add(new Collectible("Teacup", "A tiny teacup from the Borrowers"));
-                collectibles.Add(new Collectible("Needle Sword", "A sword made from a needle"));
-                collectibles.Add(new Collectible("Sugar Cube", "A large sugar cube for Arietty"));
+                collectibles.Add(new Collectible("NeedleSword", "A sword made from a needle"));
+                collectibles.Add(new Collectible("SugarCube", "A large sugar cube for Arietty"));
                 break;
 
             default:

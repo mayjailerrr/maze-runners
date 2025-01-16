@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CollectibleViewManager : MonoBehaviour
 {
     [SerializeField] private GameObject collectiblePrefab; 
     public PieceGridView pieceGridView;
-    
+    public List<GameObject> collectibleObjects = new List<GameObject>();
     public Dictionary<string, Sprite> collectibleSprites;
 
     private void Awake()
@@ -20,81 +21,72 @@ public class CollectibleViewManager : MonoBehaviour
             { "Ham", Resources.Load<Sprite>("Ham") },
             { "Potion", Resources.Load<Sprite>("Potion") },
             { "Ship", Resources.Load<Sprite>("Ship") },
+
             { "Calcifer", Resources.Load<Sprite>("Calcifer") },
             { "Feather", Resources.Load<Sprite>("Feather") },
-            { "MagicDoor", Resources.Load<Sprite>("MagicDoor") }
-            // Añade el resto de los mapeos...
+            { "MagicDoor", Resources.Load<Sprite>("MagicDoor") },
+
+            { "CrystalDagger", Resources.Load<Sprite>("CrystalDagger") },
+            { "Kodama", Resources.Load<Sprite>("Kodama") },
+            { "MononokeMask", Resources.Load<Sprite>("MononokeMask") },
+
+            { "Cage", Resources.Load<Sprite>("Cage") },
+            { "Radio", Resources.Load<Sprite>("Radio") },
+            { "RedShoes", Resources.Load<Sprite>("RedShoes") },
+
+            { "BathTokens", Resources.Load<Sprite>("BathTokens") },
+            { "Hairband", Resources.Load<Sprite>("Hairband") },
+            { "Susuwatari", Resources.Load<Sprite>("Susuwatari") },
+
+            { "Acorn", Resources.Load<Sprite>("Acorn") },
+            { "Chibi-Totoro", Resources.Load<Sprite>("Chibi-Totoro") },
+            { "Corn", Resources.Load<Sprite>("Corn") },
+
+            { "Pilot Goggles", Resources.Load<Sprite>("Pilot Goggles") },
+            { "Propeller", Resources.Load<Sprite>("Propeller") },
+            { "AmeliaScarf", Resources.Load<Sprite>("AmeliaScarf") },
+
+            { "Teacup", Resources.Load<Sprite>("Teacup") },
+            { "NeedleSword", Resources.Load<Sprite>("NeedleSword") },
+            { "SugarCube", Resources.Load<Sprite>("SugarCube") }
         };
     }
 
-   public void CreateCollectibleVisual(Collectible collectible)
+    public GameObject CreateCollectibleVisual(Collectible collectible)
     {
-        if (collectibleSprites == null)
+        if (collectible == null || collectibleSprites == null || collectiblePrefab == null)
         {
-            Debug.LogError("Collectible sprites dictionary is null!");
-            return;
+            Debug.LogError("Error: Missing collectible, sprite dictionary, or prefab.");
+            return null;
         }
 
-        if (collectiblePrefab == null)
-        {
-            Debug.LogError("Collectible prefab is not assigned!");
-            return;
-        }
-
-        if (collectibleSprites.TryGetValue(collectible.Name, out Sprite sprite))
-        {
-            if (sprite is null)
-            {
-                Debug.LogWarning($"No sprite found for collectible: {collectible.Name}. Using default sprite.");
-            }
-            GameObject collectibleObject = Instantiate(collectiblePrefab);  // Sin parámetros extras
-            CollectibleView view = collectibleObject.GetComponent<CollectibleView>();
-
-            if (view is null)
-            {
-                Debug.LogError("CollectibleView component not found in collectible prefab!");
-                return;
-            }
-            view.Initialize(sprite, new Vector2(0, -0.2f), 0.5f); // Configuración de sombra
-        }
-        else
+        if (!collectibleSprites.TryGetValue(collectible.Name, out Sprite sprite))
         {
             Debug.LogWarning($"No sprite found for collectible: {collectible.Name}. Using default sprite.");
-            GameObject collectibleObject = Instantiate(collectiblePrefab);  // Sin parámetros extras
-            CollectibleView view = collectibleObject.GetComponent<CollectibleView>();
-            view.Initialize(GetDefaultSprite(), new Vector2(0, -0.2f), 0.5f);
+            sprite = GetDefaultSprite();
         }
+
+        GameObject collectibleObject = Instantiate(collectiblePrefab);
+
+        Image image = collectibleObject.GetComponent<Image>();
+        if (image == null)
+        {
+            Debug.LogError("Prefab missing Image component.");
+            Destroy(collectibleObject);
+            return null;
+        }
+
+        image.sprite = sprite;
+
+        collectibleObject.transform.localScale = Vector3.one;
+        collectibleObject.name = $"Collectible_{collectible.Name}";
+        collectibleObjects.Add(collectibleObject);
+
+        return collectibleObject;
     }
-
-    //  public static void CreateVisualCollectible(Collectible collectible, Transform parent)
-    // {
-    //     // Cargar el sprite correspondiente para el coleccionable
-    //     Sprite collectibleSprite = Resources.Load<Sprite>("Sprites/" + collectible.Name);  
-
-    //     // Si no se encuentra el sprite, usa uno predeterminado
-    //     if (collectibleSprite == null)
-    //     {
-    //         collectibleSprite = Resources.Load<Sprite>("Sprites/DefaultCollectible");
-    //         Debug.LogWarning($"No sprite found for {collectible.Name}, using default sprite.");
-    //     }
-
-    //     // Crear el GameObject visual del coleccionable
-    //     GameObject collectibleObject = new GameObject(collectible.Name);
-    //     collectibleObject.transform.SetParent(parent);
-
-    //     // Añadir el SpriteRenderer al objeto
-    //     SpriteRenderer spriteRenderer = collectibleObject.AddComponent<SpriteRenderer>();
-    //     spriteRenderer.sprite = collectibleSprite;
-
-    //     // Crear y asignar la sombra
-    //     CollectibleView view = collectibleObject.AddComponent<CollectibleView>();
-    //     view.Initialize(collectibleSprite, new Vector2(0, -0.2f), 0.5f);  // Desplazamiento y opacidad de la sombra
-    // }
-
 
     private Sprite GetDefaultSprite()
     {
-        // Aquí puedes retornar un sprite predeterminado en caso de que no haya un sprite específico
         return Resources.Load<Sprite>("Sprites/DefaultCollectible");
     }
 

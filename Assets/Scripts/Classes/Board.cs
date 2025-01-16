@@ -367,7 +367,7 @@ public class Board
         });
     }
 
-   public void PlaceCollectibles(List<Collectible> collectibles)
+    public void PlaceCollectibles(List<Collectible> collectibles)
     {
         Debug.Log($"Placing {collectibles.Count} collectibles.");
         foreach (var collectible in collectibles)

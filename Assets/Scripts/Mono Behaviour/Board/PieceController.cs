@@ -107,6 +107,15 @@ public class PieceController : MonoBehaviour
             return;
         }
 
+        else if (targetTile is CollectibleTile collectibleTile)
+        {
+            collectibleTile.Interact(piece, gameContext.CurrentPlayer);
+            if (gameContext.CurrentPlayer.HasCollectedAllObjects())
+            {
+                GameManager.Instance.EndGame(gameContext.CurrentPlayer);
+            }
+        }
+
         if (isMoving)
         {
             if (turnManager.PerformAction(ActionType.Move, piece, board, newX, newY, gameContext))
@@ -128,14 +137,7 @@ public class PieceController : MonoBehaviour
                     trapTile.ActivateTrap(piece, turnManager);
                 }
 
-                else if (targetTile is CollectibleTile collectibleTile)
-                {
-                    collectibleTile.Interact(piece, gameContext.CurrentPlayer);
-                    if (gameContext.CurrentPlayer.HasCollectedAllObjects())
-                    {
-                        GameManager.Instance.EndGame(gameContext.CurrentPlayer);
-                    }
-                }
+                
             }   
         }
 

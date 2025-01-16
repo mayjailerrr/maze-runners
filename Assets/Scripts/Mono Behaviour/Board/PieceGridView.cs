@@ -9,7 +9,6 @@ public class PieceGridView : MonoBehaviour
     public GameObject tilePrefab; 
     public PiecePrefabRegistry piecePrefabRegistry; 
     public Transform boardParent; 
-    public CollectibleViewManager collectibleViewManager;
 
     [Header("Board Params")]
     private Board board;
@@ -17,6 +16,7 @@ public class PieceGridView : MonoBehaviour
     public float tileSize = 1.0f;
     private GameObject[,] tiles; 
     private GameObject[,] pieces; 
+
     public void InitializeGrid(Board board)
     {
         this.board = board;
@@ -43,7 +43,6 @@ public class PieceGridView : MonoBehaviour
         }
     }
 
-
     private void CreateTile(int x, int y)
     {
         Vector3 position = GetTilePosition(x, y);
@@ -51,49 +50,7 @@ public class PieceGridView : MonoBehaviour
         GameObject tileGO = Instantiate(tilePrefab, position, Quaternion.identity, boardParent);
         tileGO.name = $"Tile ({x}, {y})";
         tiles[x, y] = tileGO;
-
-         if (tile is TrapTile)
-        {
-            Animator animator = tileGO.GetComponent<Animator>();
-            if (animator != null)
-            {
-                animator.Play("FloatingTrapAnimation"); 
-            }
-        }
-        
-      else if (tile is CollectibleTile)
-{
-    // Instanciar el coleccionable en la posición correspondiente
-    InstantiateCollectible(x, y);
-    
-    // Si tienes un animator en el tile, lo reproducimos
-    Animator animator = tileGO.GetComponent<Animator>();
-    if (animator != null)
-    {
-        animator.Play("FloatingCollectibleAnimation");
     }
-}
-
-    }
-
- private void InstantiateCollectible(int x, int y)
-{
-    // Obtener el tile en la posición dada
-    CollectibleTile collectibleTile = board.GetTileAtPosition(x, y) as CollectibleTile;
-
-    // Verificar si el tile es de tipo CollectibleTile
-    if (collectibleTile != null)
-    {
-        // Llamar al método de creación de la visual del coleccionable en CollectibleViewManager
-        collectibleViewManager.CreateCollectibleVisual(collectibleTile.Collectible);
-    }
-
-    else
-    {
-        Debug.LogError("Tile is not a CollectibleTile.");
-    }
-}
-
 
     public void PlacePiece(Piece piece, int x, int y)
     {
@@ -152,7 +109,7 @@ public class PieceGridView : MonoBehaviour
 
     private Vector3 GetTilePosition(int x, int y)
     {
-
+        
          return ConvertGridToWorldPosition(x, y);
     }
 
@@ -162,8 +119,7 @@ public class PieceGridView : MonoBehaviour
         float offsetY = -boardSize / 2.0f * tileSize; 
         float worldX = x * tileSize + offsetX + tileSize / 2; 
         float worldY = (boardSize - 1 - y) * tileSize + offsetY + tileSize / 2;
+       
         return new Vector3(worldX, worldY, 0f);
     }
-
-
 }

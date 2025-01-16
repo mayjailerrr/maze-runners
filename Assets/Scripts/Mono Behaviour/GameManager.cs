@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     public BoardController BoardController { get; private set; }
     public TurnManager TurnManager { get; private set; }
     
+    public CollectibleGridView collectibleGridView;
     public CollectibleViewManager collectibleViewManager;
     
     public Button endTurnButton;
@@ -96,6 +97,8 @@ public class GameManager : MonoBehaviour
         InitializePieceController();
         GameContext.SetTurnManager(TurnManager);
 
+        collectibleGridView.InitializeGrid(board);
+
         TurnManager.StartTurn();
     }
 
@@ -133,48 +136,46 @@ public class GameManager : MonoBehaviour
 
     }
 
-   private void GenerateAllCollectibles()
-{
-    foreach (var playerEntry in players)
+    private void GenerateAllCollectibles()
     {
-        Player player = playerEntry.Value;
-        Movies selectedMovie = selectedMovies[player.ID];
-
-        // Crear los coleccionables basados en la película seleccionada
-        List<Collectible> collectibles = CollectibleFactory.CreateCollectibles(selectedMovie);
-
-        int collectibleIndex = 0;
-
-        foreach (var collectible in collectibles)
+        if (collectibleViewManager == null)
         {
-            if (collectibleViewManager == null)
-            {
-                Debug.LogError("CollectibleViewManager not found in the scene.");
-                return;
-            }
-
-            if (collectible is null)
-            {
-                Debug.LogError("Collectible is null.");
-            }
-            // Delegar la creación visual al CollectibleViewManager sin parámetros extra
-            collectibleViewManager.CreateCollectibleVisual(collectible);
-
-            collectibleIndex++;  // Incrementamos el índice para colocar cada collectible en la siguiente posición
+            Debug.LogError("CollectibleViewManager is null. Ensure it is properly assigned.");
+            return;
         }
 
-        // Asignar los coleccionables al jugador
-        player.AssignObjects(collectibles);
+        foreach (var playerEntry in players)
+        {
+            Player player = playerEntry.Value;
+            Movies selectedMovie = selectedMovies[player.ID];
 
-        // Agregar los coleccionables a la lista global de coleccionables
-        playersCollectibles.AddRange(collectibles);
+            List<Collectible> collectibles = CollectibleFactory.CreateCollectibles(selectedMovie);
+
+            int collectibleIndex = 0;
+
+            foreach (var collectible in collectibles)
+            {
+                if (collectibleViewManager == null)
+                {
+                    Debug.LogError("CollectibleViewManager not found in the scene.");
+                    return;
+                }
+
+                if (collectible is null)
+                {
+                    Debug.LogError("Collectible is null.");
+                }
+
+                collectibleViewManager.CreateCollectibleVisual(collectible);
+
+                collectibleIndex++; 
+            }
+
+            player.AssignObjects(collectibles);
+
+            playersCollectibles.AddRange(collectibles);
+        }
     }
-}
-
-
-
-
-
 
     private void InitializeTurnManager()
     {
