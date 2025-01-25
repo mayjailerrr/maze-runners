@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WalkRight 2
+  m_Name: WalkUp 2
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -32,34 +32,34 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.25
-        value: 40
-        inSlope: 31.231995
-        outSlope: 31.231995
+        value: 32
+        inSlope: 0
+        outSlope: 0
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.5
-        value: 48
-        inSlope: 32
-        outSlope: 32
+        value: 32
+        inSlope: 0
+        outSlope: 0
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.75
-        value: 56
-        inSlope: 32
-        outSlope: 32
+        value: 32
+        inSlope: 0
+        outSlope: 0
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
-        value: 64
+        value: 32
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -89,34 +89,34 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.25
-        value: 5
-        inSlope: 0
-        outSlope: 0
+        value: 8
+        inSlope: 31.872593
+        outSlope: 31.872593
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.5
-        value: 0
-        inSlope: 0
-        outSlope: 0
+        value: 16
+        inSlope: 32
+        outSlope: 32
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.75
-        value: 5
-        inSlope: 0
-        outSlope: 0
+        value: 24
+        inSlope: 32
+        outSlope: 32
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
-        value: 0
+        value: 32
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -225,34 +225,34 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.25
-        value: 40
-        inSlope: 31.231995
-        outSlope: 31.231995
+        value: 32
+        inSlope: 0
+        outSlope: 0
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.5
-        value: 48
-        inSlope: 32
-        outSlope: 32
+        value: 32
+        inSlope: 0
+        outSlope: 0
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.75
-        value: 56
-        inSlope: 32
-        outSlope: 32
+        value: 32
+        inSlope: 0
+        outSlope: 0
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
-        value: 64
+        value: 32
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -282,34 +282,34 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.25
-        value: 5
-        inSlope: 0
-        outSlope: 0
+        value: 8
+        inSlope: 31.872593
+        outSlope: 31.872593
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.5
-        value: 0
-        inSlope: 0
-        outSlope: 0
+        value: 16
+        inSlope: 32
+        outSlope: 32
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.75
-        value: 5
-        inSlope: 0
-        outSlope: 0
+        value: 24
+        inSlope: 32
+        outSlope: 32
         tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
-        value: 0
+        value: 32
         inSlope: 0
         outSlope: 0
         tangentMode: 136

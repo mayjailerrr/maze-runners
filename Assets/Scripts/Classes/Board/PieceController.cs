@@ -74,6 +74,7 @@ public class PieceController : MonoBehaviour
         gameContext.CurrentPiece = selectedPiece;
 
         Debug.Log($"Selected piece: {selectedPiece.Name}");
+        Debug.Log($"This piece is at {selectedPiece.Position.x}, {selectedPiece.Position.y}");
     }
 
     private void TryMovePiece(Piece piece, Vector2 direction)
@@ -86,10 +87,10 @@ public class PieceController : MonoBehaviour
 
         string directionString = direction switch
         {
-            Vector2 v when v == Vector2.up => "Up",
-            Vector2 v when v == Vector2.down => "Down",
-            Vector2 v when v == Vector2.left => "Left",
-            Vector2 v when v == Vector2.right => "Right",
+            Vector2 v when v == Vector2.up => "Right",
+            Vector2 v when v == Vector2.down => "Left",
+            Vector2 v when v == Vector2.left => "Up",
+            Vector2 v when v == Vector2.right => "Down",
             _ => "Unknown"
         };
 
@@ -105,15 +106,6 @@ public class PieceController : MonoBehaviour
         {
             Debug.LogWarning("Movement blocked: The target tile is an obstacle.");
             return;
-        }
-
-        else if (targetTile is CollectibleTile collectibleTile)
-        {
-            collectibleTile.Interact(piece, gameContext.CurrentPlayer);
-            if (gameContext.CurrentPlayer.HasCollectedAllObjects())
-            {
-                GameManager.Instance.EndGame(gameContext.CurrentPlayer);
-            }
         }
 
         if (isMoving)
@@ -137,7 +129,15 @@ public class PieceController : MonoBehaviour
                     trapTile.ActivateTrap(piece, turnManager);
                 }
 
-                
+                 if (targetTile is CollectibleTile collectibleTile)
+                {
+                    collectibleTile.Interact(piece, gameContext.CurrentPlayer);
+                    if (gameContext.CurrentPlayer.HasCollectedAllObjects())
+                    {
+                        GameManager.Instance.EndGame(gameContext.CurrentPlayer);
+                    }
+                }
+                        
             }   
         }
 

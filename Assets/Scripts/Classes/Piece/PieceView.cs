@@ -34,15 +34,12 @@ public class PieceView : MonoBehaviour
         animator.SetFloat("Vertical", lastDirection.y);
         animator.SetBool("IsMoving", isMoving);
 
-         Debug.Log($"Ficha: {gameObject.name}, AnimationClip: {animator.GetCurrentAnimatorClipInfo(0)[0].clip.name}");
     }
 
     public IEnumerator AnimateMovement(Vector3 targetPosition, System.Action onMovementComplete)
     {
         Vector2 direction = (targetPosition - transform.position).normalized;
         UpdateAnimation(direction, true);
-
-         Debug.Log($"Ficha: {gameObject.name}, AnimationClip: {animator.GetCurrentAnimatorClipInfo(0)[0].clip.name}");
 
         yield return MoveSmoothly(targetPosition);
 
@@ -57,6 +54,8 @@ public class PieceView : MonoBehaviour
         float duration = moveDuration; 
         float timeElapsed = 0f;
 
+        rectTransform.position = targetPosition;
+
         while (timeElapsed < duration)
         {
             rectTransform.position = Vector3.Lerp(rectTransform.position, targetPosition, timeElapsed / duration);
@@ -64,7 +63,7 @@ public class PieceView : MonoBehaviour
             yield return null;
         }
 
-        rectTransform.position = targetPosition;
+       
 
     }
 
