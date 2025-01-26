@@ -15,14 +15,12 @@ public class PieceGridView : MonoBehaviour
     private int boardSize;
     public float tileSize = 1.0f;
     private GameObject[,] tiles; 
-    private GameObject[,] pieces; 
 
     public void InitializeGrid(Board board)
     {
         this.board = board;
         boardSize = board.Size;
         tiles = new GameObject[boardSize, boardSize];
-        pieces = new GameObject[boardSize, boardSize];
         GenerateVisualBoard(board);
     }
 
@@ -34,10 +32,10 @@ public class PieceGridView : MonoBehaviour
             {
                 CreateTile(x, y);
 
-                Piece piece = board.GetPieceAtPosition(x, y);
-                if (piece != null)
+                Tile tile = board.TileGrid[x, y];
+                if (tile.OccupyingPiece != null)
                 {
-                    PlacePiece(piece, x, y);
+                    PlacePiece(tile.OccupyingPiece, x, y);
                 }
             }
         }
@@ -46,7 +44,6 @@ public class PieceGridView : MonoBehaviour
     private void CreateTile(int x, int y)
     {
         Vector3 position = GetTilePosition(x, y);
-        Tile tile = board.GetTileAtPosition(x, y);
         GameObject tileGO = Instantiate(tilePrefab, position, Quaternion.identity, boardParent);
         tileGO.name = $"Tile ({x}, {y})";
         tiles[x, y] = tileGO;
@@ -65,7 +62,6 @@ public class PieceGridView : MonoBehaviour
 
         GameObject pieceObject = Instantiate(prefab, tile.transform.position, Quaternion.identity, tile.transform);
         pieceObject.name = $"Piece {piece.Name} ({x}, {y})";
-        pieces[x, y] = pieceObject;
 
         PieceView pieceView = pieceObject.GetComponent<PieceView>();
         if (pieceView != null)
@@ -78,19 +74,15 @@ public class PieceGridView : MonoBehaviour
     {
         boardParent.GetComponent<GridLayoutGroup>().enabled = false;
 
-        GameObject pieceObject = pieces[piece.Position.x, piece.Position.y];
-        if (pieceObject != null)
+        GameObject pieceObject = tiles[piece.Position.x, piece.Position.y].transform.GetChild(0).gameObject;
+        GameObject newTile = tiles[newX, newY];
+
+        PieceView pieceView = pieceObject.GetComponent<PieceView>();
+        if (pieceView != null)
         {
-            pieces[piece.Position.x, piece.Position.y] = null;
-            GameObject newTile = tiles[newX, newY];
+            pieceView.moveDuration = 0.3f;
 
-            PieceView pieceView = pieceObject.GetComponent<PieceView>();
-            if (pieceView != null)
-            {
-                pieceView.moveDuration = 0.3f;
-
-                StartCoroutine(MovePieceWithAnimation(pieceView, newTile.transform, newX, newY));
-            }
+            StartCoroutine(MovePieceWithAnimation(pieceView, newTile.transform, newX, newY));
         }
     }
 
@@ -102,8 +94,6 @@ public class PieceGridView : MonoBehaviour
         {
             pieceView.transform.SetParent(newParent, true);
             pieceView.transform.localPosition = Vector3.zero;
-
-            pieces[newX, newY] = pieceView.gameObject;
         });
     }
 

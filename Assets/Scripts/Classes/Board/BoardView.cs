@@ -28,40 +28,50 @@ public class BoardView : MonoBehaviour
             for (int y = 0; y < board.Size; y++)
             {
                 MazeRunners.Tile currentTile = board.TileGrid[x, y];
-                GameObject prefab = GetPrefabForTile(board, currentTile, x, y);
+                GameObject prefab = GetPrefabForTile(board, currentTile);
 
                 if (prefab != null)
                 {
                     GameObject tileGO = Instantiate(prefab, new Vector3(x, 0, y), Quaternion.identity, transform);
+                    tileGO.name = $"Tile ({x}, {y})";
                     tileObjects[x, y] = tileGO;
                 }
             }
         }
     }
 
-    private GameObject GetPrefabForTile(Board board, MazeRunners.Tile tile, int x, int y)
+    private GameObject GetPrefabForTile(Board board, MazeRunners.Tile tile)
     {
         if (tile is ObstacleTile)
         {
-            var neighbors = board.GetNeighbours(tile);
-            bool hasTopObstacle = neighbors.Any(n => n.Position.y > tile.Position.y && n is ObstacleTile);
-            return hasTopObstacle ? interiorObstaclePrefab : bottomObstaclePrefab;
+            return interiorObstaclePrefab;
         }
 
         if (tile is TrapTile) return trapPrefab;
         if (tile is CollectibleTile) return collectiblePrefab;
 
-        var tileNeighbors = board.GetNeighbours(tile);
-        bool hasLeft = tileNeighbors.Any(n => n.Position.x < x && !(n is ObstacleTile));
-        bool hasRight = tileNeighbors.Any(n => n.Position.x > x && !(n is ObstacleTile));
-        bool hasAbove = tileNeighbors.Any(n => n.Position.y > y && !(n is ObstacleTile));
-        bool hasBelow = tileNeighbors.Any(n => n.Position.y < y && !(n is ObstacleTile));
+        return DeterminePathTilePrefab(board, tile);
+    }
 
-        if ((hasLeft && hasRight) && !(hasAbove || hasBelow))
+    private GameObject DeterminePathTilePrefab(Board board, MazeRunners.Tile tile)
+    {
+        var neighbours = board.GetNeighbours(tile);
+       
+        bool hasTopNeighbour = neighbours.Any(n => n.Position.y == tile.Position.y - 1);
+        bool hasBottomNeighbour = neighbours.Any(n => n.Position.y == tile.Position.y + 1);
+        bool hasLeftNeighbour = neighbours.Any(n => n.Position.x == tile.Position.x - 1);
+        bool hasRightNeighbour = neighbours.Any(n => n.Position.x == tile.Position.x + 1);
+
+        if (hasTopNeighbour && hasBottomNeighbour && hasLeftNeighbour && hasRightNeighbour)
+        {
             return horizontalTilePrefab;
-        if ((hasAbove && hasBelow) && !(hasLeft || hasRight))
-            return verticalTilePrefab;
+        }
 
-        return horizontalTilePrefab; 
+        if ((hasTopNeighbour || hasBottomNeighbour) && (hasLeftNeighbour || hasRightNeighbour))
+        {
+            return verticalTilePrefab;
+        }
+
+        return horizontalTilePrefab;
     }
 }

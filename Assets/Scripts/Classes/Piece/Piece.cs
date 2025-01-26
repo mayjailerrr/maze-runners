@@ -111,9 +111,13 @@ public class Piece
     {
         if (board == null) throw new ArgumentNullException(nameof(board));
 
-        board.PieceGrid[Position.x, Position.y] = null;
+        Tile currentTile = board.TileGrid[Position.x, Position.y];
+        Tile targetTile = board.TileGrid[newX, newY];
+
+        currentTile.OccupyingPiece = null;
+        targetTile.OccupyingPiece = this;
+
         Position = (newX, newY);
-        board.PieceGrid[newX, newY] = this;
 
         movesRemaining--;
         HasMoved = true;
