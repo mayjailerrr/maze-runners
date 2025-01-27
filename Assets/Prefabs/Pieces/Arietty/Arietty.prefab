@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 701285803878449659}
   - component: {fileID: 6028302372187952782}
   m_Layer: 5
-  m_Name: Kiki
+  m_Name: Arietty
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87,7 +87,7 @@ Animator:
   m_GameObject: {fileID: 1734017783239383874}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 75104851722b47a468cf9b0754dcea2a, type: 2}
+  m_Controller: {fileID: 9100000, guid: bce3eeb61b98ca845a74a8303c7bc4b4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -110,4 +110,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19592f126ab3a9f4fa59b23e0c0410e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDuration: 0.7
+  moveDuration: 0.4

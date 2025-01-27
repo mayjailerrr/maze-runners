@@ -54,13 +54,11 @@ public class TurnManager
 
         foreach (var piece in currentPlayer.Pieces)
         {
-                piece.ResetTurn();
-                piece.ReduceCooldown();
+            piece.ResetTurn();
+            piece.ReduceCooldown();
         }
 
-        Debug.Log($"Player {currentPlayer.ID + 1}, it's your turn!");
-
-       
+        Debug.Log($"Player {currentPlayer.ID + 1}, it's your turn!"); 
     }
 
     public void NextTurn()
@@ -68,9 +66,9 @@ public class TurnManager
         currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
         gameContext.CurrentPlayer = players[currentPlayerIndex];
 
-        StartTurn();
-
         Debug.Log($"Turn changed to player {currentPlayerIndex + 1}.");
+
+        StartTurn();
     }
 
 

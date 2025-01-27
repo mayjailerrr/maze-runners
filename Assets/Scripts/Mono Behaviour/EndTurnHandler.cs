@@ -5,6 +5,7 @@ public class EndTurnHandler : MonoBehaviour
 {
     public Button endTurnButton;
     private TurnManager turnManager;
+    private bool isProcessing = false;
 
     public void Initialize(TurnManager turnManager)
     {
@@ -12,6 +13,7 @@ public class EndTurnHandler : MonoBehaviour
 
         if (endTurnButton != null)
         {
+            endTurnButton.onClick.RemoveAllListeners(); // Elimina todos los listeners previos
             endTurnButton.onClick.AddListener(OnPassButtonPressed);
         }
         else
@@ -20,14 +22,29 @@ public class EndTurnHandler : MonoBehaviour
         }
     }
 
-    public void OnPassButtonPressed()
+    private bool isButtonLocked = false;
+
+public void OnPassButtonPressed()
+{
+    if (isButtonLocked)
     {
-        if (turnManager == null)
-        {
-            Debug.LogError("TurnManager is not assigned.");
-            return;
-        }
-        
+        Debug.LogWarning("Button press ignored. Already processing turn.");
+        return;
+    }
+
+    isButtonLocked = true;
+
+    if (turnManager != null)
+    {
         turnManager.NextTurn();
     }
+    else
+    {
+        Debug.LogError("TurnManager is not assigned.");
+    }
+
+    isButtonLocked = false;
+}
+
+
 }
