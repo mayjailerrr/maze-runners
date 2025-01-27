@@ -55,10 +55,10 @@ public class PieceController : MonoBehaviour
 
     private Vector2 GetInputDirection()
     {
-        if (Input.GetKeyDown(KeyCode.W)) return Vector2.up;
-        if (Input.GetKeyDown(KeyCode.A)) return Vector2.left;
-        if (Input.GetKeyDown(KeyCode.S)) return Vector2.down;
-        if (Input.GetKeyDown(KeyCode.D)) return Vector2.right;
+        if (Input.GetKeyDown(KeyCode.W)) return Vector2.left; // Up
+        if (Input.GetKeyDown(KeyCode.A)) return Vector2.down; // Left
+        if (Input.GetKeyDown(KeyCode.S)) return Vector2.right; // Down
+        if (Input.GetKeyDown(KeyCode.D)) return Vector2.up; // Right
         return Vector2.zero;
     }
 
@@ -79,36 +79,60 @@ public class PieceController : MonoBehaviour
             return;
         }
 
+        string directionString = direction switch
+        {
+            Vector2 v when v == Vector2.up => "Up",
+            Vector2 v when v == Vector2.down => "Down",
+            Vector2 v when v == Vector2.left => "Left",
+            Vector2 v when v == Vector2.right => "Right",
+            _ => "Unknown"
+        };
+
+        gameContext.SetPlayerDirection(directionString);
+
         int newX = piece.Position.Item1 + (int)direction.x;
         int newY = piece.Position.Item2 + (int)direction.y;
+        pieceGridView.MovePiece(piece, newX, newY);
 
-        Tile targetTile = board.TileGrid[newX, newY];
-        if (targetTile == null || targetTile.IsOccupied || !board.IsValidMove(piece, newX, newY))
+        bool isMoving = board.IsValidMove(piece, newX, newY);
+        if (isMoving)
         {
-            Debug.LogWarning($"Invalid move for piece {piece.Name} to ({newX}, {newY}).");
-            piece.View.UpdateAnimation(Vector2.zero, false);
-            return;
+            if (turnManager.PerformAction(ActionType.Move, piece, board, newX, newY, gameContext))
+            {
+                Tile targetTile = board.GetTileAtPosition(newX, newY);
+                gameContext.UpdateTileAndPosition(board.GetTileAtPosition(newX, newY));
+
+                piece.UpdatePosition((newX, newY));
+
+                if(piece.View == null)
+                {
+                    Debug.LogError("PieceView is null for piece.");
+                    return;
+                }
+
+                piece.View.UpdateAnimation(direction, true);
+
+                HandleTileInteractions(piece, targetTile);
+            }   
         }
 
-        if (turnManager.PerformAction(ActionType.Move, piece, board, newX, newY, gameContext))
+        else
         {
-            UpdatePiecePosition(piece, targetTile, direction);
+            piece.View.UpdateAnimation(Vector2.zero, false);
+            Debug.LogWarning($"Invalid move for piece {piece.Name} to ({newX}, {newY}).");
         }
     }
 
-    private void UpdatePiecePosition(Piece piece, Tile targetTile, Vector2 direction)
+    private void UpdatePiecePosition(Piece piece, int newX, int newY, Vector2 direction)
     {
-        Tile currentTile = board.TileGrid[piece.Position.Item1, piece.Position.Item2];
-
-        currentTile.OccupyingPiece = null;
-        targetTile.OccupyingPiece = piece;
+        Tile targetTile = board.GetTileAtPosition(newX, newY);
 
         gameContext.UpdateTileAndPosition(targetTile);
-        piece.UpdatePosition(targetTile.Position);
+        piece.UpdatePosition((newX, newY));
 
         if (piece.View != null)
         {
-            pieceGridView.MovePiece(piece, targetTile.Position.x, targetTile.Position.y);
+            pieceGridView.MovePiece(piece, newX, newY);
             piece.View.UpdateAnimation(direction, true);
         }
         else

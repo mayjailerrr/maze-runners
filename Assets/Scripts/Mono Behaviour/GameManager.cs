@@ -220,7 +220,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                PieceGridView.InitializeGrid(board);
+                PieceGridView.InitializeGrid(board, BoardController.GetComponent<BoardView>());
             }
         }
     }

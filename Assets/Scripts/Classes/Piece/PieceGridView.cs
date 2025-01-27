@@ -6,32 +6,26 @@ using MazeRunners;
 public class PieceGridView : MonoBehaviour
 {
     [Header("Prefabs & Configuration")]
-    public GameObject tilePrefab; 
     public PiecePrefabRegistry piecePrefabRegistry; 
-    public Transform boardParent; 
-
-    [Header("Board Params")]
+    private BoardView boardView;
     private Board board;
-    private int boardSize;
-    public float tileSize = 1.0f;
-    private GameObject[,] tiles; 
 
-    public void InitializeGrid(Board board)
+    [Header("Parent Objects")]
+    public Transform boardParent;
+
+    public void InitializeGrid(Board board, BoardView boardView)
     {
         this.board = board;
-        boardSize = board.Size;
-        tiles = new GameObject[boardSize, boardSize];
-        GenerateVisualBoard(board);
+        this.boardView = boardView;
+        PlaceAllPieces();
     }
 
-    private void GenerateVisualBoard(Board board)
+    private void PlaceAllPieces()
     {
-        for (int x = 0; x < boardSize; x++)
+        for (int x = 0; x < board.Size; x++)
         {
-            for (int y = 0; y < boardSize; y++)
+            for (int y = 0; y < board.Size; y++)
             {
-                CreateTile(x, y);
-
                 Tile tile = board.TileGrid[x, y];
                 if (tile.OccupyingPiece != null)
                 {
@@ -41,26 +35,23 @@ public class PieceGridView : MonoBehaviour
         }
     }
 
-    private void CreateTile(int x, int y)
-    {
-        Vector3 position = GetTilePosition(x, y);
-        GameObject tileGO = Instantiate(tilePrefab, position, Quaternion.identity, boardParent);
-        tileGO.name = $"Tile ({x}, {y})";
-        tiles[x, y] = tileGO;
-    }
-
     public void PlacePiece(Piece piece, int x, int y)
     {
-        GameObject tile = tiles[x, y];
+        GameObject tileObject = boardView.GetTileObject(x, y); // Usa el tile de BoardView
+        if (tileObject == null)
+        {
+            Debug.LogError($"No tile found at ({x}, {y}) to place piece {piece.Name}.");
+            return;
+        }
+
         GameObject prefab = piecePrefabRegistry.GetPrefab(piece.Name);
-        
         if (prefab == null)
         {
             Debug.LogError($"No prefab found for piece {piece.Name}. Skipping instantiation.");
             return;
         }
 
-        GameObject pieceObject = Instantiate(prefab, tile.transform.position, Quaternion.identity, tile.transform);
+        GameObject pieceObject = Instantiate(prefab, tileObject.transform.position, Quaternion.identity, tileObject.transform);
         pieceObject.name = $"Piece {piece.Name} ({x}, {y})";
 
         PieceView pieceView = pieceObject.GetComponent<PieceView>();
@@ -71,22 +62,34 @@ public class PieceGridView : MonoBehaviour
     }
 
     public void MovePiece(Piece piece, int newX, int newY)
-    {
-        boardParent.GetComponent<GridLayoutGroup>().enabled = false;
+    {   
+        // Obtén el objeto del tile actual y el nuevo tile
+        GameObject currentTileObject = boardView.GetTileObject(piece.Position.x, piece.Position.y);
+        GameObject newTileObject = boardView.GetTileObject(newX, newY);
 
-        GameObject pieceObject = tiles[piece.Position.x, piece.Position.y].transform.GetChild(0).gameObject;
-        GameObject newTile = tiles[newX, newY];
+        if (currentTileObject == null || newTileObject == null)
+        {
+            Debug.LogError($"Tile object not found for position ({piece.Position.x}, {piece.Position.y}) or ({newX}, {newY}).");
+            return;
+        }
+
+        // Verificar si el tile actual tiene un hijo
+        if (currentTileObject.transform.childCount == 0)
+        {
+            Debug.LogError($"No piece found on tile ({piece.Position.x}, {piece.Position.y}).");
+            return;
+        }
+
+        GameObject pieceObject = currentTileObject.transform.GetChild(0).gameObject;
 
         PieceView pieceView = pieceObject.GetComponent<PieceView>();
         if (pieceView != null)
         {
-            pieceView.moveDuration = 0.3f;
-
-            StartCoroutine(MovePieceWithAnimation(pieceView, newTile.transform, newX, newY));
+            StartCoroutine(MovePieceWithAnimation(pieceView, newTileObject.transform));
         }
     }
 
-    private IEnumerator MovePieceWithAnimation(PieceView pieceView, Transform newParent, int newX, int newY)
+    private IEnumerator MovePieceWithAnimation(PieceView pieceView, Transform newParent)
     {
         Vector3 targetPosition = newParent.position;
 
@@ -95,21 +98,5 @@ public class PieceGridView : MonoBehaviour
             pieceView.transform.SetParent(newParent, true);
             pieceView.transform.localPosition = Vector3.zero;
         });
-    }
-
-    private Vector3 GetTilePosition(int x, int y)
-    {
-        
-         return ConvertGridToWorldPosition(x, y);
-    }
-
-    public Vector3 ConvertGridToWorldPosition(int x, int y)
-    {
-        float offsetX = -boardSize / 2.0f * tileSize; 
-        float offsetY = -boardSize / 2.0f * tileSize; 
-        float worldX = x * tileSize + offsetX + tileSize / 2; 
-        float worldY = (boardSize - 1 - y) * tileSize + offsetY + tileSize / 2;
-       
-        return new Vector3(worldX, worldY, 0f);
     }
 }

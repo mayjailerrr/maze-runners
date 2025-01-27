@@ -77,8 +77,9 @@ public class Board
             Tile selectedTile = neutralTiles[randomIndex];
             neutralTiles.RemoveAt(randomIndex);
 
-            piece.InitialPosition = (selectedTile.Position.y, selectedTile.Position.x);
-            piece.UpdatePosition((selectedTile.Position.y, selectedTile.Position.x));
+            selectedTile.OccupyingPiece = piece;
+            piece.InitialPosition = (selectedTile.Position.x, selectedTile.Position.y);
+            piece.UpdatePosition((selectedTile.Position.x, selectedTile.Position.y));
         }
     }
 

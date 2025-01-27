@@ -9301,10 +9301,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 042753241b57a2f41b4f9e00a7a6d99c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 3109402955476414337, guid: ff4ca147b7e7041499ca04ae33ed95b6, type: 3}
   piecePrefabRegistry: {fileID: 11400000, guid: 1796d2db320163b418f5c533702c8285, type: 2}
-  boardParent: {fileID: 1440439743}
-  tileSize: 1
+  boardParent: {fileID: 1007092592}
 --- !u!114 &1440439745
 MonoBehaviour:
   m_ObjectHideFlags: 0
