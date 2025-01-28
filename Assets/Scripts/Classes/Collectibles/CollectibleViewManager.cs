@@ -105,11 +105,9 @@ public class CollectibleViewManager : MonoBehaviour
             return;
         }
 
-        // Mueve el coleccionable al contenedor HUD
         collectibleGO.transform.SetParent(hudContainer, false);
         collectibleGO.transform.localScale = Vector3.one;
 
-        // Asegura que el coleccionable se coloque al final del contenedor (por si necesitas orden visual)
         collectibleGO.transform.SetAsLastSibling();
 
         Debug.Log($"Collectible {collectible.Name} moved to HUD.");

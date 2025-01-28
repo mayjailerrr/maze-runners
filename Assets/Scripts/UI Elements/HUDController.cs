@@ -18,7 +18,7 @@ public class HUDController : MonoBehaviour
     public Color dimColor = new Color(1, 1, 1, 0.5f); 
 
     [Header("Speed")]
-    public TMP_Text speedText; // Texto para movimientos restantes
+    public TMP_Text speedText;
 
     private Player currentPlayer;
     private Piece selectedPiece;
@@ -27,8 +27,9 @@ public class HUDController : MonoBehaviour
     {
         if (selectedPiece != null)
         {
-            selectedPiece.OnAbilityStateChanged -= UpdateAbilityIcon; // Desuscribir de la ficha anterior
+            selectedPiece.OnAbilityStateChanged -= UpdateAbilityIcon;
             selectedPiece.OnMovesChanged -= UpdateSpeed;
+            selectedPiece.OnHealthChanged -= UpdateHealth;
         }
 
         currentPlayer = player;
@@ -36,42 +37,38 @@ public class HUDController : MonoBehaviour
 
         if (selectedPiece != null)
         {
-            selectedPiece.OnAbilityStateChanged += UpdateAbilityIcon; // Suscribir a la nueva ficha
+            selectedPiece.OnAbilityStateChanged += UpdateAbilityIcon;
             selectedPiece.OnMovesChanged += UpdateSpeed;
+            selectedPiece.OnHealthChanged += UpdateHealth;
         }
 
         UpdateCollectibles(player);
-        UpdateHealth(piece);
+        UpdateHealth();
         UpdateAbilityIcon();
         UpdateSpeed();
     }
 
     private void UpdateCollectibles(Player player)
     {
-        // Itera sobre el HashSet de coleccionables capturados por el jugador
         foreach (var collectible in player.CollectedObjects)
         {
-            // Busca si ya existe un objeto visual para este coleccionable en el HUD
             Transform existingCollectible = collectibleContainer.Find(collectible.Name);
 
             if (existingCollectible == null)
             {
-                // Si no existe, crea uno nuevo y añádelo al HUD
                 GameObject collectibleGO = Instantiate(collectibleIconPrefab, collectibleContainer);
                 collectibleGO.name = collectible.Name;
 
-                // Opcional: Personaliza el aspecto del coleccionable
                 var textComponent = collectibleGO.GetComponentInChildren<Text>();
                 if (textComponent != null)
                 {
-                    textComponent.text = collectible.Name; // Muestra el nombre como texto
+                    textComponent.text = collectible.Name; 
                 }
 
-                collectibleGO.transform.SetAsLastSibling(); // Asegura el orden visual
+                collectibleGO.transform.SetAsLastSibling(); 
             }
         }
 
-        // Elimina del HUD los coleccionables que ya no están en el HashSet
         foreach (Transform child in collectibleContainer)
         {
             if (!player.CollectedObjects.Any(c => c.Name == child.name))
@@ -82,13 +79,19 @@ public class HUDController : MonoBehaviour
     }
 
 
-    private void UpdateHealth(Piece piece)
+    private void UpdateHealth()
     {
-        int health = piece.Health;
+        if (selectedPiece == null || healthIcons == null || healthIcons.Length == 0)
+        {
+            Debug.LogWarning("No piece selected or health icons not assigned.");
+            return;
+        }
+
+        int health = Mathf.Clamp(selectedPiece.Health, 0, healthIcons.Length); 
 
         for (int i = 0; i < healthIcons.Length; i++)
         {
-            healthIcons[i].enabled = i < health; // Activa o desactiva según la salud restante
+            healthIcons[i].enabled = i < health; 
         }
     }
 

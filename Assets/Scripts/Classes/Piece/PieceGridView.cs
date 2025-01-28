@@ -37,7 +37,7 @@ public class PieceGridView : MonoBehaviour
 
     public void PlacePiece(Piece piece, int x, int y)
     {
-        GameObject tileObject = boardView.GetTileObject(x, y); // Usa el tile de BoardView
+        GameObject tileObject = boardView.GetTileObject(x, y);
         if (tileObject == null)
         {
             Debug.LogError($"No tile found at ({x}, {y}) to place piece {piece.Name}.");
@@ -63,7 +63,6 @@ public class PieceGridView : MonoBehaviour
 
     public void MovePiece(Piece piece, int newX, int newY)
     {   
-        // Obtén el objeto del tile actual y el nuevo tile
         GameObject currentTileObject = boardView.GetTileObject(piece.Position.x, piece.Position.y);
         GameObject newTileObject = boardView.GetTileObject(newX, newY);
 
@@ -73,7 +72,6 @@ public class PieceGridView : MonoBehaviour
             return;
         }
 
-        // Verificar si el tile actual tiene un hijo
         if (currentTileObject.transform.childCount == 0)
         {
             Debug.LogError($"No piece found on tile ({piece.Position.x}, {piece.Position.y}).");

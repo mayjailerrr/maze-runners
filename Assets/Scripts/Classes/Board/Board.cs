@@ -4,8 +4,6 @@ using MazeRunners;
 using UnityEngine;
 using System;
 using System.Linq;
-
-
 public class Board
 {
     public int Size { get; private set; }

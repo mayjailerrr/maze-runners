@@ -62,9 +62,6 @@ public class PieceView : MonoBehaviour
             timeElapsed += Time.deltaTime;
             yield return null;
         }
-
-       
-
     }
 
     public void SetVisibility(bool isVisible)

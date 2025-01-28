@@ -12,7 +12,7 @@ public class EndTurnHandler : MonoBehaviour
 
         if (endTurnButton != null)
         {
-            endTurnButton.onClick.RemoveAllListeners(); // Elimina todos los listeners previos
+            endTurnButton.onClick.RemoveAllListeners();
             endTurnButton.onClick.AddListener(OnPassButtonPressed);
         }
         else

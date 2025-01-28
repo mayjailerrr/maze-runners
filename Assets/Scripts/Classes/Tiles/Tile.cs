@@ -4,9 +4,9 @@ namespace MazeRunners
     public class Tile
     {
         public (int x, int y) Position { get; private set; }
-        public Piece OccupyingPiece { get; set; } // Referencia a la pieza ocupante
+        public Piece OccupyingPiece { get; set; } 
 
-        public bool IsOccupied => OccupyingPiece != null; // Determina si el tile está ocupado
+        public bool IsOccupied => OccupyingPiece != null;
 
         public Tile(int x, int y)
         {

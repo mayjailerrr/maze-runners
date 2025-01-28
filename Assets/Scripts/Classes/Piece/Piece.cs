@@ -15,8 +15,18 @@ public class Piece
     public (int x, int y)? PreviousPosition { get; private set; }
     public (int x, int y)? InitialPosition { get; set; }
     
-    public int Health { get; set; } = 3;
-
+    public event Action OnHealthChanged;
+    private int health = 3;
+    public int Health
+    {
+        get => health;
+        set
+        {
+            health = Mathf.Max(0, value);
+            OnHealthChanged?.Invoke(); // Notificar cambio
+        }
+    }
+    
     private bool isShielded;
     public bool IsShielded
     {
