@@ -97,7 +97,15 @@ public class GameManager : MonoBehaviour
         InitializePieceController();
         GameContext.SetTurnManager(TurnManager);
 
-        collectibleGridView.InitializeGrid(board);
+        if (collectibleViewManager == null)
+        {
+            Debug.LogError("CollectibleViewManager not found in the scene.");
+        }
+
+        collectibleViewManager = FindObjectOfType<CollectibleViewManager>();
+        collectibleGridView.InitializeGrid(board, BoardController.GetComponent<BoardView>(), collectibleViewManager);
+
+        
 
         TurnManager.StartTurn();
     }

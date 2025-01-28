@@ -36,16 +36,29 @@ public class Piece
         {
             _abilitiesBlocked = value;
             Debug.Log($"{Name} abilities are now {(value ? "blocked" : "unblocked")}.");
+            NotifyAbilityStateChanged();
         }
     }
+
+    public event Action OnAbilityStateChanged;
     public bool CanUseAbility => !_abilitiesBlocked && currentCooldown == 0;
-   
     public bool HasUsedAbility { get; private set; }
     public IAbility Ability { get; set; }
+   
     public PieceView View { get; set; }
 
     private int movesRemaining;
+    public int MovesRemaining
+    {
+        get => movesRemaining;
+        private set
+        {
+            movesRemaining = value;
+            NotifyMovesChanged();
+        }
+    }
     public bool HasMoved { get; private set; }
+    public event Action OnMovesChanged;
 
     public Piece (string name, int speed, int cooldown, IAbility ability)
     {
@@ -95,7 +108,16 @@ public class Piece
 
     public void ReduceCooldown()
     {
-        if (currentCooldown > 0) currentCooldown--;
+        if (currentCooldown > 0)
+        {
+            currentCooldown--;
+            NotifyAbilityStateChanged();
+        }
+    }
+
+    private void NotifyAbilityStateChanged()
+    {
+        OnAbilityStateChanged?.Invoke();
     }
 
      public void ResetTurn()
@@ -125,6 +147,11 @@ public class Piece
         Debug.Log($"{Name} moved to ({newX}, {newY})");
     }
 
+    private void NotifyMovesChanged()
+    {
+        OnMovesChanged?.Invoke();
+    }
+
     public void UpdateCooldown()
     {
         if (currentCooldown > 0) currentCooldown--;
@@ -133,6 +160,7 @@ public class Piece
     protected void ActivateAbility()
     {
         currentCooldown = Cooldown;
+        NotifyAbilityStateChanged();
     }
 
     public string GetDirection(Vector2 newPosition)

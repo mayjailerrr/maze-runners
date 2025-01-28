@@ -5,8 +5,8 @@ using UnityEngine.UI;
 public class CollectibleViewManager : MonoBehaviour
 {
     [SerializeField] private GameObject collectiblePrefab; 
-    public PieceGridView pieceGridView;
-    public List<GameObject> collectibleObjects = new List<GameObject>();
+    public Transform hudContainer;
+    private Dictionary<string, GameObject> collectibleObjects = new Dictionary<string, GameObject>();
     public Dictionary<string, Sprite> collectibleSprites;
 
     private void Awake()
@@ -60,6 +60,12 @@ public class CollectibleViewManager : MonoBehaviour
             return null;
         }
 
+        if (collectibleObjects.ContainsKey(collectible.Name))
+        {
+            Debug.LogWarning($"Collectible {collectible.Name} already exists in the view. Reusing existing object.");
+            return collectibleObjects[collectible.Name];
+        }
+
         if (!collectibleSprites.TryGetValue(collectible.Name, out Sprite sprite))
         {
             Debug.LogWarning($"No sprite found for collectible: {collectible.Name}. Using default sprite.");
@@ -80,7 +86,7 @@ public class CollectibleViewManager : MonoBehaviour
 
         collectibleObject.transform.localScale = Vector3.one;
         collectibleObject.name = $"Collectible_{collectible.Name}";
-        collectibleObjects.Add(collectibleObject);
+        collectibleObjects.Add(collectible.Name, collectibleObject);
 
         return collectibleObject;
     }
@@ -90,4 +96,46 @@ public class CollectibleViewManager : MonoBehaviour
         return Resources.Load<Sprite>("Sprites/DefaultCollectible");
     }
 
+    public void MoveToHUD(Collectible collectible)
+    {
+        GameObject collectibleGO = GetCollectibleObject(collectible.Name);
+        if (collectibleGO == null)
+        {
+            Debug.LogError($"Collectible {collectible.Name} cannot be moved to HUD because it does not exist.");
+            return;
+        }
+
+        // Mueve el coleccionable al contenedor HUD
+        collectibleGO.transform.SetParent(hudContainer, false);
+        collectibleGO.transform.localScale = Vector3.one;
+
+        // Asegura que el coleccionable se coloque al final del contenedor (por si necesitas orden visual)
+        collectibleGO.transform.SetAsLastSibling();
+
+        Debug.Log($"Collectible {collectible.Name} moved to HUD.");
+    }
+
+    public void RemoveCollectible(string collectibleName)
+    {
+        if (!collectibleObjects.TryGetValue(collectibleName, out GameObject collectibleGO))
+        {
+            Debug.LogWarning($"Collectible {collectibleName} not found in view.");
+            return;
+        }
+
+        Destroy(collectibleGO);
+        collectibleObjects.Remove(collectibleName);
+        Debug.Log($"Collectible {collectibleName} removed from view.");
+    }
+
+    public GameObject GetCollectibleObject(string collectibleName)
+    {
+        if (collectibleObjects.TryGetValue(collectibleName, out GameObject collectibleGO))
+        {
+            return collectibleGO;
+        }
+
+        Debug.LogError($"Collectible object with name '{collectibleName}' not found in the dictionary.");
+        return null;
+    }
 }

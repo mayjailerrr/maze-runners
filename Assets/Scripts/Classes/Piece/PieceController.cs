@@ -9,6 +9,8 @@ public class PieceController : MonoBehaviour
     private Context gameContext;
     private Board board;
     private PieceGridView pieceGridView;
+    private CollectibleViewManager collectibleViewManager;
+    private HUDController hudController;
 
     private bool isInitialized = false;
 
@@ -18,6 +20,8 @@ public class PieceController : MonoBehaviour
         this.turnManager = turnManager;
         this.gameContext = context;
         this.pieceGridView = pieceGridView;
+        this.collectibleViewManager = FindObjectOfType<CollectibleViewManager>();
+        this.hudController = FindObjectOfType<HUDController>();
 
         isInitialized = true;
     }
@@ -67,6 +71,8 @@ public class PieceController : MonoBehaviour
         selectedPieceIndex = (selectedPieceIndex + 1) % pieces.Count;
         Piece selectedPiece = pieces[selectedPieceIndex];
         gameContext.CurrentPiece = selectedPiece;
+
+        hudController.UpdateHUD(gameContext.CurrentPlayer, selectedPiece);
 
         Debug.Log($"Selected piece: {selectedPiece.Name}");
     }
@@ -135,6 +141,7 @@ public class PieceController : MonoBehaviour
             pieceGridView.MovePiece(piece, newX, newY);
             piece.View.UpdateAnimation(direction, true);
         }
+
         else
         {
             Debug.LogError($"PieceView is null for piece {piece.Name}.");
@@ -153,6 +160,7 @@ public class PieceController : MonoBehaviour
         if (targetTile is CollectibleTile collectibleTile)
         {
             collectibleTile.Interact(piece, gameContext.CurrentPlayer);
+            collectibleViewManager.MoveToHUD(collectibleTile.Collectible);
 
             if (gameContext.CurrentPlayer.HasCollectedAllObjects())
             {

@@ -5,7 +5,6 @@ public class EndTurnHandler : MonoBehaviour
 {
     public Button endTurnButton;
     private TurnManager turnManager;
-    private bool isProcessing = false;
 
     public void Initialize(TurnManager turnManager)
     {
