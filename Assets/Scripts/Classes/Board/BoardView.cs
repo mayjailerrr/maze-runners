@@ -49,30 +49,43 @@ public class BoardView : MonoBehaviour
         }
 
         return tileObjects[x, y];
-    }
-    
+        }
     private GameObject GetPrefabForTile(Board board, MazeRunners.Tile tile, int x, int y)
     {
         if (tile is ObstacleTile)
         {
             var neighbors = board.GetNeighbours(tile);
-            bool hasTopObstacle = neighbors.Any(n => n.Position.y > tile.Position.y && n is ObstacleTile);
-            return hasTopObstacle ? interiorObstaclePrefab : bottomObstaclePrefab;
+
+            bool hasLeftNeighbor = neighbors.Any(n => n.Position.x < tile.Position.x && n is ObstacleTile);
+            bool hasRightNeighbor = neighbors.Any(n => n.Position.x > tile.Position.x && n is ObstacleTile);
+            bool hasTopNeighbor = neighbors.Any(n => n.Position.y > tile.Position.y && n is ObstacleTile);
+            bool hasBottomNeighbor = neighbors.Any(n => n.Position.y < tile.Position.y && n is ObstacleTile);
+
+            if (hasRightNeighbor)
+            {
+                return interiorObstaclePrefab;
+            }
+
+            if(hasTopNeighbor && hasRightNeighbor)
+            {
+                return bottomObstaclePrefab;
+            }
+
+            if (hasLeftNeighbor && hasRightNeighbor)
+            {
+                return bottomObstaclePrefab;
+            }
+
+            if (!hasLeftNeighbor && !hasRightNeighbor)
+            {
+                return bottomObstaclePrefab;
+            }
+
+            return bottomObstaclePrefab; 
         }
 
         if (tile is TrapTile) return trapPrefab;
         if (tile is CollectibleTile) return collectiblePrefab;
-
-        var tileNeighbors = board.GetNeighbours(tile);
-        bool hasLeft = tileNeighbors.Any(n => n.Position.x < x && !(n is ObstacleTile));
-        bool hasRight = tileNeighbors.Any(n => n.Position.x > x && !(n is ObstacleTile));
-        bool hasAbove = tileNeighbors.Any(n => n.Position.y > y && !(n is ObstacleTile));
-        bool hasBelow = tileNeighbors.Any(n => n.Position.y < y && !(n is ObstacleTile));
-
-        if ((hasLeft && hasRight) && !(hasAbove || hasBelow))
-            return horizontalTilePrefab;
-        if ((hasAbove && hasBelow) && !(hasLeft || hasRight))
-            return verticalTilePrefab;
 
         return horizontalTilePrefab; 
     }

@@ -53,7 +53,7 @@ public static class PieceFactory
                 break;
 
             case Movies.Arietty:
-                pieces.Add(new Piece("Arietty", 4, 3, PieceAbilities.GetAbility(AbilityName.WallDestroyer)));
+                pieces.Add(new Piece("Arietty", 6, 3, PieceAbilities.GetAbility(AbilityName.WallDestroyer)));
                 pieces.Add(new Piece("Sho", 5, 2, PieceAbilities.GetAbility(AbilityName.Shield)));
                 pieces.Add(new Piece("Spiller", 5, 3, PieceAbilities.GetAbility(AbilityName.HealthDamage)));
                 break;
