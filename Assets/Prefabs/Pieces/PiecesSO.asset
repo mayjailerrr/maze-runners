@@ -43,3 +43,21 @@ MonoBehaviour:
     prefab: {fileID: 1734017783239383874, guid: 9c87fa938959d4c458b8c1062829ab39, type: 3}
   - pieceName: Totoro
     prefab: {fileID: 1734017783239383874, guid: 3a8c8b37f1504f743b5a93e57355e6ff, type: 3}
+  - pieceName: Arietty
+    prefab: {fileID: 1734017783239383874, guid: 6a77043101449c147bc75f61ba35e348, type: 3}
+  - pieceName: Sho
+    prefab: {fileID: 1734017783239383874, guid: 5b2f69afdfd4a484d94ef3c71ca4c44e, type: 3}
+  - pieceName: Spiller
+    prefab: {fileID: 1734017783239383874, guid: ba39ae960cc2d004b8b0a9b0d798a6f7, type: 3}
+  - pieceName: Porco
+    prefab: {fileID: 1734017783239383874, guid: 9c14caf94c9b81c4ebcf06188d8a92d0, type: 3}
+  - pieceName: Fio
+    prefab: {fileID: 1734017783239383874, guid: c535ca8fb653d1c42aec7839d85bd62c, type: 3}
+  - pieceName: Gina
+    prefab: {fileID: 1734017783239383874, guid: 20f28fd3a372a7e439a8c5d0b40ac8cd, type: 3}
+  - pieceName: Kiki
+    prefab: {fileID: 1734017783239383874, guid: 69e208ff263fceb4a930d9ece2402bf3, type: 3}
+  - pieceName: Jiji
+    prefab: {fileID: 1734017783239383874, guid: 3e4011055c442214a8c2ceb9627fd1bf, type: 3}
+  - pieceName: Tombo
+    prefab: {fileID: 1734017783239383874, guid: 0a3c1689830abe74ab77d5f0b2010478, type: 3}

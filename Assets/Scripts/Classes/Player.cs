@@ -126,13 +126,17 @@ public class Player
         return CollectedObjects.Count == AssignedObjects.Count;
     }
 
-    public void CollectObject(Collectible collectible)
+    public bool CollectObject(Collectible collectible)
     {
         if (AssignedObjects.Contains(collectible))
         {
             CollectedObjects.Add(collectible);
             Debug.Log($"Player {ID + 1} collected {collectible.Name}!");
+            
+            return true;
         }
+       
+        return false;
     }
 
      public bool HasMovedAtLeastOnePiece()
