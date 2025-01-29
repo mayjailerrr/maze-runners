@@ -49,8 +49,9 @@ public class BoardView : MonoBehaviour
         }
 
         return tileObjects[x, y];
-        }
-    private GameObject GetPrefabForTile(Board board, MazeRunners.Tile tile, int x, int y)
+    }
+
+    public GameObject GetPrefabForTile(Board board, MazeRunners.Tile tile, int x, int y)
     {
         if (tile is ObstacleTile)
         {

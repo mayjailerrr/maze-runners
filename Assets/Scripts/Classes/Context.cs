@@ -7,6 +7,7 @@ public class Context
     public Player CurrentPlayer { get; set; }
     public Tile CurrentTile { get; set; }
     public TurnManager TurnManager { get; private set; }
+    public BoardView BoardView { get; set; }
     public string PlayerDirection { get; private set; }
     public Context(Board board, Player currentPlayer, Piece currentPiece = null, Tile currentTile = null)
     {
@@ -26,6 +27,11 @@ public class Context
     public void SetTurnManager(TurnManager turnManager)
     {
         TurnManager = turnManager;
+    }
+
+    public void SetBoardView(BoardView boardView)
+    {
+        BoardView = boardView;
     }
 
 

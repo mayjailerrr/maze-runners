@@ -38,6 +38,7 @@ public class Piece
             else View.HideShield();
         }
     }
+    
     private bool _abilitiesBlocked = false;
     public bool AbilitiesBlocked
     {

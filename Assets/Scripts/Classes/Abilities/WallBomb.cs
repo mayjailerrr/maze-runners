@@ -17,6 +17,7 @@ public class WallBombAbility : IAbility
         }
 
         var board = context.Board;
+        var boardView = context.BoardView;
         var position = targetPiece.Position;
 
         for (int x = -1; x <= 1; x++)
@@ -26,7 +27,7 @@ public class WallBombAbility : IAbility
                 int targetX = position.x + x;
                 int targetY = position.y + y;
 
-                if (board.IsWithinBounds(targetX, targetY))  //to-do: check if necesary
+                if (board.IsWithinBounds(targetX, targetY))
                 {
                     var tile = board.GetTileAtPosition(targetX, targetY);
 
@@ -35,6 +36,7 @@ public class WallBombAbility : IAbility
                         if (tile is ObstacleTile || tile is TrapTile)
                         {
                             board.ReplaceTile(targetX, targetY, new Tile(targetX, targetY)); 
+                            ReplaceTileVisual(boardView, targetX, targetY, board);
                         }
                         else if (tile is CollectibleTile)
                         {
@@ -48,5 +50,25 @@ public class WallBombAbility : IAbility
         }
 
         return true;
+    }
+
+    private void ReplaceTileVisual(BoardView boardView, int x, int y, Board board)
+    {
+        var tileGO = boardView.GetTileObject(x, y);
+        if (tileGO == null)
+        {
+            Debug.LogError($"No tile found at ({x}, {y}).");
+            return;
+        }
+
+        int siblingIndex = tileGO.transform.GetSiblingIndex();
+        GameObject.Destroy(tileGO);
+
+        var newTileGO = GameObject.Instantiate(boardView.horizontalTilePrefab, boardView.transform);
+        newTileGO.transform.localPosition = Vector3.zero;
+        newTileGO.transform.localScale = Vector3.one;
+        newTileGO.transform.localRotation = Quaternion.identity; 
+        newTileGO.name = $"Tile ({x}, {y})";
+        newTileGO.transform.SetSiblingIndex(siblingIndex);
     }
 }

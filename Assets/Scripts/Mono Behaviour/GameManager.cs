@@ -96,6 +96,7 @@ public class GameManager : MonoBehaviour
         InitializePieceGridView();
         InitializePieceController();
         GameContext.SetTurnManager(TurnManager);
+        GameContext.SetBoardView(BoardController.GetComponent<BoardView>());
 
         if (collectibleViewManager == null)
         {

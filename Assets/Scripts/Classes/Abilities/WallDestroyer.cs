@@ -17,6 +17,7 @@ public class WallDestroyerAbility : IAbility
         }
 
         var board = context.Board;
+        var boardView = context.BoardView;
         var currentPosition = currentPiece.Position;
 
         (int dx, int dy) direction = GetFacingDirection(context);
@@ -30,6 +31,8 @@ public class WallDestroyerAbility : IAbility
             if (targetTile is ObstacleTile)
             {
                 board.ReplaceTile(targetX, targetY, new Tile(targetX, targetY));
+                ReplaceTileVisual(boardView, targetX, targetY, board);
+
                 Debug.Log($"Wall destroyed at ({targetX}, {targetY}).");
                 return true;
             }
@@ -42,6 +45,27 @@ public class WallDestroyerAbility : IAbility
 
         Debug.LogError($"Target position ({targetX}, {targetY}) is out of bounds.");
         return false;
+    }
+
+    private void ReplaceTileVisual(BoardView boardView, int x, int y, Board board)
+    {
+        var tileGO = boardView.GetTileObject(x, y);
+        if (tileGO == null)
+        {
+            Debug.LogError($"No tile found at ({x}, {y}).");
+            return;
+        }
+
+        int siblingIndex = tileGO.transform.GetSiblingIndex();
+        GameObject.Destroy(tileGO);
+
+        var newTileGO = GameObject.Instantiate(boardView.horizontalTilePrefab, boardView.transform);
+        newTileGO.transform.localPosition = Vector3.zero;
+        newTileGO.transform.localScale = Vector3.one;
+        newTileGO.transform.localRotation = Quaternion.identity;
+        newTileGO.name = $"Tile ({x}, {y})";
+        newTileGO.transform.SetSiblingIndex(siblingIndex);
+
     }
 
     private (int dx, int dy) GetFacingDirection(Context context)

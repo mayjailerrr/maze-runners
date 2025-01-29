@@ -28,6 +28,7 @@ public class RampartBuilderAbility : IAbility
         }
 
         var board = context.Board;
+        var boardView = context.BoardView;
         var position = targetPiece.Position;
 
         bool wallBuilt = false;
@@ -46,6 +47,8 @@ public class RampartBuilderAbility : IAbility
                     board.ReplaceTile(targetX, targetY, new ObstacleTile(targetX, targetY));
                     Debug.Log($"Wall built at ({targetX}, {targetY}).");
                     wallBuilt = true; 
+
+                    ReplaceTileVisual(boardView, targetX, targetY, board);
                 }
             }
         }
@@ -56,5 +59,28 @@ public class RampartBuilderAbility : IAbility
         }
 
         return wallBuilt;
+    }
+
+    private void ReplaceTileVisual(BoardView boardView, int x, int y, Board board)
+    {
+        var tileGO = boardView.GetTileObject(x, y);
+        if (tileGO == null)
+        {
+            Debug.LogError($"No tile found at ({x}, {y}).");
+            return;
+        }
+
+        int siblingIndex = tileGO.transform.GetSiblingIndex();
+        GameObject.Destroy(tileGO);
+
+        var newTileGO = GameObject.Instantiate(boardView.GetPrefabForTile(board, board.GetTileAtPosition(x, y), x, y), boardView.transform);
+
+        newTileGO.transform.localPosition = Vector3.zero;
+        newTileGO.transform.localScale = Vector3.one;
+        newTileGO.transform.localRotation = Quaternion.identity; 
+        newTileGO.name = $"Tile ({x}, {y})";
+        newTileGO.transform.SetSiblingIndex(siblingIndex);
+
+        
     }
 }
