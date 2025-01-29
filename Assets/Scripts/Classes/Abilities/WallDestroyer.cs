@@ -57,15 +57,21 @@ public class WallDestroyerAbility : IAbility
         }
 
         int siblingIndex = tileGO.transform.GetSiblingIndex();
-        GameObject.Destroy(tileGO);
+        
+        LeanTween.scale(tileGO, Vector3.zero, 0.4f).setEaseInBack()
+        .setOnComplete(() =>
+        {
+            GameObject.Destroy(tileGO);
 
-        var newTileGO = GameObject.Instantiate(boardView.horizontalTilePrefab, boardView.transform);
-        newTileGO.transform.localPosition = Vector3.zero;
-        newTileGO.transform.localScale = Vector3.one;
-        newTileGO.transform.localRotation = Quaternion.identity;
-        newTileGO.name = $"Tile ({x}, {y})";
-        newTileGO.transform.SetSiblingIndex(siblingIndex);
+            var newTileGO = GameObject.Instantiate(boardView.horizontalTilePrefab, boardView.transform);
+            newTileGO.transform.localPosition = Vector3.zero;
+            newTileGO.transform.localScale = Vector3.zero; 
+            newTileGO.transform.localRotation = Quaternion.identity;
+            newTileGO.name = $"Tile ({x}, {y})";
+            newTileGO.transform.SetSiblingIndex(siblingIndex);
 
+            LeanTween.scale(newTileGO, Vector3.one, 0.5f).setEaseOutElastic();
+        });
     }
 
     private (int dx, int dy) GetFacingDirection(Context context)

@@ -74,10 +74,12 @@ public class WallBuilderAbility : IAbility
         var newTileGO = GameObject.Instantiate(boardView.GetPrefabForTile(board, board.GetTileAtPosition(x, y), x, y), boardView.transform);
 
         newTileGO.transform.localPosition = Vector3.zero;
-        newTileGO.transform.localScale = Vector3.one;
+        newTileGO.transform.localScale = new Vector3(1f, 0f, 1f);
         newTileGO.transform.localRotation = Quaternion.identity; 
         newTileGO.name = $"Tile ({x}, {y})";
         newTileGO.transform.SetSiblingIndex(siblingIndex);
+
+        LeanTween.scaleY(newTileGO, 1f, 0.5f).setEaseOutElastic();
 
     }
 }

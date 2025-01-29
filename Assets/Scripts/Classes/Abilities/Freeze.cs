@@ -41,7 +41,11 @@ public class FreezeAbility : IAbility
         var freezeAbilitiesEffect = new ActionTemporaryEffect(
             targetPiece,
             () => targetPiece.AbilitiesBlocked = true,
-            () => targetPiece.AbilitiesBlocked = false, 
+            () =>
+            {
+                targetPiece.AbilitiesBlocked = false;
+                HideFreezeIndicator(targetPiece);
+            },
             freezeTurns
         );
         turnManager.ApplyTemporaryEffect(freezeAbilitiesEffect);
@@ -62,8 +66,22 @@ public class FreezeAbility : IAbility
         freezeIndicator.transform.SetParent(targetPiece.View.transform, false);
         freezeIndicator.transform.localPosition = Vector3.zero;
         freezeIndicator.transform.localScale = Vector3.one * 1.5f;
+        freezeIndicator.transform.SetAsLastSibling();
 
         targetPiece.View.FreezeIndicator = freezeIndicator;
+
+        LeanTween.alpha(freezeIndicator.GetComponent<RectTransform>(), 0.2f, 0.5f)
+            .setLoopPingPong();
+    }
+
+    private void HideFreezeIndicator(Piece targetPiece)
+    {
+        if (targetPiece.View.FreezeIndicator != null)
+        {
+            LeanTween.cancel(targetPiece.View.FreezeIndicator);
+            GameObject.Destroy(targetPiece.View.FreezeIndicator);
+            targetPiece.View.FreezeIndicator = null;
+        }
     }
 
     private Sprite CreateCircleSprite(int diameter)

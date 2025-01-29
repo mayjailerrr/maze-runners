@@ -12,10 +12,7 @@ TagManager:
   - Fidel
   - Batista
   - WeatherCard
-  - LeaderCard
-  - Weather
-  - Deck
-  - BonusCard
+  - MainCanvas
   layers:
   - Default
   - TransparentFX
