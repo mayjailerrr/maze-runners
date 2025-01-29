@@ -23,7 +23,7 @@ public class Piece
         set
         {
             health = Mathf.Max(0, value);
-            OnHealthChanged?.Invoke(); // Notificar cambio
+            OnHealthChanged?.Invoke();
         }
     }
     
@@ -34,11 +34,9 @@ public class Piece
         set
         {
             isShielded = value;
-            if (isShielded) View.ShowShield();
-            else View.HideShield();
         }
     }
-    
+
     private bool _abilitiesBlocked = false;
     public bool AbilitiesBlocked
     {

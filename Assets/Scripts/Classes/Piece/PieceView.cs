@@ -9,7 +9,7 @@ public class PieceView : MonoBehaviour
     private RectTransform rectTransform;
 
     public GameObject FreezeIndicator { get; set; }
-    private GameObject shieldIndicator;
+    public GameObject ShieldIndicator { get; set; }
 
     public float moveDuration = 0.4f; 
 
@@ -76,59 +76,4 @@ public class PieceView : MonoBehaviour
             gameObject.SetActive(isVisible);
         }
     }
-
-    public void ShowShield()
-    {
-        if (shieldIndicator == null)
-        {
-            shieldIndicator = new GameObject("ShieldIndicator");
-            var image = shieldIndicator.AddComponent<Image>();
-
-            image.sprite = CreateCircleSprite(64);
-            image.color = new Color(1f, 0.84f, 0f, 0.4f);
-
-            shieldIndicator.transform.SetParent(this.transform.parent, false);
-            shieldIndicator.transform.localPosition = Vector3.zero;
-            shieldIndicator.transform.localScale = Vector3.one * 1.5f;
-
-            shieldIndicator.transform.SetAsLastSibling();
-        }
-
-        shieldIndicator.SetActive(true);
-        Debug.Log("Shield effect activated!");
-    }
-
-    public void HideShield()
-    {
-        if (shieldIndicator != null)
-        {
-            shieldIndicator.SetActive(false);
-        }
-        Debug.Log("Shield effect deactivated!");
-    }
-
-    private Sprite CreateCircleSprite(int diameter)
-    {
-        Texture2D texture = new Texture2D(diameter, diameter, TextureFormat.RGBA32, false);
-        Color[] pixels = new Color[diameter * diameter];
-        int radius = diameter / 2;
-        Vector2 center = new Vector2(radius, radius);
-
-        for (int y = 0; y < diameter; y++)
-        {
-            for (int x = 0; x < diameter; x++)
-            {
-                Vector2 pixelPos = new Vector2(x, y);
-                float distance = Vector2.Distance(pixelPos, center);
-                pixels[y * diameter + x] = distance <= radius ? Color.white : Color.clear;
-            }
-        }
-
-        texture.SetPixels(pixels);
-        texture.Apply();
-
-        Rect rect = new Rect(0, 0, diameter, diameter);
-        return Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f));
-    }
-
 }
