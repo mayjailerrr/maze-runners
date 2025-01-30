@@ -1,4 +1,5 @@
 # Ghibli Labyrinth: The Spirit Paths
+![Ghibli Labyrinth: The Spirit Paths Logo](./Picture.jpeg)
 
 ## Description
 Ghibli Labyrinth: The Spirit Paths is a fan-made multiplayer escape labyrinth game inspired by the enchanting worlds of Studio Ghibli. This project is created by fans for fans, aiming to capture the magic and artistry of Ghibli's storytelling.
@@ -13,7 +14,7 @@ As the game is developed in Unity, I plan to create a build soon. In the meantim
 
 1. **Clone the Repository**:
    ```bash
-   git clone [https://github.com/yourusername/ghibli-labyrinth.git](https://github.com/mayjailerrr/maze-runners.git)
+   git clone https://github.com/mayjailerrr/maze-runners.git
    ```
    
 2. **Open in Unity**:
