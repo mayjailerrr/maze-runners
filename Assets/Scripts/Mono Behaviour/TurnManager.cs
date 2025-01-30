@@ -132,12 +132,32 @@ public class TurnManager
                     return false;
                 }
 
-                if (currentPlayer.MovePiece(piece, targetX, targetY, board))
-                {
-                    CheckPieceExhausted();
-                    return true;
-                }
+               if (!board.IsWithinBounds(targetX, targetY))
+            {
+                Debug.LogWarning("Target move is out of bounds.");
                 return false;
+            }
+
+            Tile targetTile = board.GetTileAtPosition(targetX, targetY);
+
+            if (targetTile is CollectibleTile collectibleTile && !collectibleTile.CanBeCollectedBy(currentPlayer))
+            {
+                int newX = targetX + (targetX - piece.Position.x); 
+                int newY = targetY + (targetY - piece.Position.y);
+
+                if (!board.IsWithinBounds(newX, newY))
+                {
+                    Debug.LogWarning("Movimiento bloqueado: collectible ajeno y fuera de límites.");
+                    return false;
+                }
+            }
+
+            if (currentPlayer.MovePiece(piece, targetX, targetY, board))
+            {
+                CheckPieceExhausted();
+                return true;
+            }
+            return false;
 
             case ActionType.UseAbility:
                 if (currentPlayer.HasUsedAbility())

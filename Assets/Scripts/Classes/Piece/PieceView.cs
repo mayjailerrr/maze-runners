@@ -46,6 +46,12 @@ public class PieceView : MonoBehaviour
 
     public IEnumerator AnimateMovement(Vector3 targetPosition, System.Action onMovementComplete)
     {
+         if (Piece == null || !Piece.CanMoveMoreTiles())
+        {
+            UpdateAnimation(Vector2.zero, false);
+            yield break;
+        }
+        
         UpdateAnimation(Vector2.zero, false);
 
         Transform originalParent = transform.parent;

@@ -12,15 +12,5 @@ namespace MazeRunners
         {
             Position = (x, y);
         }
-
-        public virtual void OnEnter(Piece piece)
-        {
-            // Lógica personalizada al entrar en un tile
-        }
-
-        public virtual void OnExit(Piece piece)
-        {
-            // Lógica personalizada al salir de un tile
-        }
     }
 }

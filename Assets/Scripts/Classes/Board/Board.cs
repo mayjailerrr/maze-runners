@@ -139,7 +139,7 @@ public class Board
 
         Tile targetTile = GetTileAtPosition(targetX, targetY);
 
-        return !(targetTile is null) && !(targetTile is ObstacleTile);
+        return !targetTile.IsOccupied && !(targetTile is null) && !(targetTile is ObstacleTile );
     }
 
     public void ReplaceTile(int x, int y, Tile newTile)
@@ -152,4 +152,37 @@ public class Board
 
         TileGrid[x, y] = newTile;
     }
+
+    public void MovePieceLogicOnly(Piece piece, Player currentPlayer, int newX, int newY)
+    {
+        if (!this.IsWithinBounds(newX, newY) || !this.IsTileFree(newX, newY, currentPlayer))
+        {
+            Debug.LogWarning("Movement blocked because of an obstacle or collectible conflict.");
+            return;
+        }
+
+        TileGrid[piece.Position.x, piece.Position.y].OccupyingPiece = null;
+        piece.Position = (newX, newY);
+        TileGrid[newX, newY].OccupyingPiece = piece;
+    }
+
+
+    public bool IsTileFree(int x, int y, Player player)
+    {
+        if (!IsWithinBounds(x, y)) return false;
+
+        Tile tile = TileGrid[x, y];
+
+        if (tile.OccupyingPiece != null) return false;
+
+        if (tile is ObstacleTile) return false;
+
+        if (tile is CollectibleTile collectible)
+        {
+            return collectible.CanBeCollectedBy(player);
+        }
+
+        return true;
+    }
+
 }
