@@ -10,9 +10,9 @@ public class DamageTrap : ITrapEffect
     {
         this.damage = damage;
     }
-    public void ApplyEffect(Piece piece, TurnManager turnManager)
+    public void ApplyEffect(Piece piece, Context context)
     {
-        piece.TakeDamage(damage);
+        piece.TakeDamage(damage, context);
         
         Debug.Log($"{piece.Name} takes {damage} damage from a Damage Trap!");
     }

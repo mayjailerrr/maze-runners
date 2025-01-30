@@ -29,8 +29,8 @@ public class HealthDamageAbility : IAbility
             return false;
         }
 
-        int damage = 1;
-        targetPiece.TakeDamage(damage);
+        int damage = 3;
+        targetPiece.TakeDamage(damage, context);
 
         return true;
     }

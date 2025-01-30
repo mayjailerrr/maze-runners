@@ -13,10 +13,10 @@ public class SlowTrap : ITrapEffect
         this.slowTurns = slowTurns;
     }
 
-    public void ApplyEffect(Piece piece, TurnManager turnManager)
+    public void ApplyEffect(Piece piece, Context context)
     {
         var slowTemporaryEffect = new PropertyTemporaryEffect(piece, "Speed", speedReduction, slowTurns);
-        turnManager.ApplyTemporaryEffect(slowTemporaryEffect);
+        context.TurnManager.ApplyTemporaryEffect(slowTemporaryEffect);
         Debug.Log($"{piece.Name} fell into a Slow Trap! Speed reduced for {slowTurns} turns.");
     }
 }

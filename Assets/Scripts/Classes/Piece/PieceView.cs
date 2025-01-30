@@ -10,6 +10,7 @@ public class PieceView : MonoBehaviour
 
     public GameObject FreezeIndicator { get; set; }
     public GameObject ShieldIndicator { get; set; }
+    public BoardView BoardView;
 
     public float moveDuration = 0.4f; 
 

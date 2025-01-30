@@ -12,12 +12,12 @@ public class TrapTile : Tile
         TrapEffect = trapEffect;
     }
 
-    public void ActivateTrap(Piece piece, TurnManager turnManager)
+    public void ActivateTrap(Piece piece, Context context)
     {
          if (TrapEffect != null)
         {
             Debug.Log($"Trap activated at ({piece.Position.x}, {piece.Position.y}) for piece {piece.Name}!");
-            TrapEffect?.ApplyEffect(piece, turnManager);
+            TrapEffect?.ApplyEffect(piece, context);
         }
     }
 }

@@ -154,7 +154,7 @@ public class PieceController : MonoBehaviour
     {
         if (targetTile is TrapTile trapTile)
         {
-            trapTile.ActivateTrap(piece, turnManager);
+            trapTile.ActivateTrap(piece, this.gameContext);
         }
 
         if (targetTile is CollectibleTile collectibleTile)

@@ -10,10 +10,10 @@ public class FreezeTrap : ITrapEffect
         this.freezeTurns = freezeTurns;
     }
 
-    public void ApplyEffect(Piece piece, TurnManager turnManager)
+    public void ApplyEffect(Piece piece, Context context)
     {
         var freezeTemporaryEffect = new PropertyTemporaryEffect(piece, "Speed", 0, freezeTurns);
-        turnManager.ApplyTemporaryEffect(freezeTemporaryEffect);
+        context.TurnManager.ApplyTemporaryEffect(freezeTemporaryEffect);
 
         Debug.Log($"{piece.Name} is frozen for {freezeTurns} turns by a Freeze Trap!");
     }

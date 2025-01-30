@@ -40,8 +40,18 @@ public class TeleportAbility : IAbility
 
         context.CurrentPiece.Position = (targetTile.Position.x, targetTile.Position.y);
 
-        pieceView.transform.position = context.BoardView.GetTileObject(targetTile.Position.x, targetTile.Position.y).transform.position;
-
+        var targetTileGO = context.BoardView.GetTileObject(targetTile.Position.x, targetTile.Position.y);
+        if(targetTileGO != null)
+        {
+            pieceView.transform.SetParent(targetTileGO.transform, false);
+            pieceView.transform.localScale = Vector3.one;
+            pieceView.transform.localPosition = Vector3.zero;
+        }
+        else 
+        {
+            Debug.LogError("Target tile game object is null.");
+        }
+      
         LeanTween.scale(pieceView.gameObject, Vector3.one, 0.3f).setEaseInOutQuad();
 
         Debug.Log($"Piece teleported to ({targetTile.Position.x}, {targetTile.Position.y})");

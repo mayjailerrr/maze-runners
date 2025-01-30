@@ -90,4 +90,42 @@ public class BoardView : MonoBehaviour
 
         return horizontalTilePrefab; 
     }
+
+    public void ResetPositionWithFeedback(Piece piece)
+    {
+        if (piece == null)
+        {
+            Debug.LogError("Piece is null.");
+            return;
+        }
+
+        if (!piece.InitialPosition.HasValue)
+        {
+            Debug.LogError("Piece initial position not set.");
+            return;
+        }
+
+        var initialTileGO = GetTileObject(piece.InitialPosition.Value.x, piece.InitialPosition.Value.y);
+        if (initialTileGO == null)
+        {
+            Debug.LogError($"Initial tile at ({piece.InitialPosition.Value.x}, {piece.InitialPosition.Value.y}) not found.");
+            return;
+        }
+
+        var pieceView = piece.View;
+        if (pieceView == null)
+        {
+            Debug.LogError("Piece view is null.");
+            return;
+        }
+
+        LeanTween.scale(pieceView.gameObject, Vector3.zero, 0.3f).setEaseInBack().setOnComplete(() =>
+        {
+            pieceView.transform.SetParent(initialTileGO.transform, false);
+            pieceView.transform.localPosition = Vector3.zero;
+
+            LeanTween.scale(pieceView.gameObject, Vector3.one, 0.5f).setEaseOutElastic();
+        });
+    }
+
 }

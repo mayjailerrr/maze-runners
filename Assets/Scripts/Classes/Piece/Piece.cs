@@ -194,7 +194,7 @@ public class Piece
         return piece;
     }
     
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Context context)
     {
         if (IsShielded)
         {
@@ -210,6 +210,7 @@ public class Piece
             Health = 3;
             Debug.Log($"{Name} health reached 0. Resetting to initial position.");
             ResetPosition();
+            context.BoardView.ResetPositionWithFeedback(this);
         }
     }
 }
