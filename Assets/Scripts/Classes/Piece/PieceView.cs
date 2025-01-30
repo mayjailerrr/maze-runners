@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class PieceView : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class PieceView : MonoBehaviour
     public GameObject FreezeIndicator { get; set; }
     public GameObject ShieldIndicator { get; set; }
     public BoardView BoardView;
+    public Piece Piece { get; set; } 
 
     public float moveDuration = 0.4f; 
 
@@ -44,29 +46,36 @@ public class PieceView : MonoBehaviour
 
     public IEnumerator AnimateMovement(Vector3 targetPosition, System.Action onMovementComplete)
     {
+        UpdateAnimation(Vector2.zero, false);
+
+        Transform originalParent = transform.parent;
+        Vector3 originalScale = transform.localScale;
+
         Vector2 direction = (targetPosition - transform.position).normalized;
         UpdateAnimation(direction, true);
 
-        yield return MoveSmoothly(targetPosition);
+        float duration = 0.5f;
+        Vector3 startPos = transform.position;
+        float elapsed = 0;
 
-        UpdateAnimation(Vector2.zero, false);
-
-        onMovementComplete?.Invoke();
-    }
-    
-    private IEnumerator MoveSmoothly(Vector3 targetPosition)
-    {
-        float distance = Vector3.Distance(rectTransform.position, targetPosition);
-        float duration = moveDuration; 
-        float timeElapsed = 0f;
-
-        rectTransform.position = targetPosition;
-
-        while (timeElapsed < duration)
+        while (elapsed < duration)
         {
-            rectTransform.position = Vector3.Lerp(rectTransform.position, targetPosition, timeElapsed / duration);
-            timeElapsed += Time.deltaTime;
+            if (transform.parent != originalParent || transform.localScale != originalScale)
+            {
+                UpdateAnimation(Vector2.zero, false);
+                yield break; 
+            }
+
+            transform.position = Vector3.Lerp(startPos, targetPosition, elapsed / duration);
+            elapsed += Time.deltaTime;
             yield return null;
+        }
+
+        if (transform.parent == originalParent)
+        {
+            transform.position = targetPosition;
+            UpdateAnimation(Vector2.zero, false);
+            onMovementComplete?.Invoke();
         }
     }
 

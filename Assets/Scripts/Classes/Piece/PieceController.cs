@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using MazeRunners;
+using UnityEngine.XR;
 
 public class PieceController : MonoBehaviour
 {
@@ -98,56 +99,33 @@ public class PieceController : MonoBehaviour
 
         int newX = piece.Position.Item1 + (int)direction.x;
         int newY = piece.Position.Item2 + (int)direction.y;
-        pieceGridView.MovePiece(piece, newX, newY);
 
-        bool isMoving = board.IsValidMove(piece, newX, newY);
-        if (isMoving)
-        {
-            if (turnManager.PerformAction(ActionType.Move, piece, board, newX, newY, gameContext))
-            {
-                Tile targetTile = board.GetTileAtPosition(newX, newY);
-                gameContext.UpdateTileAndPosition(board.GetTileAtPosition(newX, newY));
-
-                piece.UpdatePosition((newX, newY));
-
-                if(piece.View == null)
-                {
-                    Debug.LogError("PieceView is null for piece.");
-                    return;
-                }
-
-                piece.View.UpdateAnimation(direction, true);
-
-                HandleTileInteractions(piece, targetTile);
-            }   
-        }
-
-        else
+        if (!board.IsValidMove(piece, newX, newY))
         {
             piece.View.UpdateAnimation(Vector2.zero, false);
             Debug.LogWarning($"Invalid move for piece {piece.Name} to ({newX}, {newY}).");
+            return;
         }
-    }
 
-    private void UpdatePiecePosition(Piece piece, int newX, int newY, Vector2 direction)
-    {
-        Tile targetTile = board.GetTileAtPosition(newX, newY);
+        var previousPosition = piece.Position;
 
-        gameContext.UpdateTileAndPosition(targetTile);
-        piece.UpdatePosition((newX, newY));
-
-        if (piece.View != null)
+        if(turnManager.PerformAction(ActionType.Move, piece, board, newX, newY, gameContext))
         {
-            pieceGridView.MovePiece(piece, newX, newY);
+            Tile targetTile = board.GetTileAtPosition(newX, newY);
+            gameContext.UpdateTileAndPosition(board.GetTileAtPosition(newX, newY));
+
+            pieceGridView.MovePiece(piece, previousPosition.x, previousPosition.y, newX, newY);
+            piece.UpdatePosition((newX, newY));
+
+            if (piece.View == null)
+            {
+                Debug.LogError("PieceView is null for piece.");
+                return;
+            }
+            
             piece.View.UpdateAnimation(direction, true);
+            HandleTileInteractions(piece, targetTile);
         }
-
-        else
-        {
-            Debug.LogError($"PieceView is null for piece {piece.Name}.");
-        }
-
-        HandleTileInteractions(piece, targetTile);
     }
 
     private void HandleTileInteractions(Piece piece, Tile targetTile)
@@ -159,9 +137,13 @@ public class PieceController : MonoBehaviour
 
         if (targetTile is CollectibleTile collectibleTile)
         {
-            collectibleTile.Interact(piece, gameContext.CurrentPlayer);
-            collectibleViewManager.MoveToHUD(collectibleTile.Collectible);
-
+            bool waCollected = collectibleTile.Interact(piece, gameContext.CurrentPlayer);
+            
+            if(waCollected)
+            {
+                collectibleViewManager.MoveToHUD(collectibleTile.Collectible);
+            }
+    
             if (gameContext.CurrentPlayer.HasCollectedAllObjects())
             {
                 GameManager.Instance.EndGame(gameContext.CurrentPlayer);

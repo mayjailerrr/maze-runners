@@ -59,12 +59,13 @@ public class PieceGridView : MonoBehaviour
         if (pieceView != null)
         {
             piece.View = pieceView;
+            pieceView.Piece = piece;
         }
     }
 
-    public void MovePiece(Piece piece, int newX, int newY)
+    public void MovePiece(Piece piece, int previousX, int previousY, int newX, int newY)
     {   
-        GameObject currentTileObject = boardView.GetTileObject(piece.Position.x, piece.Position.y);
+        GameObject currentTileObject = boardView.GetTileObject(previousX, previousY);
         GameObject newTileObject = boardView.GetTileObject(newX, newY);
 
         if (currentTileObject == null || newTileObject == null)
@@ -84,18 +85,29 @@ public class PieceGridView : MonoBehaviour
         PieceView pieceView = pieceObject.GetComponent<PieceView>();
         if (pieceView != null)
         {
-            StartCoroutine(MovePieceWithAnimation(pieceView, newTileObject.transform));
+            Coroutine movementCoroutine = StartCoroutine(MovePieceWithAnimation(pieceView, newTileObject.transform));
+            boardView.activeMovements[piece] = movementCoroutine;
         }
     }
 
     private IEnumerator MovePieceWithAnimation(PieceView pieceView, Transform newParent)
     {
+         if (!pieceView.isActiveAndEnabled) yield break;
+
         Vector3 targetPosition = newParent.position;
 
         yield return pieceView.AnimateMovement(targetPosition, () =>
         {
-            pieceView.transform.SetParent(newParent, true);
-            pieceView.transform.localPosition = Vector3.zero;
+            if (pieceView != null && newParent != null)
+            {
+                pieceView.transform.SetParent(newParent, true);
+                pieceView.transform.localPosition = Vector3.zero;
+            }
+
+            if (boardView.activeMovements.ContainsKey(pieceView.Piece))
+            {
+                boardView.activeMovements.Remove(pieceView.Piece);
+            }
         });
     }
 }

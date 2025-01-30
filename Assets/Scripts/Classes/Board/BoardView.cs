@@ -1,7 +1,7 @@
 
 using UnityEngine;
 using System.Linq;
-
+using System.Collections.Generic;
 public class BoardView : MonoBehaviour
 {
     [Header("Tile Prefabs")]
@@ -13,6 +13,8 @@ public class BoardView : MonoBehaviour
     public GameObject collectiblePrefab;
 
     private GameObject[,] tileObjects;
+
+    public Dictionary<Piece, Coroutine> activeMovements = new Dictionary<Piece, Coroutine>();
 
     public void InitializeTileBoardView(Board board)
     {
@@ -99,6 +101,12 @@ public class BoardView : MonoBehaviour
             return;
         }
 
+        if (activeMovements.TryGetValue(piece, out Coroutine coroutine))
+        {
+            StopCoroutine(coroutine);
+            activeMovements.Remove(piece);
+        }
+
         if (!piece.InitialPosition.HasValue)
         {
             Debug.LogError("Piece initial position not set.");
@@ -119,12 +127,43 @@ public class BoardView : MonoBehaviour
             return;
         }
 
-        LeanTween.scale(pieceView.gameObject, Vector3.zero, 0.3f).setEaseInBack().setOnComplete(() =>
+        pieceView.UpdateAnimation(Vector2.zero, false); 
+
+        LeanTween.scale(pieceView.gameObject, Vector3.zero, 0.3f)
+            .setEaseInBack()
+            .setOnComplete(() =>
+            {
+                pieceView.transform.SetParent(initialTileGO.transform, false);
+                pieceView.transform.localPosition = Vector3.zero;
+
+                LeanTween.scale(pieceView.gameObject, Vector3.one, 0.5f)
+                    .setEaseOutElastic()
+                    .setOnComplete(() => {
+                        pieceView.transform.localScale = Vector3.one;
+                        pieceView.UpdateAnimation(Vector2.zero, false); 
+                    });
+            });
+
+        LeanTween.cancel(pieceView.gameObject, true);
+       
+        pieceView.transform.localScale = Vector3.one;
+        pieceView.transform.localPosition = Vector3.zero;
+        pieceView.transform.localRotation = Quaternion.identity;
+
+
+        LeanTween.scale(pieceView.gameObject, Vector3.zero, 0.3f)
+        .setEaseInBack()
+        .setOnComplete(() =>
         {
             pieceView.transform.SetParent(initialTileGO.transform, false);
             pieceView.transform.localPosition = Vector3.zero;
 
-            LeanTween.scale(pieceView.gameObject, Vector3.one, 0.5f).setEaseOutElastic();
+            LeanTween.scale(pieceView.gameObject, Vector3.one, 0.5f)
+                .setEaseOutElastic()
+                .setOnComplete(() => 
+                {
+                    pieceView.transform.localScale = Vector3.one;
+                });
         });
     }
 
