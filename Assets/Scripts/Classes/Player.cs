@@ -132,10 +132,10 @@ public class Player
         {
             CollectedObjects.Add(collectible);
             Debug.Log($"Player {ID + 1} collected {collectible.Name}!");
-            
+
             return true;
         }
-       
+
         return false;
     }
 

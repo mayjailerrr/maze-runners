@@ -50,6 +50,7 @@ public class CollectibleGridView : MonoBehaviour
 
         collectibleGO.transform.SetParent(tileObject.transform, false);
         collectibleGO.transform.localPosition = Vector3.zero;
+        collectibleGO.transform.localScale = Vector3.one * 0.6f;
     }
 
 }

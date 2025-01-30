@@ -53,6 +53,7 @@ public class PieceGridView : MonoBehaviour
 
         GameObject pieceObject = Instantiate(prefab, tileObject.transform.position, Quaternion.identity, tileObject.transform);
         pieceObject.name = $"Piece {piece.Name} ({x}, {y})";
+        pieceObject.transform.localScale = Vector3.one * 0.85f;
 
         PieceView pieceView = pieceObject.GetComponent<PieceView>();
         if (pieceView != null)

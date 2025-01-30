@@ -9,8 +9,8 @@ public class CollectibleTile : Tile
         Collectible = collectible;
     }
 
-    public void Interact(Piece piece, Player player)
+    public bool Interact(Piece piece, Player player)
     {
-        player.CollectObject(Collectible);
+        return player.CollectObject(Collectible);
     }
 }

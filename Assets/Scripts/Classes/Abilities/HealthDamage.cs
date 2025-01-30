@@ -29,7 +29,7 @@ public class HealthDamageAbility : IAbility
             return false;
         }
 
-        int damage = 3;
+        int damage = 1;
         targetPiece.TakeDamage(damage, context);
 
         return true;
