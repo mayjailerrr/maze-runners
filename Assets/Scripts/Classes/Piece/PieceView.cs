@@ -41,22 +41,13 @@ public class PieceView : MonoBehaviour
         animator.SetFloat("Horizontal", lastDirection.x);
         animator.SetFloat("Vertical", lastDirection.y);
         animator.SetBool("IsMoving", isMoving);
-
     }
 
     public IEnumerator AnimateMovement(Vector3 targetPosition, System.Action onMovementComplete)
     {
-         if (Piece == null || !Piece.CanMoveMoreTiles())
-        {
-            UpdateAnimation(Vector2.zero, false);
-            yield break;
-        }
-        
         UpdateAnimation(Vector2.zero, false);
-
         Transform originalParent = transform.parent;
         Vector3 originalScale = transform.localScale;
-
         Vector2 direction = (targetPosition - transform.position).normalized;
         UpdateAnimation(direction, true);
 

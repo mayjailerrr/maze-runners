@@ -60,6 +60,7 @@ public class PieceGridView : MonoBehaviour
         {
             piece.View = pieceView;
             pieceView.Piece = piece;
+            pieceView.BoardView = boardView;
         }
     }
 

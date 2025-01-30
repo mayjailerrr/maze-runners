@@ -252,6 +252,14 @@ public class GameManager : MonoBehaviour
         // show message with winner
         // restart game or go back to main menu
         // optional: show all players' stats
+
+        EndGameManager endGameManager = FindObjectOfType<EndGameManager>();
+        if (endGameManager == null)
+        {
+            Debug.LogError("EndGameManager not found in the scene.");
+            return;
+        }
+        endGameManager.EndGame(winner);
     }
 
     
