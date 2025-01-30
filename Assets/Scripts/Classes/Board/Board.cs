@@ -132,14 +132,28 @@ public class Board
         return x >= 0 && x < Size && y >= 0 && y < Size;
     }
 
-
-    public bool IsValidMove(Piece piece, int targetX, int targetY)
+    public bool IsValidMove(Piece piece, int targetX, int targetY, Context gameContext)
     {
         if (!IsWithinBounds(targetX, targetY)) return false;
 
         Tile targetTile = GetTileAtPosition(targetX, targetY);
 
-        return !targetTile.IsOccupied && !(targetTile is null) && !(targetTile is ObstacleTile );
+        if (targetTile == null || targetTile.IsOccupied)
+        {
+            return false;
+        }
+
+        if (targetTile is ObstacleTile)
+        {
+            return false;
+        }
+
+        if (targetTile is CollectibleTile collectibleTile && !collectibleTile.CanBeCollectedBy(gameContext.CurrentPlayer))
+        {
+            return false;
+        }
+
+        return true;
     }
 
     public void ReplaceTile(int x, int y, Tile newTile)

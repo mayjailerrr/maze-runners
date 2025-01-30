@@ -66,14 +66,11 @@ public class Player
         if (!ValidatePieceOwnership(piece))
             return false;
 
-        if (board.IsValidMove(piece, newX, newY))
-        {
-            piece.Move(newX, newY, board);
+        //Debug.LogWarning($"Player {ID}: Invalid move for piece {piece.Name} to ({newX}, {newY}).");
+        
+        piece.Move(newX, newY, board);
             return true;
-        }
-
-        Debug.LogWarning($"Player {ID}: Invalid move for piece {piece.Name} to ({newX}, {newY}).");
-        return false;
+        
     }
 
     public bool UsePieceAbility(Piece piece, Context context)

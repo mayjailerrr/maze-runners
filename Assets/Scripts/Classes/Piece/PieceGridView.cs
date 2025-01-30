@@ -111,39 +111,6 @@ public class PieceGridView : MonoBehaviour
         });
     }
 
-    public void TeleportPieceWithEffect(Piece piece, int fromX, int fromY, int toX, int toY)
-    {
-        if (piece == null || piece.View == null)
-        {
-            Debug.LogError("Piece o PieceView es null.");
-            return;
-        }
-
-        GameObject currentTile = boardView.GetTileObject(fromX, fromY);
-        GameObject targetTile = boardView.GetTileObject(toX, toY);
-
-        if (currentTile == null || targetTile == null)
-        {
-            Debug.LogError("Tile de origen o destino es null.");
-            return;
-        }
-
-        Transform currentParent = piece.View.transform.parent;
-
-        LeanTween.scale(piece.View.gameObject, Vector3.zero, 0.3f)
-            .setEaseInOutQuad()
-            .setOnComplete(() =>
-            {
-                piece.View.transform.SetParent(targetTile.transform, false);
-                piece.View.transform.localPosition = Vector3.zero;
-
-                LeanTween.scale(piece.View.gameObject, Vector3.one, 0.3f)
-                    .setEaseOutQuad()
-                    .setOnComplete(() =>
-                    {
-                        piece.View.UpdateAnimation(Vector2.zero, false);
-                    });
-            });
-    }
+   
 
 }
