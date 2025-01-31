@@ -148,11 +148,6 @@ public class Board
             return false;
         }
 
-        if (targetTile is CollectibleTile collectibleTile && !collectibleTile.CanBeCollectedBy(gameContext.CurrentPlayer))
-        {
-            return false;
-        }
-
         return true;
     }
 

@@ -106,10 +106,10 @@ public class PieceController : MonoBehaviour
             return;
         }
 
-         Tile targetTile = board.GetTileAtPosition(newX, newY);
-        
-         if ((targetTile is CollectibleTile collectibleTile && !collectibleTile.CanBeCollectedBy(gameContext.CurrentPlayer)) || 
-        targetTile.IsOccupied)
+        Tile targetTile = board.GetTileAtPosition(newX, newY);
+
+       if ((targetTile is CollectibleTile collectibleTile && collectibleTile.Collectible != null &&
+            !collectibleTile.CanBeCollectedBy(gameContext.CurrentPlayer)) || targetTile.IsOccupied)
         {
             Debug.LogWarning("Movimiento bloqueado: casilla ocupada o collectible inválido");
             piece.View.UpdateAnimation(Vector2.zero, false);
@@ -154,12 +154,7 @@ public class PieceController : MonoBehaviour
 
         if (targetTile is CollectibleTile collectibleTile)
         {
-            bool wasCollected = collectibleTile.Interact(piece, gameContext.CurrentPlayer);
-
-            if (wasCollected)
-            {
-                collectibleViewManager.MoveToHUD(collectibleTile.Collectible);
-            }
+            collectibleTile.Interact(piece, gameContext.CurrentPlayer);
 
             if (gameContext.CurrentPlayer.HasCollectedAllObjects())
             {

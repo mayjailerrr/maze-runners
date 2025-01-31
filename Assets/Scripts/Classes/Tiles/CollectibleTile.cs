@@ -2,7 +2,7 @@ using MazeRunners;
 using UnityEngine;
 public class CollectibleTile : Tile
 {
-    public Collectible Collectible { get; }
+    public Collectible Collectible { get; set; }
 
     public CollectibleTile(int x, int y, Collectible collectible) : base(x, y)
     {
@@ -11,11 +11,19 @@ public class CollectibleTile : Tile
 
     public bool Interact(Piece piece, Player player)
     {
-        return player.CollectObject(Collectible);
+        if (Collectible == null) return false;
+
+        bool collected = player.CollectObject(Collectible);
+        if (collected)
+        {
+            CollectibleViewManager.Instance?.MoveToHUD(Collectible);
+            Collectible = null;
+        }
+        return collected;
     }
 
     public bool CanBeCollectedBy(Player player)
     {
-        return Collectible.TargetPlayerID == player.ID;
+        return Collectible != null && Collectible.TargetPlayerID == player.ID;
     }
 }

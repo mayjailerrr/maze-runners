@@ -9,10 +9,19 @@ public class CollectibleViewManager : MonoBehaviour
     private Dictionary<string, GameObject> collectibleObjects = new Dictionary<string, GameObject>();
     public Dictionary<string, Sprite> collectibleSprites;
 
+    public static CollectibleViewManager Instance { get; private set; }
+
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
         InitializeCollectibleSprites();
     }
+
 
     private void InitializeCollectibleSprites()
     {
