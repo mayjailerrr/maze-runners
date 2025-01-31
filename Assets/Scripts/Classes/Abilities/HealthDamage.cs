@@ -31,6 +31,7 @@ public class HealthDamageAbility : IAbility
 
         int damage = 1;
         targetPiece.TakeDamage(damage, context);
+        context.CurrentPlayer.RecordAbilityUse();
 
         return true;
     }

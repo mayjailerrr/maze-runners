@@ -2,24 +2,44 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class EndGameManager : MonoBehaviour
 {
     public Image blackoutImage;
     public RectTransform memeImage;
     public TextMeshProUGUI statsText;
+    public Button restartButton;
 
     private void Start()
     {
         memeImage.localScale = Vector3.zero;
         statsText.text = "";
         blackoutImage.color = new Color(blackoutImage.color.r, blackoutImage.color.g, blackoutImage.color.b, 0);
+        restartButton.gameObject.SetActive(false); // Asegúrate de que el botón esté desactivado al inicio
+        restartButton.onClick.AddListener(RestartGame);
     }
 
     public void EndGame(Player winner)
     {
         Debug.Log($"Player {winner.ID + 1} wins the game!");
-        StartCoroutine(ShowEndGameSequence(winner));
+
+        float gameEndTime = Time.time;
+        float totalPlayTime = gameEndTime - GameManager.Instance.GameStartTime;
+
+        List<Player> allPlayers = GameManager.Instance.Players.Values.ToList();
+
+        StartCoroutine(EndGameSequence(winner, allPlayers, totalPlayTime));
+    }
+
+    private IEnumerator EndGameSequence(Player winner, List<Player> allPlayers, float totalPlayTime)
+    {
+        yield return ShowEndGameSequence(winner);
+
+        yield return DisplayStats(winner, allPlayers, totalPlayTime);
+
+        restartButton.gameObject.SetActive(true);
     }
 
     private IEnumerator ShowEndGameSequence(Player winner)
@@ -29,8 +49,6 @@ public class EndGameManager : MonoBehaviour
         yield return StartCoroutine(ZoomInMeme());
 
         yield return StartCoroutine(MoveMemeToLeft());
-
-        yield return StartCoroutine(DisplayStats(winner));
     }
 
     private IEnumerator FadeToBlack()
@@ -66,7 +84,7 @@ public class EndGameManager : MonoBehaviour
 
     private IEnumerator MoveMemeToLeft()
     {
-        Vector3 targetPosition = new Vector3(-Screen.width * 0.4f, memeImage.anchoredPosition.y, 0);
+        Vector3 targetPosition = new Vector3(-Screen.width * 0.2f, memeImage.anchoredPosition.y, 0);
         Vector3 startPosition = memeImage.anchoredPosition;
         float duration = 1f;
         float elapsed = 0f;
@@ -79,16 +97,37 @@ public class EndGameManager : MonoBehaviour
         }
     }
 
-    private IEnumerator DisplayStats(Player winner)
+    private IEnumerator DisplayStats(Player winner, List<Player> allPlayers, float totalPlayTime)
     {
-        //string statsMessage = $"Player {winner.ID + 1} Wins!\nScore: {winner.Score}\nMoves: {winner.Moves}\nCollectibles: {winner.Collectibles}";
-        string statsMessage = $"Player {winner.ID + 1} Wins!\nScore:";
+        string fullStatsMessage = $"Player {winner.ID + 1} Wins!\n" +
+                                $"Time Played: {totalPlayTime:F2} seconds\n" +
+                                $"Moves: {winner.Moves}\n" +
+                                $"Traps Triggered: {winner.TrapsTriggered}\n" +
+                                $"Abilities Used: {winner.AbilitiesUsed}\n" +
+                                $"Collectibles: {string.Join(", ", winner.CollectedObjects.Select(c => c.Name))}\n";
+
+        foreach (var player in allPlayers.Where(p => p != winner))
+        {
+            string playerStats = $"\nPlayer {player.ID + 1} Stats:\n" +
+                                $"Moves: {player.Moves}\n" +
+                                $"Traps Triggered: {player.TrapsTriggered}\n" +
+                                $"Abilities Used: {player.AbilitiesUsed}\n" +
+                                $"Collectibles: {string.Join(", ", player.CollectedObjects.Select(c => c.Name))}\n";
+
+            fullStatsMessage += playerStats;
+        }
+
         statsText.text = "";
 
-        foreach (char c in statsMessage)
+        foreach (char c in fullStatsMessage)
         {
             statsText.text += c;
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.01f);
         }
+    }
+
+    private void RestartGame()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
     }
 }

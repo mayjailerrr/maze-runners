@@ -31,6 +31,7 @@ public class AbsorbAbilitiesAbility : IAbility
         }
 
         context.CurrentPiece.Ability = targetPiece.Ability;
+        context.CurrentPlayer.RecordAbilityUse();
 
         Debug.Log($"Ability absorbed: {targetPiece.Ability.Description}");
         return true;

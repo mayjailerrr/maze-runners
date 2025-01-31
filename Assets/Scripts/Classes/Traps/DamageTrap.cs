@@ -13,6 +13,7 @@ public class DamageTrap : ITrapEffect
     public void ApplyEffect(Piece piece, Context context)
     {
         piece.TakeDamage(damage, context);
+        context.CurrentPlayer.RecordTrap();
         
         Debug.Log($"{piece.Name} takes {damage} damage from a Damage Trap!");
     }

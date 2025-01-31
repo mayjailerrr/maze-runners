@@ -8,11 +8,14 @@ using System.Linq;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    public float GameStartTime { get; private set; }
 
     public List<Collectible> playersCollectibles = new List<Collectible>();
 
     public int PlayerCount => players.Count;
     private Dictionary<int, Player> players = new Dictionary<int, Player>();
+    public IReadOnlyDictionary<int, Player> Players => players;
+    
     private List<Movies> selectedMovies = new List<Movies>();
     public Context GameContext { get; private set; }
 
@@ -85,6 +88,8 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Cannot start game. Not enough players or movies selected.");
             return;
         }
+
+        GameStartTime = Time.time;
 
         GenerateAllCollectibles();
         InitializeBoard();

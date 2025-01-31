@@ -14,6 +14,16 @@ public class Player
     public List<Collectible> AssignedObjects { get; private set; }
     public HashSet<Collectible> CollectedObjects { get; private set; }
 
+    public int Moves { get; set; } = 0;
+    public int TrapsTriggered { get; set; } = 0;
+    public int AbilitiesUsed { get; set; } = 0;
+    public float TotalPlayTime { get; set; }
+
+    public void RecordMove() => Moves++;
+    public void RecordTrap() => TrapsTriggered++;
+    public void RecordAbilityUse() => AbilitiesUsed++;
+    public void AddCollectible(Collectible collectible) => CollectedObjects.Add(collectible);
+   
     public Player(int id, string name = "Player")
     {
         ID = id;
@@ -65,11 +75,11 @@ public class Player
     {
         if (!ValidatePieceOwnership(piece))
             return false;
-
-        //Debug.LogWarning($"Player {ID}: Invalid move for piece {piece.Name} to ({newX}, {newY}).");
         
         piece.Move(newX, newY, board);
-            return true;
+        this.RecordMove();
+        
+        return true;
         
     }
 

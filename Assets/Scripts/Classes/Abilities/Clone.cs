@@ -25,6 +25,7 @@ public class CloneAbility : IAbility
         context.CurrentPlayer.AddPiece(clonedPiece);
         
         CreateVisualClone(clonedPiece, context);
+        context.CurrentPlayer.RecordAbilityUse();
 
         Debug.Log($"Piece {context.CurrentPiece.Name} cloned successfully. New piece: {clonedPiece.Name}");
 

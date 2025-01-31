@@ -49,7 +49,8 @@ public class FreezeAbility : IAbility
             freezeTurns
         );
         turnManager.ApplyTemporaryEffect(freezeAbilitiesEffect);
-
+        context.CurrentPlayer.RecordAbilityUse();
+        
         Debug.Log($"Piece {targetPiece.Name} has been frozen for {freezeTurns} turns.");
        
         return true;

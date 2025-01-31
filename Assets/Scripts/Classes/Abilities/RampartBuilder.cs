@@ -58,6 +58,8 @@ public class RampartBuilderAbility : IAbility
             Debug.LogWarning("No valid positions to build walls.");
         }
 
+        context.CurrentPlayer.RecordAbilityUse();
+
         return wallBuilt;
     }
 

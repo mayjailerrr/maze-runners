@@ -49,6 +49,8 @@ public class WallBombAbility : IAbility
             }
         }
 
+        context.CurrentPlayer.RecordAbilityUse();
+
         return true;
     }
 

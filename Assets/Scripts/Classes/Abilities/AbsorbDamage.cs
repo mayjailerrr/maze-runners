@@ -28,6 +28,8 @@ public class AbsorbDamageAbility : IAbility
             piece.Health = 3;
         }
 
+        context.CurrentPlayer.RecordAbilityUse();
+
         Debug.Log($"Player {currentPlayer.ID + 1} pieces have been healed to full health.");
        
         return true;

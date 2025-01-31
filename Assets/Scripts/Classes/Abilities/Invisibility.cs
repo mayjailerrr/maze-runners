@@ -31,6 +31,7 @@ public class InvisibilityAbility : IAbility
         invisibilityEffect.Apply();
 
         context.TurnManager.ApplyTemporaryEffect(invisibilityEffect);
+        context.CurrentPlayer.RecordAbilityUse();
 
         return true;
     }

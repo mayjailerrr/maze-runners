@@ -54,6 +54,8 @@ public class WallBuilderAbility : IAbility
             }
         }
 
+        context.CurrentPlayer.RecordAbilityUse();
+
         Debug.LogWarning("No valid position to build a wall.");
         
         return false;

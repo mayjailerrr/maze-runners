@@ -42,6 +42,7 @@ public class WallDestroyerAbility : IAbility
                 return false;
             }
         }
+        context.CurrentPlayer.RecordAbilityUse();
 
         Debug.LogError($"Target position ({targetX}, {targetY}) is out of bounds.");
         return false;
