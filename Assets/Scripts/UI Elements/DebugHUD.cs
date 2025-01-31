@@ -5,7 +5,7 @@ public class DebugHUD : MonoBehaviour
 {
     [Header("UI Elements")]
     public TMP_Text dialogueText; 
-    public GameObject characterImage; 
+    public GameObject character; 
 
     private void OnEnable()
     {
@@ -42,14 +42,6 @@ public class DebugHUD : MonoBehaviour
     {
         dialogueText.text = message;
 
-        // Opción de animación (puedes mejorarlo)
-        characterImage.SetActive(true);
-        CancelInvoke(nameof(HideCharacter));
-        Invoke(nameof(HideCharacter), 5f); // Oculta después de 5 segundos
-    }
-
-    private void HideCharacter()
-    {
-        characterImage.SetActive(false);
+        character.SetActive(true);
     }
 }
