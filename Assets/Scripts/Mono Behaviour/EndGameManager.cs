@@ -11,10 +11,9 @@ public class EndGameManager : MonoBehaviour
 
     private void Start()
     {
-        // Ensure initial states are set
-        memeImage.localScale = Vector3.zero; // Hide meme
-        statsText.text = ""; // Clear text
-        blackoutImage.color = new Color(blackoutImage.color.r, blackoutImage.color.g, blackoutImage.color.b, 0); // Fully transparent
+        memeImage.localScale = Vector3.zero;
+        statsText.text = "";
+        blackoutImage.color = new Color(blackoutImage.color.r, blackoutImage.color.g, blackoutImage.color.b, 0);
     }
 
     public void EndGame(Player winner)
@@ -25,23 +24,19 @@ public class EndGameManager : MonoBehaviour
 
     private IEnumerator ShowEndGameSequence(Player winner)
     {
-        // Step 1: Darken the screen
         yield return StartCoroutine(FadeToBlack());
 
-        // Step 2: Animate the meme zooming in
         yield return StartCoroutine(ZoomInMeme());
 
-        // Step 3: Move meme to the left
         yield return StartCoroutine(MoveMemeToLeft());
 
-        // Step 4: Type out the stats
         yield return StartCoroutine(DisplayStats(winner));
     }
 
     private IEnumerator FadeToBlack()
     {
         Color color = blackoutImage.color;
-        float duration = 2f; // 2 seconds to fade
+        float duration = 2f;
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -93,7 +88,7 @@ public class EndGameManager : MonoBehaviour
         foreach (char c in statsMessage)
         {
             statsText.text += c;
-            yield return new WaitForSeconds(0.05f); // Typing speed
+            yield return new WaitForSeconds(0.05f);
         }
     }
 }

@@ -3,7 +3,7 @@ using MazeRunners;
 
 public static class CollectibleFactory
 {
-    public static List<Collectible> CreateCollectibles(Movies movie)
+    public static List<Collectible> CreateCollectibles(Movies movie, int playerID)
     {
         List<Collectible> collectibles = new List<Collectible>();
 
@@ -60,6 +60,11 @@ public static class CollectibleFactory
             default:
                 UnityEngine.Debug.LogError("Movie not found in CollectibleFactory.");
                 break;
+        }
+
+        foreach (Collectible collectible in collectibles)
+        {
+            collectible.AssignPlayerID(playerID);
         }
 
         return collectibles;

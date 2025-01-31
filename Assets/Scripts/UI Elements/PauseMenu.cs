@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement; // Asegúrate de incluir esto
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
-    public GameObject pauseMenuUI; // Asigna el Panel del menú de pausa aquí
+    public GameObject pauseMenuUI; 
     public Button resumeButton;
     public Button restartButton;
     public Button exitButton;

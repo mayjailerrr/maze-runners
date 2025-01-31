@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour
     private void AssignMovieToPlayer(Movies movie, Player player)
     {
         player.AssignPieces(PieceFactory.CreatePieces(movie));
-        player.AssignObjects(CollectibleFactory.CreateCollectibles(movie));
+        player.AssignObjects(CollectibleFactory.CreateCollectibles(movie, player.ID));
     }
 
     private void InitializeBoard()
@@ -158,7 +158,7 @@ public class GameManager : MonoBehaviour
             Player player = playerEntry.Value;
             Movies selectedMovie = selectedMovies[player.ID];
 
-            List<Collectible> collectibles = CollectibleFactory.CreateCollectibles(selectedMovie);
+            List<Collectible> collectibles = CollectibleFactory.CreateCollectibles(selectedMovie, player.ID);
 
             int collectibleIndex = 0;
 
