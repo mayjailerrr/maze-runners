@@ -30,6 +30,10 @@ public class EndGameManager : MonoBehaviour
 
         List<Player> allPlayers = GameManager.Instance.Players.Values.ToList();
 
+        var winnerMovie = GameManager.Instance.GetSelectedMovieForPlayer(winner.ID);
+        Sprite memeSprite = MemeManager.Instance.GetMemeForMovie(winnerMovie);
+        memeImage.GetComponent<Image>().sprite = memeSprite;
+
         StartCoroutine(EndGameSequence(winner, allPlayers, totalPlayTime));
     }
 

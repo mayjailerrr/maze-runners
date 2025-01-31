@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public IReadOnlyDictionary<int, Player> Players => players;
     
     private List<Movies> selectedMovies = new List<Movies>();
+    
     public Context GameContext { get; private set; }
 
     private Board board;
@@ -33,8 +34,7 @@ public class GameManager : MonoBehaviour
     public BoardView BoardView { get; set; }
     public PieceGridView PieceGridView { get; set; }
     public PieceController PieceController { get; set; }
-   
-  
+    
     private void Awake()
     {
         if (Instance == null)
@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
 
         var player = GetOrCreatePlayer();
         AssignMovieToPlayer(movie, player);
-
+        
         selectedMovies.Add(movie);
         Debug.Log($"Player {currentPlayerIndex + 1} selected {movie}.");
         
@@ -250,13 +250,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public Movies GetSelectedMovieForPlayer(int playerId)
+    {
+        return selectedMovies[playerId];
+    }
+
     public void EndGame(Player winner)
     {
         Debug.Log($"Player {winner.ID + 1} wins the game!");
-        // to - do:
-        // show message with winner
-        // restart game or go back to main menu
-        // optional: show all players' stats
 
         EndGameManager endGameManager = FindObjectOfType<EndGameManager>();
         if (endGameManager == null)
@@ -264,8 +265,11 @@ public class GameManager : MonoBehaviour
             Debug.LogError("EndGameManager not found in the scene.");
             return;
         }
+
+        var winnerMovie = selectedMovies[winner.ID];
+        Sprite finalMeme = MemeManager.Instance.GetMemeForMovie(winnerMovie);
+
         endGameManager.EndGame(winner);
     }
 
-    
 }
