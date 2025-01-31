@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
         GenerateAllCollectibles();
         InitializeBoard();
         InitializeTurnManager();
-        InitializeEndTurnButton();
+        InitializeEndTurnHandler();
 
         BoardController.ExternalInitialize(board, BoardController.GetComponent<BoardView>()); 
        
@@ -191,12 +191,12 @@ public class GameManager : MonoBehaviour
         TurnManager = new TurnManager(new List<Player>(players.Values), GameContext);
     }
 
-     private void InitializeEndTurnButton()
+    private void InitializeEndTurnHandler()
     {
-        endTurnHandler = endTurnButton.GetComponent<EndTurnHandler>();
+        endTurnHandler = gameObject.GetComponent<EndTurnHandler>();
         if (endTurnHandler == null)
         {
-            endTurnHandler = endTurnButton.gameObject.AddComponent<EndTurnHandler>();
+            endTurnHandler = gameObject.AddComponent<EndTurnHandler>();
         }
 
         endTurnHandler.Initialize(TurnManager);

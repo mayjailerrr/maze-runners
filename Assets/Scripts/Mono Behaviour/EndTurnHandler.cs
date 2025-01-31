@@ -1,49 +1,43 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class EndTurnHandler : MonoBehaviour
 {
-    public Button endTurnButton;
     private TurnManager turnManager;
+    private bool isButtonLocked = false;
 
     public void Initialize(TurnManager turnManager)
     {
         this.turnManager = turnManager;
+    }
 
-        if (endTurnButton != null)
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
         {
-            endTurnButton.onClick.RemoveAllListeners();
-            endTurnButton.onClick.AddListener(OnPassButtonPressed);
+            OnPassButtonPressed();
+        }
+    }
+
+    private void OnPassButtonPressed()
+    {
+        if (isButtonLocked)
+        {
+            Debug.LogWarning("Button press ignored. Already processing turn.");
+            return;
+        }
+
+        isButtonLocked = true;
+
+        if (turnManager != null)
+        {
+            turnManager.NextTurn();
         }
         else
         {
-            Debug.LogError("The button is not assigned.");
+            Debug.LogWarning("TurnManager is not assigned. Skipping turn.");
         }
+
+        isButtonLocked = false;
     }
-
-    private bool isButtonLocked = false;
-
-public void OnPassButtonPressed()
-{
-    if (isButtonLocked)
-    {
-        Debug.LogWarning("Button press ignored. Already processing turn.");
-        return;
-    }
-
-    isButtonLocked = true;
-
-    if (turnManager != null)
-    {
-        turnManager.NextTurn();
-    }
-    else
-    {
-        Debug.LogError("TurnManager is not assigned.");
-    }
-
-    isButtonLocked = false;
-}
-
 
 }

@@ -132,6 +132,7 @@ public class PieceController : MonoBehaviour
 
             pieceGridView.MovePiece(piece, previousPosition.x, previousPosition.y, newX, newY);
             piece.UpdatePosition((newX, newY));
+            board.CleanPreviousTile(previousPosition.x, previousPosition.y);
 
             if (piece.View == null)
             {

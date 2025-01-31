@@ -132,17 +132,17 @@ public class TurnManager
                     return false;
                 }
 
-               if (!board.IsWithinBounds(targetX, targetY))
-            {
-                Debug.LogWarning("Target move is out of bounds.");
-                return false;
-            }
+                if (!board.IsWithinBounds(targetX, targetY))
+                {
+                    Debug.LogWarning("Target move is out of bounds.");
+                    return false;
+                }
 
-            if (currentPlayer.MovePiece(piece, targetX, targetY, board))
-            {
-                CheckPieceExhausted();
-                return true;
-            }
+                if (currentPlayer.MovePiece(piece, targetX, targetY, board))
+                {
+                    CheckPieceExhausted();
+                    return true;
+                }
             return false;
 
             case ActionType.UseAbility:
