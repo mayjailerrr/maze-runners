@@ -17,7 +17,7 @@ public class EndGameManager : MonoBehaviour
         memeImage.localScale = Vector3.zero;
         statsText.text = "";
         blackoutImage.color = new Color(blackoutImage.color.r, blackoutImage.color.g, blackoutImage.color.b, 0);
-        restartButton.gameObject.SetActive(false); // Asegúrate de que el botón esté desactivado al inicio
+        restartButton.gameObject.SetActive(false);
         restartButton.onClick.AddListener(RestartGame);
     }
 
