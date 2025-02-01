@@ -26,7 +26,7 @@ As the game is developed in Unity, I plan to create a build soon. In the meantim
    - Select your target platform and click on `Build`.
 
 ## Usage
-A tutorial will be included within the game to guide players on how to navigate and enjoy the experience. However, if time does not permit, I will attach a PDF with detailed instructions on the game's features and gameplay.
+A basic guide has been included within the game to guide players on how to navigate and enjoy the experience.
 
 ## Contributing
 I am new to open-source contributions, but if anyone is interested in helping out, please feel free to reach out, and I will consider any contributions!

@@ -29,6 +29,7 @@ public class AbsorbDamageAbility : IAbility
         }
 
         context.CurrentPlayer.RecordAbilityUse();
+        context.CurrentPiece.View.PlayAbilitySound();
 
         Debug.Log($"Player {currentPlayer.ID + 1} pieces have been healed to full health.");
        

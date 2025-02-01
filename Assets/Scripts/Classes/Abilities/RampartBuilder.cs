@@ -59,6 +59,7 @@ public class RampartBuilderAbility : IAbility
         }
 
         context.CurrentPlayer.RecordAbilityUse();
+        context.CurrentPiece.View.PlayAbilitySound();
 
         return wallBuilt;
     }

@@ -32,6 +32,7 @@ public class HealthDamageAbility : IAbility
         int damage = 1;
         targetPiece.TakeDamage(damage, context);
         context.CurrentPlayer.RecordAbilityUse();
+        context.CurrentPiece.View.PlayAbilitySound();
 
         return true;
     }

@@ -5,7 +5,7 @@ public class MovieSelectionController : MonoBehaviour
 {
     private MovieSelectionModel model;
 
-   private void Start()
+    private void Start()
     {
         model = new MovieSelectionModel();
     }
@@ -34,6 +34,4 @@ public class MovieSelectionController : MonoBehaviour
 
         GameManager.Instance.NextPlayer();
     }
-
 }
-

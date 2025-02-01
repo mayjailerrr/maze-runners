@@ -50,6 +50,7 @@ public class WallBombAbility : IAbility
         }
 
         context.CurrentPlayer.RecordAbilityUse();
+        context.CurrentPiece.View.PlayAbilitySound();
 
         return true;
     }

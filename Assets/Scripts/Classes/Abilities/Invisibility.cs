@@ -32,6 +32,7 @@ public class InvisibilityAbility : IAbility
 
         context.TurnManager.ApplyTemporaryEffect(invisibilityEffect);
         context.CurrentPlayer.RecordAbilityUse();
+        context.CurrentPiece.View.PlayAbilitySound();
 
         return true;
     }

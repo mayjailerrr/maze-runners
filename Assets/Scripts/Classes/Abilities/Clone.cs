@@ -26,6 +26,7 @@ public class CloneAbility : IAbility
         
         CreateVisualClone(clonedPiece, context);
         context.CurrentPlayer.RecordAbilityUse();
+        context.CurrentPiece.View.PlayAbilitySound();
 
         Debug.Log($"Piece {context.CurrentPiece.Name} cloned successfully. New piece: {clonedPiece.Name}");
 

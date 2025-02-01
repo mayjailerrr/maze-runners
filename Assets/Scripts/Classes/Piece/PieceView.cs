@@ -14,6 +14,8 @@ public class PieceView : MonoBehaviour
     public BoardView BoardView;
     public Piece Piece { get; set; } 
 
+    private AudioSource audioSource;
+
     public float moveDuration = 0.4f; 
 
     private void Awake()
@@ -23,6 +25,12 @@ public class PieceView : MonoBehaviour
         if (animator == null)
         {
             Debug.LogError("Animator is not assigned in PieceView.");
+        }
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            Debug.LogError("AudioSource is missing on this piece!");
         }
         
     }
@@ -81,6 +89,18 @@ public class PieceView : MonoBehaviour
         if (gameObject != null)
         {
             gameObject.SetActive(isVisible);
+        }
+    }
+
+    public void PlayAbilitySound()
+    {
+        if (audioSource != null && audioSource.clip != null)
+        {
+            audioSource.Play();
+        }
+        else
+        {
+            Debug.LogWarning("No AudioSource or AudioClip assigned.");
         }
     }
 }

@@ -18,6 +18,7 @@ public class SpeedBoostAbility : IAbility
 
         targetPiece.Speed += 2;
         context.CurrentPlayer.RecordAbilityUse();
+        context.CurrentPiece.View.PlayAbilitySound();
         
         Debug.Log($"Piece speed increased to {targetPiece.Speed}");
         return true;
