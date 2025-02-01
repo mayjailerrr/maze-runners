@@ -1,7 +1,9 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Linq;
 using TMPro;
+using UnityEngine.Events;
 
 public class HUDController : MonoBehaviour
 {
@@ -19,6 +21,12 @@ public class HUDController : MonoBehaviour
 
     [Header("Speed")]
     public TMP_Text speedText;
+
+    [Header("Cooldown")]
+    public TMP_Text cooldownText;
+
+    [Header("Ability Description")]
+    public TMP_Text abilityDescriptionText;
 
     private Player currentPlayer;
     private Piece selectedPiece;
@@ -46,38 +54,27 @@ public class HUDController : MonoBehaviour
         UpdateHealth();
         UpdateAbilityIcon();
         UpdateSpeed();
+        UpdateCooldown();
+        UpdateAbilityDescription();
     }
 
     private void UpdateCollectibles(Player player)
     {
-        foreach (var collectible in player.CollectedObjects)
-        {
-            Transform existingCollectible = collectibleContainer.Find(collectible.Name);
-
-            if (existingCollectible == null)
-            {
-                GameObject collectibleGO = Instantiate(collectibleIconPrefab, collectibleContainer);
-                collectibleGO.name = collectible.Name;
-
-                var textComponent = collectibleGO.GetComponentInChildren<Text>();
-                if (textComponent != null)
-                {
-                    textComponent.text = collectible.Name; 
-                }
-
-                collectibleGO.transform.SetAsLastSibling(); 
-            }
-        }
-
         foreach (Transform child in collectibleContainer)
         {
-            if (!player.CollectedObjects.Any(c => c.Name == child.name))
+            Destroy(child.gameObject);
+        }
+
+        foreach (var collectible in player.CollectedObjects)
+        {
+            GameObject collectibleGO = CollectibleViewManager.Instance.CreateCollectibleVisual(collectible);
+            if (collectibleGO != null)
             {
-                Destroy(child.gameObject);
+                collectibleGO.transform.SetParent(collectibleContainer, false);
+                collectibleGO.transform.localScale = Vector3.one;
             }
         }
     }
-
 
     private void UpdateHealth()
     {
@@ -115,5 +112,27 @@ public class HUDController : MonoBehaviour
         }
 
         speedText.text = $"Moves: {selectedPiece.MovesRemaining}";
+    }
+
+    private void UpdateCooldown()
+    {
+        if (selectedPiece == null || cooldownText == null)
+        {
+            Debug.LogWarning("No piece selected or cooldownText not assigned.");
+            return;
+        }
+
+        cooldownText.text = $"Cooldown: {selectedPiece.Cooldown}";
+    }
+
+     private void UpdateAbilityDescription()
+    {
+        if (selectedPiece == null || abilityDescriptionText == null)
+        {
+            Debug.LogWarning("No piece selected or ability description text not assigned.");
+            return;
+        }
+
+        abilityDescriptionText.text = selectedPiece.Ability != null ? $"Ability: {selectedPiece.Ability.Description}" : "No Ability";
     }
 }
