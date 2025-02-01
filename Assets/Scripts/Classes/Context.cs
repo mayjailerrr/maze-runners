@@ -66,15 +66,8 @@ public class Context
         return true;
     }
 
-     public void SetPlayerDirection(string direction)
+    public void SetPlayerDirection(Directions direction)
     {
-        if (direction == "Up" || direction == "Down" || direction == "Left" || direction == "Right")
-        {
-            PlayerDirection = direction;
-        }
-        else
-        {
-            throw new System.ArgumentException($"Invalid direction: {direction}");
-        }
+        PlayerDirection = direction.ToString();
     }
 }

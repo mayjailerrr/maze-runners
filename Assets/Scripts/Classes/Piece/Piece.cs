@@ -172,19 +172,6 @@ public class Piece
         NotifyAbilityStateChanged();
     }
 
-    public string GetDirection(Vector2 newPosition)
-    {
-        Vector2 current = new Vector2(Position.Item1, Position.Item2);
-        Vector2 direction = newPosition - current;
-
-        if (direction == Vector2.up) return "Right";
-        if (direction == Vector2.down) return "Left";
-        if (direction == Vector2.left) return "Up";
-        if (direction == Vector2.right) return "Down";
-
-        return "Idle";
-    }
-
     public Piece Clone()
     {
         Piece piece = new Piece(Name + "_Clone", Speed, Cooldown, this.Ability);

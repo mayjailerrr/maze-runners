@@ -86,13 +86,13 @@ public class PieceController : MonoBehaviour
             return;
         }
 
-        string directionString = direction switch
+        Directions directionString = direction switch
         {
-            Vector2 v when v == Vector2.up => "Up",
-            Vector2 v when v == Vector2.down => "Down",
-            Vector2 v when v == Vector2.left => "Left",
-            Vector2 v when v == Vector2.right => "Right",
-            _ => "Unknown"
+            Vector2 v when v == Vector2.up => Directions.Up,
+            Vector2 v when v == Vector2.down => Directions.Down,
+            Vector2 v when v == Vector2.left => Directions.Left,
+            Vector2 v when v == Vector2.right => Directions.Right,
+            _ => Directions.Right
         };
 
         gameContext.SetPlayerDirection(directionString);

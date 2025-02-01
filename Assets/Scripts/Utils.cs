@@ -21,7 +21,7 @@ public enum AbilityName
     Teleport,
     SpeedBoost,
 
-    //offensives
+    
     Freeze, 
     WallBuilder, 
     WallDestroyer,
@@ -30,10 +30,18 @@ public enum AbilityName
     AbsorbAbility,
     RampartBuilder,
 
-    //defensives
+    
     Shield,
     Clone,
     Invisibility,
     AbsorbDamage,
 
+}
+
+public enum Directions
+{
+    Up,
+    Down,
+    Left,
+    Right
 }
