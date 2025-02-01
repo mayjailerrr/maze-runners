@@ -1004,8 +1004,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 865c81a837504f74f9fd06e296806af6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transitionImage: {fileID: 1705694380}
-  transitionDuration: 1
+  transitionMask: {fileID: 1705694380}
+  transitionDuration: 3
 --- !u!1 &149654500
 GameObject:
   m_ObjectHideFlags: 0
@@ -5049,6 +5049,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
+--- !u!114 &1164261339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164261332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 489d0ac585d1bdb41b0f339449b012d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1197148638
 GameObject:
   m_ObjectHideFlags: 0
@@ -7523,6 +7535,19 @@ MonoBehaviour:
   mazeSceneName: Game
   nextButton: {fileID: 1696399254}
   canvasComponent: {fileID: 1594332678}
+--- !u!114 &1696399257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1696399246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c356533e3d70f2a4d8ce7aa537644413, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transitionManager: {fileID: 129646442}
 --- !u!1 &1705694378
 GameObject:
   m_ObjectHideFlags: 0
@@ -7534,6 +7559,7 @@ GameObject:
   - component: {fileID: 1705694379}
   - component: {fileID: 1705694381}
   - component: {fileID: 1705694380}
+  - component: {fileID: 1705694382}
   m_Layer: 5
   m_Name: BackgroundFadeIn
   m_TagString: Untagged
@@ -7580,7 +7606,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 160f97d9655e7314ebb53cffb7b58f32, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 88833f77582580f4288f3b029319a84e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7598,6 +7624,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1705694378}
   m_CullTransparentMesh: 1
+--- !u!114 &1705694382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705694378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 1
 --- !u!1 &1716734288 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3085716917365445374, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
@@ -9982,7 +10021,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 64e2cd6247544c844b3a6eb382211209, type: 3}
     - target: {fileID: 2553025494946298405, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2553025494946298405, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -10015,7 +10054,7 @@ PrefabInstance:
     - target: {fileID: 2553025494946298405, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
-      objectReference: {fileID: 1696399256}
+      objectReference: {fileID: 1696399257}
     - target: {fileID: 2553025494946298405, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
@@ -10042,7 +10081,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2553025494946298405, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
-      value: LoadMazeScene
+      value: OnButtonPress
       objectReference: {fileID: 0}
     - target: {fileID: 2553025494946298405, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -10058,7 +10097,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2553025494946298405, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
-      value: NextButton, Assembly-CSharp
+      value: ExampleCaller, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2553025494946298405, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
@@ -10748,6 +10787,74 @@ PrefabInstance:
       propertyPath: m_SpriteState.m_HighlightedSprite
       value: 
       objectReference: {fileID: 21300000, guid: 64e2cd6247544c844b3a6eb382211209, type: 3}
+    - target: {fileID: 6610596440959737670, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6610596440959737670, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6610596440959737670, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6610596440959737670, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6610596440959737670, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1164261339}
+    - target: {fileID: 6610596440959737670, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1164261339}
+    - target: {fileID: 6610596440959737670, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 1164261339}
+    - target: {fileID: 6610596440959737670, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6610596440959737670, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ReloadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 6610596440959737670, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: ReloadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 6610596440959737670, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: ReloadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 6610596440959737670, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ReloadSceneButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6610596440959737670, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: ReloadSceneButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6610596440959737670, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: ReloadSceneButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6610596440959737670, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6610596440959737670, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6610596440959737670, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6628894114693969501, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
       propertyPath: m_Type
       value: 0
@@ -11257,12 +11364,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5354970880269765417, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1696399256}
+    - targetCorrespondingSourceObject: {fileID: 5354970880269765417, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1696399257}
     - targetCorrespondingSourceObject: {fileID: 4442480866461191285, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1164261338}
     - targetCorrespondingSourceObject: {fileID: 4442480866461191285, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1164261337}
+    - targetCorrespondingSourceObject: {fileID: 4442480866461191285, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1164261339}
     - targetCorrespondingSourceObject: {fileID: 1959394435462531931, guid: 8d0973ea17edeec44a6bd4d7f4b6d4a3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 190731780}
