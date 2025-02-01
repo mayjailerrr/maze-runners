@@ -1,5 +1,4 @@
-using System;
-using MazeRunners;
+
 using UnityEngine;
 using UnityEngine.UI;
 

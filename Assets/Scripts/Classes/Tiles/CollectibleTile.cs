@@ -1,5 +1,4 @@
 using MazeRunners;
-using UnityEngine;
 public class CollectibleTile : Tile
 {
     public Collectible Collectible { get; set; }

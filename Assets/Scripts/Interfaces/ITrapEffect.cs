@@ -1,4 +1,4 @@
-using MazeRunners;
+
 
 public interface ITrapEffect
 {

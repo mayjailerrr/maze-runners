@@ -1,7 +1,8 @@
-using MazeRunners;
+
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
+
+
 public class Player
 {
     public int ID { get; }
@@ -17,13 +18,12 @@ public class Player
     public int Moves { get; set; } = 0;
     public int TrapsTriggered { get; set; } = 0;
     public int AbilitiesUsed { get; set; } = 0;
-    public float TotalPlayTime { get; set; }
 
     public void RecordMove() => Moves++;
     public void RecordTrap() => TrapsTriggered++;
     public void RecordAbilityUse() => AbilitiesUsed++;
-    public void AddCollectible(Collectible collectible) => CollectedObjects.Add(collectible);
-   
+  
+
     public Player(int id, string name = "Player")
     {
         ID = id;
@@ -58,17 +58,6 @@ public class Player
         }
 
         _pieces.Add(piece);
-    }
-
-    public Piece ChoosePiece(int index)
-    {
-        if (index < 0 || index >= _pieces.Count)
-        {
-            Debug.LogWarning($"Player {ID}: Invalid piece index {index}.");
-            return null;
-        }
-
-        return _pieces[index];
     }
 
     public bool MovePiece(Piece piece, int newX, int newY, Board board)
@@ -144,11 +133,6 @@ public class Player
         }
 
         return false;
-    }
-
-     public bool HasMovedAtLeastOnePiece()
-    {
-        return _pieces.Any(piece => piece.HasMoved);
     }
 
     public void ResetTurn()

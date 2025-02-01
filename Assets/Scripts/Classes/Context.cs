@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+
 using MazeRunners;
 public class Context
 {
@@ -8,7 +8,7 @@ public class Context
     public Tile CurrentTile { get; set; }
     public TurnManager TurnManager { get; private set; }
     public BoardView BoardView { get; set; }
-    public string PlayerDirection { get; private set; }
+    public Directions PlayerDirection { get; private set; }
     public Context(Board board, Player currentPlayer, Piece currentPiece = null, Tile currentTile = null)
     {
         if (board == null)
@@ -21,7 +21,7 @@ public class Context
         CurrentPiece = currentPiece;
         CurrentTile = currentTile;
 
-        PlayerDirection = "Up";
+        PlayerDirection = Directions.Up;
     }
 
     public void SetTurnManager(TurnManager turnManager)
@@ -50,7 +50,7 @@ public class Context
             piece.ResetTurn();
         }
 
-        PlayerDirection = "Up";
+        PlayerDirection = Directions.Up;
     }
 
     public bool AllPiecesMoved()
@@ -68,6 +68,6 @@ public class Context
 
     public void SetPlayerDirection(Directions direction)
     {
-        PlayerDirection = direction.ToString();
+        PlayerDirection = direction;
     }
 }

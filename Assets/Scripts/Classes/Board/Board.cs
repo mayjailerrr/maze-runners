@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using MazeRunners;
 using UnityEngine;
-using System;
-using System.Linq;
+
 public class Board
 {
     public int Size { get; private set; }
@@ -19,30 +18,14 @@ public class Board
         Generator = new BoardGenerator(this);
 
         Generator.GenerateBoard(collectibles);
-        PrintGridsToConsole();
     }
 
-    public void PrintGridsToConsole()
-    {
-        Debug.Log("TileGrid:");
-        for (int y = 0; y < TileGrid.GetLength(1); y++)
-        {
-            string row = "";
-            for (int x = 0; x < TileGrid.GetLength(0); x++)
-            {
-                row += TileGrid[x, y]?.ToString() ?? "null";
-                row += "\t"; 
-            }
-            Debug.Log(row);
-        }
-    }
 
     public Tile GetTileAtPosition(int x, int y)
     {
         if (IsWithinBounds(x, y)) return TileGrid[x, y];
 
         return null;
-
     }
 
     public void PlacePiecesRandomly(IEnumerable<Piece> piecesToPlace)

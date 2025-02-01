@@ -1,13 +1,6 @@
 using UnityEngine;
-using MazeRunners;
 using System.Collections.Generic;
 using System.Linq;
-
-public enum ActionType
-{
-    Move,
-    UseAbility
-}
 
 public class TurnManager
 {

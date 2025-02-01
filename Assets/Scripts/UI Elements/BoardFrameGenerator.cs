@@ -66,7 +66,7 @@ public class BoardFrameGenerator : MonoBehaviour
 
         if (numberText == null)
         {
-            Debug.LogError("El prefabNumber no tiene un componente TextMeshProUGUI.");
+            Debug.LogError("No TextMeshProUGUI component found on the number prefab.");
             return;
         }
 

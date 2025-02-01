@@ -1,6 +1,5 @@
 using System;
-using System.Reflection;
-using MazeRunners;
+
 
 public class PropertyTemporaryEffect : ITemporaryEffect
 {

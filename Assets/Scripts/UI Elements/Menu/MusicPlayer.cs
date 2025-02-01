@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using MazeRunners;
 
 public class MusicPlayer : MonoBehaviour
 {

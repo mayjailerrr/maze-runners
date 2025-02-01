@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using MazeRunners;
 using UnityEngine.UI;
 
 public class NextButton : MonoBehaviour
@@ -43,4 +41,3 @@ public class NextButton : MonoBehaviour
     }
 
 }
-

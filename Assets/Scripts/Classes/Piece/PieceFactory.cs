@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using MazeRunners;
 using UnityEngine;
 
 public static class PieceFactory
@@ -11,14 +10,14 @@ public static class PieceFactory
         switch (movie)
         {
             case Movies.Ponyo:
-                pieces.Add(new Piece("Ponyo", 10, 3, PieceAbilities.GetAbility(AbilityName.AbsorbAbility)));
-                pieces.Add(new Piece("Sosuke", 10, 1, PieceAbilities.GetAbility(AbilityName.Shield)));
-                pieces.Add(new Piece("Granmamare", 10, 3, PieceAbilities.GetAbility(AbilityName.Clone)));
+                pieces.Add(new Piece("Ponyo", 4, 1, PieceAbilities.GetAbility(AbilityName.AbsorbAbility)));
+                pieces.Add(new Piece("Sosuke", 3, 1, PieceAbilities.GetAbility(AbilityName.Shield)));
+                pieces.Add(new Piece("Granmamare", 5, 3, PieceAbilities.GetAbility(AbilityName.Clone)));
                 break;
 
             case Movies.HowlsMovingCastle:
-                pieces.Add(new Piece("Howl", 5, 4,  PieceAbilities.GetAbility(AbilityName.RampartBuilder)));
-                pieces.Add(new Piece("Sophie", 3, 1, PieceAbilities.GetAbility(AbilityName.AbsorbDamage)));
+                pieces.Add(new Piece("Howl", 5, 1,  PieceAbilities.GetAbility(AbilityName.RampartBuilder)));
+                pieces.Add(new Piece("Sophie", 3, 2, PieceAbilities.GetAbility(AbilityName.AbsorbDamage)));
                 pieces.Add(new Piece("TurnipHead", 2, 1, PieceAbilities.GetAbility(AbilityName.SpeedBoost)));
                 break;
 
@@ -29,33 +28,33 @@ public static class PieceFactory
                 break;
             
             case Movies.KikisDeliveryService:
-                pieces.Add(new Piece("Kiki", 5, 3, PieceAbilities.GetAbility(AbilityName.Teleport)));
-                pieces.Add(new Piece("Tombo", 2, 3, PieceAbilities.GetAbility(AbilityName.SpeedBoost)));
+                pieces.Add(new Piece("Kiki", 5, 4, PieceAbilities.GetAbility(AbilityName.Teleport)));
+                pieces.Add(new Piece("Tombo", 3, 2, PieceAbilities.GetAbility(AbilityName.SpeedBoost)));
                 pieces.Add(new Piece("Jiji", 2, 3, PieceAbilities.GetAbility(AbilityName.Clone)));
                 break;
 
             case Movies.SpiritedAway:
                 pieces.Add(new Piece("Chihiro", 3, 1, PieceAbilities.GetAbility(AbilityName.AbsorbDamage)));
-                pieces.Add(new Piece("Haku", 5, 3, PieceAbilities.GetAbility(AbilityName.Freeze)));
-                pieces.Add(new Piece("NoFace", 1, 1, PieceAbilities.GetAbility(AbilityName.Invisibility)));
+                pieces.Add(new Piece("Haku", 5, 1, PieceAbilities.GetAbility(AbilityName.Freeze)));
+                pieces.Add(new Piece("NoFace", 2, 2, PieceAbilities.GetAbility(AbilityName.Invisibility)));
                 break;
 
             case Movies.MyNeighborTotoro:
-                pieces.Add(new Piece("Totoro", 5, 2, PieceAbilities.GetAbility(AbilityName.Invisibility)));
+                pieces.Add(new Piece("Totoro", 5, 4, PieceAbilities.GetAbility(AbilityName.Invisibility)));
                 pieces.Add(new Piece("Satsuki", 5, 2, PieceAbilities.GetAbility(AbilityName.Shield)));
                 pieces.Add(new Piece("Mei", 5, 2, PieceAbilities.GetAbility(AbilityName.WallBuilder)));
                 break;
             
             case Movies.PorcoRosso:
-                pieces.Add(new Piece("Porco", 3, 2, PieceAbilities.GetAbility(AbilityName.WallBuilder)));
-                pieces.Add(new Piece("Fio", 2, 2, PieceAbilities.GetAbility(AbilityName.Shield)));
-                pieces.Add(new Piece("Gina", 2, 2, PieceAbilities.GetAbility(AbilityName.Clone)));
+                pieces.Add(new Piece("Porco", 4, 2, PieceAbilities.GetAbility(AbilityName.Teleport)));
+                pieces.Add(new Piece("Fio", 3, 2, PieceAbilities.GetAbility(AbilityName.Shield)));
+                pieces.Add(new Piece("Gina", 2, 3, PieceAbilities.GetAbility(AbilityName.Clone)));
                 break;
 
             case Movies.Arietty:
-                pieces.Add(new Piece("Arietty", 6, 3, PieceAbilities.GetAbility(AbilityName.WallDestroyer)));
+                pieces.Add(new Piece("Arietty", 2, 1, PieceAbilities.GetAbility(AbilityName.WallDestroyer)));
                 pieces.Add(new Piece("Sho", 5, 2, PieceAbilities.GetAbility(AbilityName.Shield)));
-                pieces.Add(new Piece("Spiller", 5, 3, PieceAbilities.GetAbility(AbilityName.HealthDamage)));
+                pieces.Add(new Piece("Spiller", 4, 1, PieceAbilities.GetAbility(AbilityName.HealthDamage)));
                 break;
             
             

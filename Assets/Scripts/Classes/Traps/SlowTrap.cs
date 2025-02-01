@@ -1,4 +1,4 @@
-using MazeRunners;
+
 using UnityEngine;
 
 public class SlowTrap : ITrapEffect

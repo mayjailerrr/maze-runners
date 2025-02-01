@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+
 using MazeRunners;
 using UnityEngine;
 using System.Collections;

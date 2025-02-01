@@ -1,7 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
-using Unity.VisualScripting;
 
 public class PieceView : MonoBehaviour
 {
@@ -10,13 +8,11 @@ public class PieceView : MonoBehaviour
     private RectTransform rectTransform;
 
     public GameObject FreezeIndicator { get; set; }
-    public GameObject ShieldIndicator { get; set; }
     public BoardView BoardView;
     public Piece Piece { get; set; } 
 
     private AudioSource audioSource;
 
-    public float moveDuration = 0.4f; 
 
     private void Awake()
     {

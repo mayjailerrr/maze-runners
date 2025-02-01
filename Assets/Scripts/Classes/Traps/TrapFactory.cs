@@ -11,7 +11,7 @@ public static class TrapFactory
         new SlowTrap(3, 1),  
         new DamageTrap(1), 
         new DamageTrap(2),     
-        new DamageTrap(3),   
+        new DamageTrap(2),   
         new FreezeTrap(1),    
         new FreezeTrap(2),      
     };

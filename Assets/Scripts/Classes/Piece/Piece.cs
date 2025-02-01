@@ -2,7 +2,6 @@
 using System;
 using MazeRunners;
 using UnityEngine;
-using System.Linq;
 
 public class Piece
 {
@@ -159,11 +158,6 @@ public class Piece
     private void NotifyMovesChanged()
     {
         OnMovesChanged?.Invoke();
-    }
-
-    public void UpdateCooldown()
-    {
-        if (currentCooldown > 0) currentCooldown--;
     }
 
     protected void ActivateAbility()

@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+
 using MazeRunners;
 using UnityEngine;
 
@@ -78,13 +77,13 @@ public class WallDestroyerAbility : IAbility
 
     private (int dx, int dy) GetFacingDirection(Context context)
     {
-        var direction = context.PlayerDirection;
+        Directions direction = context.PlayerDirection;
         return direction switch
         {
-            "Up" => (0, -1),
-            "Down" => (0, 1),
-            "Left" => (-1, 0),
-            "Right" => (1, 0),
+            Directions.Up => (0, -1),
+            Directions.Down => (0, 1),
+            Directions.Left => (-1, 0),
+            Directions.Right => (1, 0),
             _ => (0, 0),
         };
     }

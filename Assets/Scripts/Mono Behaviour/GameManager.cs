@@ -1,7 +1,6 @@
 
 using UnityEngine;
 using UnityEngine.UI;
-using MazeRunners;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -27,13 +26,12 @@ public class GameManager : MonoBehaviour
     public CollectibleGridView collectibleGridView;
     public CollectibleViewManager collectibleViewManager;
     
-    public Button endTurnButton;
     private EndTurnHandler endTurnHandler;
    
     private int currentPlayerIndex = 0;
-    public BoardView BoardView { get; set; }
     public PieceGridView PieceGridView { get; set; }
     public PieceController PieceController { get; set; }
+    private BoardView boardView;
     
     private void Awake()
     {
@@ -51,6 +49,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         BoardController = FindObjectOfType<BoardController>();
+        boardView = BoardController.GetComponent<BoardView>();
 
         if (BoardController == null)
         {
@@ -96,22 +95,15 @@ public class GameManager : MonoBehaviour
         InitializeTurnManager();
         InitializeEndTurnHandler();
 
-        BoardController.ExternalInitialize(board, BoardController.GetComponent<BoardView>()); 
+        BoardController.ExternalInitialize(board, boardView); 
        
         InitializePieceGridView();
         InitializePieceController();
         GameContext.SetTurnManager(TurnManager);
-        GameContext.SetBoardView(BoardController.GetComponent<BoardView>());
-
-        if (collectibleViewManager == null)
-        {
-            Debug.LogError("CollectibleViewManager not found in the scene.");
-        }
+        GameContext.SetBoardView(boardView);
 
         collectibleViewManager = FindObjectOfType<CollectibleViewManager>();
-        collectibleGridView.InitializeGrid(board, BoardController.GetComponent<BoardView>(), collectibleViewManager);
-
-        
+        collectibleGridView.InitializeGrid(board, boardView, collectibleViewManager);
 
         TurnManager.StartTurn();
     }

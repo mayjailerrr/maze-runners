@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using MazeRunners;
-using UnityEngine.XR;
+
 
 public class PieceController : MonoBehaviour
 {
@@ -102,7 +102,7 @@ public class PieceController : MonoBehaviour
 
         if (!board.IsWithinBounds(newX, newY))
         {
-            Debug.LogWarning("Movimiento fuera de límites.");
+            Debug.LogWarning("Move out of bounds.");
             return;
         }
 
@@ -111,7 +111,7 @@ public class PieceController : MonoBehaviour
        if ((targetTile is CollectibleTile collectibleTile && collectibleTile.Collectible != null &&
             !collectibleTile.CanBeCollectedBy(gameContext.CurrentPlayer)) || targetTile.IsOccupied)
         {
-            Debug.LogWarning("Movimiento bloqueado: casilla ocupada o collectible inválido");
+            Debug.LogWarning("Movement blocked by another piece or collectible.");
             piece.View.UpdateAnimation(Vector2.zero, false);
             return;
         }

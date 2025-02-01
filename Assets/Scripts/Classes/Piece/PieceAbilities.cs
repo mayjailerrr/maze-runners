@@ -1,7 +1,6 @@
 
 using System.Collections.Generic;
-using MazeRunners;
-using System;
+
 public static class PieceAbilities
 {
     private static readonly Dictionary<AbilityName, IAbility> Abilities = new Dictionary<AbilityName, IAbility>

@@ -1,4 +1,3 @@
-using MazeRunners;
 
 public interface ITemporaryEffect
 {

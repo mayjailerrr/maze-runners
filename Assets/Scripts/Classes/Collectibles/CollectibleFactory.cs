@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using MazeRunners;
 
 public static class CollectibleFactory
 {

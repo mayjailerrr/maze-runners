@@ -1,4 +1,4 @@
-using MazeRunners;
+
 
 public class Collectible
 {
@@ -14,19 +14,5 @@ public class Collectible
     public void AssignPlayerID(int playerID)
     {
         TargetPlayerID = playerID;
-    }
-
-    public override bool Equals(object obj)
-    {
-        if (obj is Collectible other)
-        {
-            return Name == other.Name;
-        }
-        return false;
-    }
-
-    public override int GetHashCode()
-    {
-        return Name.GetHashCode();
     }
 }

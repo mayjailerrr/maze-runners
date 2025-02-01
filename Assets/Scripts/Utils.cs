@@ -1,8 +1,4 @@
 
-using MazeRunners;
-using System;
-using System.Collections.Generic;
-
 public enum Movies
 {
     Ponyo,
@@ -44,4 +40,10 @@ public enum Directions
     Down,
     Left,
     Right
+}
+
+public enum ActionType
+{
+    Move,
+    UseAbility
 }

@@ -1,4 +1,4 @@
-using UnityEngine;
+
 using MazeRunners;
 
 public class ObstacleTile : Tile
