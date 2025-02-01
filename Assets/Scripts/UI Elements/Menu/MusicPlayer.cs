@@ -4,12 +4,14 @@ using UnityEngine;
 public class MusicPlayer : MonoBehaviour
 {
     public AudioClip[] music;
-    private AudioSource source;
+    public AudioSource source; 
+
+    private Coroutine musicCoroutine;
 
     private void Start()
     {
         source = GetComponent<AudioSource>();
-        StartCoroutine(PlayAudioClips());
+        musicCoroutine = StartCoroutine(PlayAudioClips());
     }
 
     IEnumerator PlayAudioClips()
@@ -28,6 +30,22 @@ public class MusicPlayer : MonoBehaviour
         {
             source.Pause();
         }
+    }
+
+    public void StopMusic()
+    {
+        if (musicCoroutine != null)
+        {
+            StopCoroutine(musicCoroutine);
+            musicCoroutine = null;
+        }
+        source.Stop();
+    }
+
+    public void PlayClip(AudioClip clip)
+    {
+        source.clip = clip;
+        source.Play();
     }
 
     public void ResumeMusic()

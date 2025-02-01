@@ -12,6 +12,9 @@ public class EndGameManager : MonoBehaviour
     public TextMeshProUGUI statsText;
     public Button restartButton;
 
+    public MusicPlayer musicPlayer; 
+    public AudioClip endGameClip;
+
     private void Start()
     {
         memeImage.localScale = Vector3.zero;
@@ -24,6 +27,9 @@ public class EndGameManager : MonoBehaviour
     public void EndGame(Player winner)
     {
         Debug.Log($"Player {winner.ID + 1} wins the game!");
+
+        musicPlayer.StopMusic(); 
+        musicPlayer.PlayClip(endGameClip);
 
         float gameEndTime = Time.time;
         float totalPlayTime = gameEndTime - GameManager.Instance.GameStartTime;
