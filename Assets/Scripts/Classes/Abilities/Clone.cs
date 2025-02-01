@@ -1,6 +1,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CloneAbility : IAbility
 {
@@ -42,16 +43,18 @@ public class CloneAbility : IAbility
         }
         
         var originalPosition = context.CurrentPiece.Position;
-        var clonePosition = (originalPosition.x + 1, originalPosition.y);
+        var clonePosition = FindNearestFreeTile(originalPosition, context);
 
-        if (!context.Board.IsWithinBounds(clonePosition.Item1, clonePosition.Item2) ||
-            context.Board.GetTileAtPosition(clonePosition.Item1, clonePosition.Item2)?.IsOccupied == true)
+        if (clonePosition == null)
         {
-            Debug.LogWarning("Cannot place visual clone: no valid position available.");
+            Debug.LogWarning("No valid position available for visual clone.");
             return;
         }
 
-        var tileGO = context.BoardView.GetTileObject(clonePosition.Item1, clonePosition.Item2);
+        var tile = context.Board.GetTileAtPosition(clonePosition.Value.x, clonePosition.Value.y);
+        tile.OccupyingPiece = clonedPiece; 
+
+        var tileGO = context.BoardView.GetTileObject(clonePosition.Value.x, clonePosition.Value.y);
         if (tileGO == null)
         {
             Debug.LogError("Tile GameObject not found.");
@@ -66,7 +69,54 @@ public class CloneAbility : IAbility
         context.BoardView.StartCoroutine(ScaleOverTime(cloneObject, Vector3.one, 0.5f));
 
         clonedPiece.View = cloneObject.GetComponent<PieceView>();
-        clonedPiece.UpdatePosition(clonePosition);
+        clonedPiece.UpdatePosition(clonePosition.Value);
+    }
+
+    private (int x, int y)? FindNearestFreeTile((int x, int y) start, Context context)
+    {
+        var board = context.Board;
+        var directions = new (int x, int y)[]
+        {
+            (0, 1), (1, 0), (0, -1), (-1, 0), 
+            (1, 1), (1, -1), (-1, 1), (-1, -1)
+        };
+
+        var visited = new HashSet<(int, int)>();
+        var queue = new Queue<((int x, int y) position, int distance)>();
+        queue.Enqueue((start, 0));
+
+        while (queue.Count > 0)
+        {
+            var (current, _) = queue.Dequeue();
+
+            if (visited.Contains(current)) continue;
+            visited.Add(current);
+
+            if (board.IsWithinBounds(current.x, current.y))
+            {
+                var tile = board.GetTileAtPosition(current.x, current.y);
+
+                bool isTileFree = tile != null && !(tile is TrapTile) && !(tile is ObstacleTile) &&
+                                !tile.IsOccupied &&
+                                (!(tile is CollectibleTile collectibleTile) || collectibleTile.Collectible == null);
+
+                if (isTileFree)
+                {
+                    return current;
+                }
+            }
+
+            foreach (var direction in directions)
+            {
+                var neighbor = (current.x + direction.x, current.y + direction.y);
+                if (!visited.Contains(neighbor) && board.IsWithinBounds(neighbor.Item1, neighbor.Item2))
+                {
+                    queue.Enqueue((neighbor, 0));
+                }
+            }
+        }
+
+        return null;
     }
 
     private IEnumerator ScaleOverTime(GameObject target, Vector3 targetScale, float duration)

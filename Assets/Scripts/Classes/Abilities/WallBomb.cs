@@ -37,10 +37,6 @@ public class WallBombAbility : IAbility
                             board.ReplaceTile(targetX, targetY, new Tile(targetX, targetY)); 
                             ReplaceTileVisual(boardView, targetX, targetY, board);
                         }
-                        else if (tile is CollectibleTile)
-                        {
-                            continue;
-                        }
                     }
                 }
 

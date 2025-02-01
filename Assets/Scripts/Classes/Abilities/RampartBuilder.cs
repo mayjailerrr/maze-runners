@@ -42,13 +42,25 @@ public class RampartBuilderAbility : IAbility
                 int targetX = position.x + x;
                 int targetY = position.y + y;
 
-                if (board.IsWithinBounds(targetX, targetY) && board.GetTileAtPosition(targetX, targetY) is Tile)
+                if (board.IsWithinBounds(targetX, targetY))
                 {
-                    board.ReplaceTile(targetX, targetY, new ObstacleTile(targetX, targetY));
-                    Debug.Log($"Wall built at ({targetX}, {targetY}).");
-                    wallBuilt = true; 
+                    var tile = board.GetTileAtPosition(targetX, targetY);
 
-                    ReplaceTileVisual(boardView, targetX, targetY, board);
+                    bool hasPiece = tile.OccupyingPiece != null;
+                    bool hasCollectible = tile is CollectibleTile collectibleTile && collectibleTile.Collectible != null;
+
+                    if (tile is Tile && !hasPiece && !hasCollectible)
+                    {
+                        board.ReplaceTile(targetX, targetY, new ObstacleTile(targetX, targetY));
+                        Debug.Log($"Wall built at ({targetX}, {targetY}).");
+                        wallBuilt = true;
+
+                        ReplaceTileVisual(boardView, targetX, targetY, board);
+                    }
+                    else
+                    {
+                        Debug.Log($"Cannot build wall at ({targetX}, {targetY}): Tile occupied.");
+                    }
                 }
             }
         }

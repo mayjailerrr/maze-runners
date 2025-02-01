@@ -43,11 +43,23 @@ public class WallBuilderAbility : IAbility
 
                 if (board.IsWithinBounds(targetX, targetY) && !(board.GetTileAtPosition(targetX, targetY) is ObstacleTile))
                 {
-                    board.ReplaceTile(targetX, targetY, new ObstacleTile(targetX, targetY));
-                    ReplaceTileVisual(boardView, targetX, targetY, board);
-                    
-                    Debug.Log($"Wall built at ({targetX}, {targetY}).");
-                    return true;
+                    var tile = board.GetTileAtPosition(targetX, targetY); 
+
+                    bool hasPiece = tile.OccupyingPiece != null;
+                    bool hasCollectible = tile is CollectibleTile collectibleTile && collectibleTile.Collectible != null;
+
+                    if (!hasPiece && !hasCollectible)
+                    {
+                        board.ReplaceTile(targetX, targetY, new ObstacleTile(targetX, targetY));
+                        ReplaceTileVisual(boardView, targetX, targetY, board);
+                        
+                        Debug.Log($"Wall built at ({targetX}, {targetY}).");
+                        return true;
+                    }
+                    else
+                    {
+                        Debug.Log($"Cannot build wall at ({targetX}, {targetY}): Tile occupied.");
+                    }
                 }
             }
         }

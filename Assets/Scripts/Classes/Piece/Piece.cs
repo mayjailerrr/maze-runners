@@ -168,10 +168,13 @@ public class Piece
 
     public Piece Clone()
     {
-        Piece piece = new Piece(Name + "_Clone", Speed, Cooldown, this.Ability);
+        Piece piece = new Piece(Name + "_Clone", Speed, Cooldown, null);
         piece.Position = Position;
         piece.PreviousPosition = PreviousPosition;
         piece.Health = Health;
+
+        // piece.View.Piece = piece;
+
         return piece;
     }
     

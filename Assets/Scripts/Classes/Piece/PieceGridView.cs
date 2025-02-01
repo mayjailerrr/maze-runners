@@ -86,7 +86,15 @@ public class PieceGridView : MonoBehaviour
         if (pieceView != null)
         {
             Coroutine movementCoroutine = StartCoroutine(MovePieceWithAnimation(pieceView, newTileObject.transform));
-            boardView.activeMovements[piece] = movementCoroutine;
+
+            if (!boardView.activeMovements.ContainsKey(piece))
+            {
+                boardView.activeMovements[piece] = movementCoroutine;
+            }
+            else
+            {
+                Debug.LogWarning($"La pieza {piece.Name} ya está en activeMovements.");
+            }
         }
     }
 
@@ -104,9 +112,20 @@ public class PieceGridView : MonoBehaviour
                 pieceView.transform.localPosition = Vector3.zero;
             }
 
-            if (boardView.activeMovements.ContainsKey(pieceView.Piece))
+            if (pieceView != null && pieceView.Piece != null)
             {
-                boardView.activeMovements.Remove(pieceView.Piece);
+                if (boardView.activeMovements.ContainsKey(pieceView.Piece))
+                {
+                    boardView.activeMovements.Remove(pieceView.Piece);
+                }
+                else
+                {
+                    Debug.LogWarning($"The piece {pieceView.Piece.Name} it's not in active movements dictionary");
+                }
+            }
+            else
+            {
+                Debug.LogError("PieceView or pieceView.Piece is null");
             }
         });
     }
