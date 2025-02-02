@@ -63,16 +63,9 @@ public class CollectibleViewManager : MonoBehaviour
 
     public GameObject CreateCollectibleVisual(Collectible collectible)
     {
-        if (collectible == null || collectibleSprites == null || collectiblePrefab == null)
+        if (collectible == null || collectibleObjects.ContainsKey(collectible.Name))
         {
-            Debug.LogError("Error: Missing collectible, sprite dictionary, or prefab.");
-            return null;
-        }
-
-        if (collectibleObjects.ContainsKey(collectible.Name))
-        {
-            Debug.LogWarning($"Collectible {collectible.Name} already exists in the view. Reusing existing object.");
-            return collectibleObjects[collectible.Name];
+            return collectibleObjects.ContainsKey(collectible.Name) ? collectibleObjects[collectible.Name] : null;
         }
 
         if (!collectibleSprites.TryGetValue(collectible.Name, out Sprite sprite))

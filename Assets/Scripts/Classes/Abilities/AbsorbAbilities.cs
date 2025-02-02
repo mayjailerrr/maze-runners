@@ -20,6 +20,8 @@ public class AbsorbAbilitiesAbility : IAbility
         selectedPieceIndex = random.Next(0, 3);
 
         Piece targetPiece = nextPlayer.Pieces[selectedPieceIndex];
+        Piece currentPiece = context.CurrentPiece;
+
         Debug.Log($"Target piece: {targetPiece?.Name}");
 
         if (targetPiece.Ability == null)
@@ -28,10 +30,11 @@ public class AbsorbAbilitiesAbility : IAbility
             return false;
         }
 
-        context.CurrentPiece.Ability = targetPiece.Ability;
+        currentPiece.Ability = targetPiece.Ability;
+        
         context.CurrentPlayer.RecordAbilityUse();
-
-        context.CurrentPiece.View.PlayAbilitySound();
+        currentPiece.View.PlayAbilityEffect(); 
+        currentPiece.View.PlayAbilitySound();
 
         Debug.Log($"Ability absorbed: {targetPiece.Ability.Description}");
         return true;

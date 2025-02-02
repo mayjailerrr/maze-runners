@@ -16,6 +16,7 @@ public class CloneAbility : IAbility
         }
 
         Piece clonedPiece = context.CurrentPiece.Clone();
+        Piece currentPiece = context.CurrentPiece;
 
         if (clonedPiece == null)
         {
@@ -26,8 +27,10 @@ public class CloneAbility : IAbility
         context.CurrentPlayer.AddPiece(clonedPiece);
         
         CreateVisualClone(clonedPiece, context);
+
         context.CurrentPlayer.RecordAbilityUse();
-        context.CurrentPiece.View.PlayAbilitySound();
+        currentPiece.View.PlayAbilityEffect();
+        currentPiece.View.PlayAbilitySound();
 
         Debug.Log($"Piece {context.CurrentPiece.Name} cloned successfully. New piece: {clonedPiece.Name}");
 

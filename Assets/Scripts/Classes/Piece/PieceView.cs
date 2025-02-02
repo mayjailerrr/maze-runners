@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class PieceView : MonoBehaviour
@@ -99,4 +100,53 @@ public class PieceView : MonoBehaviour
             Debug.LogWarning("No AudioSource or AudioClip assigned.");
         }
     }
+
+
+    public void PlayAbilityEffect()
+    {
+        GameObject halo = new GameObject("AbilityHalo");
+        halo.transform.SetParent(transform);
+        halo.transform.localPosition = Vector3.zero;
+
+        var image = halo.AddComponent<Image>();
+        image.sprite = CreateSimpleCircleSprite();
+        image.color = new Color(0.6f, 0.2f, 1f, 0.8f); 
+
+        RectTransform rectTransform = halo.GetComponent<RectTransform>();
+        rectTransform.sizeDelta = new Vector2(150, 150);
+        rectTransform.localScale = Vector3.zero;
+
+        LeanTween.scale(halo, Vector3.one, 0.5f).setEaseOutBack();
+        LeanTween.alpha(rectTransform, 0f, 1.5f).setOnComplete(() =>
+        {
+            Destroy(halo);
+        });
+    }
+
+    private Sprite CreateSimpleCircleSprite()
+    {
+        int resolution = 128;
+        Texture2D texture = new Texture2D(resolution, resolution, TextureFormat.ARGB32, false);
+        texture.filterMode = FilterMode.Bilinear;
+
+        Color transparent = new Color(0, 0, 0, 0);
+        Color solid = Color.white;
+
+        float centerX = resolution / 2;
+        float centerY = resolution / 2;
+        float radius = resolution / 2 * 0.9f;
+
+        for (int x = 0; x < resolution; x++)
+        {
+            for (int y = 0; y < resolution; y++)
+            {
+                float distance = Vector2.Distance(new Vector2(x, y), new Vector2(centerX, centerY));
+                texture.SetPixel(x, y, distance > radius ? transparent : solid);
+            }
+        }
+
+        texture.Apply();
+        return Sprite.Create(texture, new Rect(0, 0, resolution, resolution), new Vector2(0.5f, 0.5f));
+    }
+
 }

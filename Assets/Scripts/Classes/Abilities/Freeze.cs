@@ -21,6 +21,7 @@ public class FreezeAbility : IAbility
         selectedPieceIndex = random.Next(0, nextPlayer.Pieces.Count);
 
         Piece targetPiece = nextPlayer.Pieces[selectedPieceIndex];
+        Piece currentPiece = context.CurrentPiece;
         Debug.Log($"Target piece: {targetPiece?.Name}");
 
         if (targetPiece == null)
@@ -48,8 +49,10 @@ public class FreezeAbility : IAbility
             freezeTurns
         );
         turnManager.ApplyTemporaryEffect(freezeAbilitiesEffect);
+
         context.CurrentPlayer.RecordAbilityUse();
-        context.CurrentPiece.View.PlayAbilitySound();
+        currentPiece.View.PlayAbilityEffect();
+        currentPiece.View.PlayAbilitySound();
         
         Debug.Log($"Piece {targetPiece.Name} has been frozen for {freezeTurns} turns.");
        

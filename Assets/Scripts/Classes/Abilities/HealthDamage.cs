@@ -20,6 +20,7 @@ public class HealthDamageAbility : IAbility
         selectedPieceIndex = random.Next(0, 3);
 
         Piece targetPiece = nextPlayer.Pieces[selectedPieceIndex];
+        Piece currentPiece = context.CurrentPiece;
         Debug.Log($"Target piece: {targetPiece?.Name}");
 
         if (targetPiece == null)
@@ -30,8 +31,10 @@ public class HealthDamageAbility : IAbility
 
         int damage = 1;
         targetPiece.TakeDamage(damage, context);
+
         context.CurrentPlayer.RecordAbilityUse();
-        context.CurrentPiece.View.PlayAbilitySound();
+        currentPiece.View.PlayAbilityEffect();
+        currentPiece.View.PlayAbilitySound();
 
         return true;
     }

@@ -8,6 +8,7 @@ public class SpeedBoostAbility : IAbility
     public bool Execute(Context context)
     {
         var targetPiece = context.CurrentPiece;
+        var currentPiece = context.CurrentPiece;
         if (targetPiece == null)
         {
             Debug.LogError("No piece selected to clone.");
@@ -15,8 +16,10 @@ public class SpeedBoostAbility : IAbility
         }
 
         targetPiece.Speed += 2;
+
         context.CurrentPlayer.RecordAbilityUse();
-        context.CurrentPiece.View.PlayAbilitySound();
+        currentPiece.View.PlayAbilityEffect();
+        currentPiece.View.PlayAbilitySound();
         
         Debug.Log($"Piece speed increased to {targetPiece.Speed}");
         return true;

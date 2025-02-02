@@ -9,6 +9,7 @@ public class WallBombAbility : IAbility
     public bool Execute(Context context)
     {
         var targetPiece = context.CurrentPiece;
+        var currentPiece = context.CurrentPiece;
         if (targetPiece == null)
         {
             Debug.LogError("No piece selected to clone.");
@@ -45,7 +46,8 @@ public class WallBombAbility : IAbility
         }
 
         context.CurrentPlayer.RecordAbilityUse();
-        context.CurrentPiece.View.PlayAbilitySound();
+        currentPiece.View.PlayAbilityEffect();
+        currentPiece.View.PlayAbilitySound();
 
         return true;
     }

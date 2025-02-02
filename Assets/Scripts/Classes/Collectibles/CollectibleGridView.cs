@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class CollectibleGridView : MonoBehaviour
 {
@@ -20,14 +21,19 @@ public class CollectibleGridView : MonoBehaviour
 
     private void PlaceAllCollectibles()
     {
+        HashSet<string> placedCollectibles = new HashSet<string>();
+
         for (int x = 0; x < board.Size; x++)
         {
             for (int y = 0; y < board.Size; y++)
             {
                 MazeRunners.Tile tile = board.GetTileAtPosition(x, y);
-                if (tile is CollectibleTile collectibleTile)
+                if (tile is CollectibleTile collectibleTile && collectibleTile.Collectible != null)
                 {
+                    if (placedCollectibles.Contains(collectibleTile.Collectible.Name)) continue;
+
                     PlaceCollectible(x, y, collectibleTile.Collectible);
+                    placedCollectibles.Add(collectibleTile.Collectible.Name);
                 }
             }
         }

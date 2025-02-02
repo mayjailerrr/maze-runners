@@ -19,6 +19,7 @@ public class RampartBuilderAbility : IAbility
         selectedPieceIndex = random.Next(0, nextPlayer.Pieces.Count);
 
         Piece targetPiece = nextPlayer.Pieces[selectedPieceIndex];
+        Piece currentPiece = context.CurrentPiece;
         Debug.Log($"Target piece: {targetPiece?.Name}");
 
         if (targetPiece == null)
@@ -71,7 +72,8 @@ public class RampartBuilderAbility : IAbility
         }
 
         context.CurrentPlayer.RecordAbilityUse();
-        context.CurrentPiece.View.PlayAbilitySound();
+        currentPiece.View.PlayAbilityEffect();
+        currentPiece.View.PlayAbilitySound();
 
         return wallBuilt;
     }
