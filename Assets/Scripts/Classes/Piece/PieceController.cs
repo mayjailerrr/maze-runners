@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using MazeRunners;
-
+using System.Collections;
 
 public class PieceController : MonoBehaviour
 {
@@ -12,6 +12,9 @@ public class PieceController : MonoBehaviour
     private PieceGridView pieceGridView;
     private CollectibleViewManager collectibleViewManager;
     private HUDController hudController;
+
+    private Queue<Vector2> inputQueue = new Queue<Vector2>();
+    private bool isProcessingInput = false;
 
     private bool isInitialized = false;
 
@@ -45,11 +48,17 @@ public class PieceController : MonoBehaviour
         }
 
         Piece activePiece = currentPlayer.Pieces[selectedPieceIndex];
+       
         Vector2 direction = GetInputDirection();
-
         if (direction != Vector2.zero)
         {
-            TryMovePiece(activePiece, direction);
+            inputQueue.Enqueue(direction);
+        }
+
+        if (!isProcessingInput && inputQueue.Count > 0)
+        {
+            Vector2 nextDirection = inputQueue.Dequeue();
+            StartCoroutine(ProcessInput(nextDirection));
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -76,6 +85,18 @@ public class PieceController : MonoBehaviour
         hudController.UpdateHUD(gameContext.CurrentPlayer, selectedPiece);
 
         Debug.Log($"Selected piece: {selectedPiece.Name}");
+    }
+
+    private IEnumerator ProcessInput(Vector2 direction)
+    {
+        isProcessingInput = true;
+
+        Piece activePiece = gameContext.CurrentPlayer.Pieces[selectedPieceIndex];
+        TryMovePiece(activePiece, direction);
+
+        yield return new WaitForSeconds(0.5f);
+
+        isProcessingInput = false;
     }
 
     private void TryMovePiece(Piece piece, Vector2 direction)
