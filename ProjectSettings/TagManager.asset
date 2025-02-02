@@ -4,14 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Fidel Body
-  - Batista Body
-  - Submachine gun
-  - HandCard
-  - BattlefieldCard
-  - Fidel
-  - Batista
-  - WeatherCard
   - MainCanvas
   layers:
   - Default

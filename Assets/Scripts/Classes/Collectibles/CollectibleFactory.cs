@@ -46,7 +46,7 @@ public static class CollectibleFactory
 
             case Movies.PorcoRosso:
                 collectibles.Add(new Collectible("PilotGoggles", "Porco's goggles"));
-                collectibles.Add(new Collectible("Propeller", "A propeller from Porco's plane"));
+                collectibles.Add(new Collectible("SmallPlane", "Porco's small plane"));
                 collectibles.Add(new Collectible("AmeliaScarf", "A scarf from Amelia's aviator outfit"));
                 break;
 
