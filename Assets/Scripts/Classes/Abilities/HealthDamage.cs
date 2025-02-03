@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using System.Linq;
 
 public class HealthDamageAbility : IAbility
 {
@@ -16,10 +17,18 @@ public class HealthDamageAbility : IAbility
             return false;
         }
 
-        System.Random random = new System.Random();
-        selectedPieceIndex = random.Next(0, 3);
+        var validTargets = nextPlayer.Pieces.Where(piece => !piece.IsShielded).ToList();
 
-        Piece targetPiece = nextPlayer.Pieces[selectedPieceIndex];
+        if (validTargets.Count == 0)
+        {
+            Debug.LogWarning("All target pieces are shielded. No damage applied.");
+            return false;
+        }
+
+        System.Random random = new System.Random();
+        selectedPieceIndex = random.Next(0, validTargets.Count);
+
+        Piece targetPiece = validTargets[selectedPieceIndex];
         Piece currentPiece = context.CurrentPiece;
         Debug.Log($"Target piece: {targetPiece?.Name}");
 

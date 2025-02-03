@@ -1,6 +1,7 @@
 
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class FreezeAbility : IAbility
 {
@@ -17,20 +18,22 @@ public class FreezeAbility : IAbility
             return false;
         }
 
-        System.Random random = new System.Random();
-        selectedPieceIndex = random.Next(0, nextPlayer.Pieces.Count);
+        var validTargets = nextPlayer.Pieces.Where(piece => !piece.IsShielded).ToList();
 
-        Piece targetPiece = nextPlayer.Pieces[selectedPieceIndex];
-        Piece currentPiece = context.CurrentPiece;
-        Debug.Log($"Target piece: {targetPiece?.Name}");
-
-        if (targetPiece == null)
+        if (validTargets.Count == 0)
         {
-            Debug.LogError("No target piece selected to freeze.");
+            Debug.LogWarning("All target pieces are shielded. No freeze applied.");
             return false;
         }
 
-        int freezeTurns = 2;
+        System.Random random = new System.Random();
+        selectedPieceIndex = random.Next(0, validTargets.Count);
+
+        Piece targetPiece = validTargets[selectedPieceIndex];
+        Piece currentPiece = context.CurrentPiece;
+        Debug.Log($"Target piece: {targetPiece?.Name}");
+
+        int freezeTurns = 3;
         var turnManager = context.TurnManager;
 
         ShowFreezeIndicator(targetPiece);

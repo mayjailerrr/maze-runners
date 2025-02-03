@@ -20,7 +20,7 @@ public class ActionTemporaryEffect : ITemporaryEffect
     }
 
     public void Apply()
-    {
+    {   
         _applyAction.Invoke();
     }
 

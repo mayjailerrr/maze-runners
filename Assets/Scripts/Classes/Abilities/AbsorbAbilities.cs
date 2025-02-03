@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using System.Linq;
 
 public class AbsorbAbilitiesAbility : IAbility
 {
@@ -16,12 +17,19 @@ public class AbsorbAbilitiesAbility : IAbility
             return false;
         }
 
+        var validTargets = nextPlayer.Pieces.Where(piece => !piece.IsShielded).ToList();
+
+        if (validTargets.Count == 0)
+        {
+            Debug.LogWarning("All target pieces are shielded. No ability absorbed.");
+            return false;
+        }
+
         System.Random random = new System.Random();
-        selectedPieceIndex = random.Next(0, 3);
+        selectedPieceIndex = random.Next(0, validTargets.Count);
 
-        Piece targetPiece = nextPlayer.Pieces[selectedPieceIndex];
+        Piece targetPiece = validTargets[selectedPieceIndex];
         Piece currentPiece = context.CurrentPiece;
-
         Debug.Log($"Target piece: {targetPiece?.Name}");
 
         if (targetPiece.Ability == null)

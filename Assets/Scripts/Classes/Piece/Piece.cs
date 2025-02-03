@@ -36,6 +36,13 @@ public class Piece
         }
     }
 
+    private bool isInvisible;
+    public bool IsInvisible
+    {
+        get => isInvisible;
+        set => isInvisible = value;
+    }
+
     private bool _abilitiesBlocked = false;
     public bool AbilitiesBlocked
     {
@@ -152,7 +159,7 @@ public class Piece
         movesRemaining--;
         HasMoved = true;
         
-        Debug.Log($"{Name} moved to ({newX}, {newY})");
+        if (!IsInvisible) Debug.Log($"{Name} moved to ({newX}, {newY})");
     }
 
     private void NotifyMovesChanged()
@@ -180,12 +187,6 @@ public class Piece
     
     public void TakeDamage(int damage, Context context)
     {
-        if (IsShielded)
-        {
-            Debug.Log($"{Name} is shielded and takes no damage!");
-            return;
-        } 
-
         Health -= damage;
         Debug.Log($"{Name} took {damage} damage. Health is now {Health}.");
 

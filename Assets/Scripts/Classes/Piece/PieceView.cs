@@ -81,11 +81,15 @@ public class PieceView : MonoBehaviour
         }
     }
 
-    public void SetVisibility(bool isVisible)
+    public void SetVisibility(bool isVisible, Piece piece)
     {
-        if (gameObject != null)
+         Image imageComponent = gameObject.GetComponent<Image>();
+    
+        if (imageComponent != null)
         {
-            gameObject.SetActive(isVisible);
+            imageComponent.enabled = isVisible;
+            piece.IsInvisible = !isVisible;
+            piece.IsShielded = !isVisible;
         }
     }
 

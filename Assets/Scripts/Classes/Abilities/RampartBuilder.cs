@@ -1,5 +1,6 @@
 using MazeRunners;
 using UnityEngine;
+using System.Linq;
 
 public class RampartBuilderAbility : IAbility
 {
@@ -15,18 +16,20 @@ public class RampartBuilderAbility : IAbility
             return false;
         }
 
-        System.Random random = new System.Random();
-        selectedPieceIndex = random.Next(0, nextPlayer.Pieces.Count);
+        var validTargets = nextPlayer.Pieces.Where(piece => !piece.IsShielded).ToList();
 
-        Piece targetPiece = nextPlayer.Pieces[selectedPieceIndex];
-        Piece currentPiece = context.CurrentPiece;
-        Debug.Log($"Target piece: {targetPiece?.Name}");
-
-        if (targetPiece == null)
+        if (validTargets.Count == 0)
         {
-            Debug.LogError("No target piece selected to freeze.");
+            Debug.LogWarning("All target pieces are shielded. No walls builded.");
             return false;
         }
+
+        System.Random random = new System.Random();
+        selectedPieceIndex = random.Next(0, validTargets.Count);
+
+        Piece targetPiece = validTargets[selectedPieceIndex];
+        Piece currentPiece = context.CurrentPiece;
+        Debug.Log($"Target piece: {targetPiece?.Name}");
 
         var board = context.Board;
         var boardView = context.BoardView;
