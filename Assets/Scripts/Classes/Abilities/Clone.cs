@@ -29,7 +29,7 @@ public class CloneAbility : IAbility
         CreateVisualClone(clonedPiece, context);
 
         context.CurrentPlayer.RecordAbilityUse();
-        currentPiece.View.PlayAbilityEffect();
+        currentPiece.View.PlayAbilityEffect(new Color(0f, 0f, 0f, 0.8f));
         currentPiece.View.PlayAbilitySound();
 
         Debug.Log($"Piece {context.CurrentPiece.Name} cloned successfully. New piece: {clonedPiece.Name}");

@@ -33,7 +33,7 @@ public class AbsorbAbilitiesAbility : IAbility
         currentPiece.Ability = targetPiece.Ability;
         
         context.CurrentPlayer.RecordAbilityUse();
-        currentPiece.View.PlayAbilityEffect(); 
+        currentPiece.View.PlayAbilityEffect(new Color(1f, 0.65f, 0f, 0.8f)); 
         currentPiece.View.PlayAbilitySound();
 
         Debug.Log($"Ability absorbed: {targetPiece.Ability.Description}");

@@ -24,6 +24,7 @@ public class AbsorbDamageAbility : IAbility
             }
 
             piece.Health = 3;
+            piece.View.PlayAbilityEffect(new Color(1f, 0.4f, 0.4f, 0.8f));
         }
 
         context.CurrentPlayer.RecordAbilityUse();

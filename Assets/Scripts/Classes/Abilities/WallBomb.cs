@@ -46,7 +46,7 @@ public class WallBombAbility : IAbility
         }
 
         context.CurrentPlayer.RecordAbilityUse();
-        currentPiece.View.PlayAbilityEffect();
+        currentPiece.View.PlayAbilityEffect(new Color(0.5f, 0f, 0f, 0.8f));
         currentPiece.View.PlayAbilitySound();
 
         return true;

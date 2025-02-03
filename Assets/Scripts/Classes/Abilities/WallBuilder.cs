@@ -66,7 +66,7 @@ public class WallBuilderAbility : IAbility
         }
 
         context.CurrentPlayer.RecordAbilityUse();
-        currentPiece.View.PlayAbilityEffect();
+        currentPiece.View.PlayAbilityEffect(new Color(0f, 0.39f, 0f, 0.8f));
         currentPiece.View.PlayAbilitySound();
 
         Debug.LogWarning("No valid position to build a wall.");

@@ -33,8 +33,10 @@ public class ShieldAbility : IAbility
         );
 
         context.TurnManager.ApplyTemporaryEffect(shieldEffect);
+        
         context.CurrentPlayer.RecordAbilityUse();
-        context.CurrentPiece.View.PlayAbilitySound();
+        targetPiece.View.PlayAbilityEffect(new Color(1f, 1f, 0.7f, 0.8f));
+        targetPiece.View.PlayAbilitySound();
         
         Debug.Log($"{targetPiece.Name} is now shielded for {shieldTurns} turns.");
         return true;

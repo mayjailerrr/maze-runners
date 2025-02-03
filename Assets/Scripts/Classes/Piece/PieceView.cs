@@ -102,7 +102,7 @@ public class PieceView : MonoBehaviour
     }
 
 
-    public void PlayAbilityEffect()
+    public void PlayAbilityEffect(Color effectColor)
     {
         GameObject halo = new GameObject("AbilityHalo");
         halo.transform.SetParent(transform);
@@ -110,7 +110,7 @@ public class PieceView : MonoBehaviour
 
         var image = halo.AddComponent<Image>();
         image.sprite = CreateSimpleCircleSprite();
-        image.color = new Color(0.6f, 0.2f, 1f, 0.8f); 
+        image.color = effectColor;
 
         RectTransform rectTransform = halo.GetComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2(150, 150);
