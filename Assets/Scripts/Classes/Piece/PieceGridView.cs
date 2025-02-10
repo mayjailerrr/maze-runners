@@ -115,17 +115,7 @@ public class PieceGridView : MonoBehaviour
             if (pieceView != null && pieceView.Piece != null)
             {
                 if (boardView.activeMovements.ContainsKey(pieceView.Piece))
-                {
                     boardView.activeMovements.Remove(pieceView.Piece);
-                }
-                else
-                {
-                    Debug.LogWarning($"The piece {pieceView.Piece.Name} it's not in active movements dictionary");
-                }
-            }
-            else
-            {
-                Debug.LogError("PieceView or pieceView.Piece is null");
             }
         });
     }

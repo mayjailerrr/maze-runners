@@ -47,8 +47,11 @@ public class PieceController : MonoBehaviour
             return;
         }
 
+        if (selectedPieceIndex < 0 || selectedPieceIndex >= currentPlayer.Pieces.Count)
+            selectedPieceIndex = 0;
         Piece activePiece = currentPlayer.Pieces[selectedPieceIndex];
-       
+
+        
         Vector2 direction = GetInputDirection();
         if (direction != Vector2.zero)
         {

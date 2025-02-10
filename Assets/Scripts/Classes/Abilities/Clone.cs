@@ -73,6 +73,12 @@ public class CloneAbility : IAbility
 
         clonedPiece.View = cloneObject.GetComponent<PieceView>();
         clonedPiece.UpdatePosition(clonePosition.Value);
+
+        if (!context.BoardView.activeMovements.ContainsKey(clonedPiece))
+        {
+            context.BoardView.activeMovements[clonedPiece] = null;
+        }
+
     }
 
     private (int x, int y)? FindNearestFreeTile((int x, int y) start, Context context)

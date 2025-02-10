@@ -69,7 +69,6 @@ public class Piece
         private set
         {
             movesRemaining = value;
-            NotifyMovesChanged();
         }
     }
     public bool HasMoved { get; private set; }
@@ -158,6 +157,7 @@ public class Piece
 
         movesRemaining--;
         HasMoved = true;
+        NotifyMovesChanged();
         
         if (!IsInvisible) Debug.Log($"{Name} moved to ({newX}, {newY})");
     }
