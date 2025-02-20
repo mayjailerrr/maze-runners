@@ -126,7 +126,7 @@ public class GameManager : MonoBehaviour
 
     private void InitializeBoard()
     {
-        board = new Board(10, playersCollectibles);
+        board = new Board(13, playersCollectibles);
 
         foreach(var playerEntry in players)
         {

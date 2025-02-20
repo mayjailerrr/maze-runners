@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class BoardController : MonoBehaviour
 {
-    public int boardSize = 10;
     private Board board;
     private BoardView boardView;
 

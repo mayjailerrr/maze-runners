@@ -127,7 +127,7 @@ public class PieceView : MonoBehaviour
         });
     }
 
-    private Sprite CreateSimpleCircleSprite()
+    public Sprite CreateSimpleCircleSprite()
     {
         int resolution = 128;
         Texture2D texture = new Texture2D(resolution, resolution, TextureFormat.ARGB32, false);
@@ -153,4 +153,58 @@ public class PieceView : MonoBehaviour
         return Sprite.Create(texture, new Rect(0, 0, resolution, resolution), new Vector2(0.5f, 0.5f));
     }
 
+    public void ShowFreezeIndicator(Piece targetPiece)
+    {
+        var freezeIndicator = new GameObject("FreezeIndicator");
+        var image = freezeIndicator.AddComponent<Image>();
+
+        image.color = new Color(0f, 0.5f, 1f, 0.5f);
+        image.sprite = CreateBlurryCircleSprite(8);
+
+        freezeIndicator.transform.SetParent(targetPiece.View.transform, false);
+        freezeIndicator.transform.localPosition = Vector3.zero;
+        freezeIndicator.transform.localScale = Vector3.one * 1.5f;
+        freezeIndicator.transform.SetAsLastSibling();
+
+        targetPiece.View.FreezeIndicator = freezeIndicator;
+
+        LeanTween.alpha(freezeIndicator.GetComponent<RectTransform>(), 0.2f, 0.5f)
+            .setLoopPingPong();
+    }
+
+    public void HideFreezeIndicator(Piece targetPiece)
+    {
+        if (targetPiece.View.FreezeIndicator != null)
+        {
+            LeanTween.cancel(targetPiece.View.FreezeIndicator);
+            GameObject.Destroy(targetPiece.View.FreezeIndicator);
+            targetPiece.View.FreezeIndicator = null;
+        }
+    }
+
+    private Sprite CreateBlurryCircleSprite(int diameter)
+    {
+        Texture2D texture = new Texture2D(diameter, diameter, TextureFormat.RGBA32, false);
+        Color[] pixels = new Color[diameter * diameter];
+
+        int radius = diameter / 2;
+        Vector2 center = new Vector2(radius, radius);
+
+        for (int y = 0; y < diameter; y++)
+        {
+            for (int x = 0; x < diameter; x++)
+            {
+                Vector2 pixelPos = new Vector2(x, y);
+                float distance = Vector2.Distance(pixelPos, center);
+
+                pixels[y * diameter + x] = distance <= radius ? Color.white : Color.clear;
+            }
+        }
+
+        texture.SetPixels(pixels);
+        texture.Apply();
+
+        Rect rect = new Rect(0, 0, diameter, diameter);
+        return Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f));
+    }
 }
