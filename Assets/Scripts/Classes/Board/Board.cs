@@ -8,16 +8,10 @@ public class Board
     public int Size { get; private set; }
     public Tile[,] TileGrid;
 
-    public BoardGenerator Generator;
-
-    public Board(int size, List<Collectible> collectibles)
+    public Board(int size)
     {
         Size = size;
         TileGrid = new Tile[size, size];
-
-        Generator = new BoardGenerator(this);
-
-        Generator.GenerateBoard(collectibles);
     }
 
 
@@ -26,42 +20,6 @@ public class Board
         if (IsWithinBounds(x, y)) return TileGrid[x, y];
 
         return null;
-    }
-
-    public void PlacePiecesRandomly(IEnumerable<Piece> piecesToPlace)
-    {
-        System.Random random = new System.Random();
-        List<Tile> neutralTiles = new List<Tile>();
-
-
-        for (int x = 0; x < Size; x++)
-        {
-            for (int y = 0; y < Size; y++)
-            {
-                Tile tile = TileGrid[x, y];
-                if (!(tile is ObstacleTile) && !(tile is TrapTile) && !(tile is CollectibleTile) && !tile.IsOccupied)
-                {
-                    neutralTiles.Add(tile);
-                }
-            }
-        }
-
-        foreach (Piece piece in piecesToPlace)
-        {
-            if (neutralTiles.Count == 0)
-            {
-                Debug.LogError("No more neutral tiles available to place pieces.");
-                return;
-            }
-
-            int randomIndex = random.Next(neutralTiles.Count);
-            Tile selectedTile = neutralTiles[randomIndex];
-            neutralTiles.RemoveAt(randomIndex);
-
-            selectedTile.OccupyingPiece = piece;
-            piece.InitialPosition = (selectedTile.Position.x, selectedTile.Position.y);
-            piece.UpdatePosition((selectedTile.Position.x, selectedTile.Position.y));
-        }
     }
 
     public Tile GetRandomTile()

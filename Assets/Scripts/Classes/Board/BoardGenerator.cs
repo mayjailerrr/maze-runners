@@ -12,13 +12,15 @@ public class BoardGenerator
         this.board = board;
     }
 
-    public void GenerateBoard(List<Collectible> collectibles)
+    public void GenerateBoard(List<Collectible> collectibles, List<Piece> pieces)
     {
         CreateEmptyTileGrid();
         PlaceObstacles();
         PlaceTraps();
         EnsureReachability();
-        PlaceCollectibles(collectibles);
+
+        PlacePiecesStrategically(pieces);
+        PlaceCollectibles(collectibles, pieces);
     }
 
     private void CreateEmptyTileGrid()
@@ -85,19 +87,99 @@ public class BoardGenerator
         return null; 
     }
 
-    public void PlaceCollectibles(List<Collectible> collectibles)
+    public void PlacePiecesStrategically(List<Piece> piecesToPlace)
     {
-        foreach (var collectible in collectibles)
+        System.Random random = new System.Random();
+        List<Tile> availableTiles = GetValidTiles();
+        List<Tile> placedTiles = new List<Tile>();
+
+        foreach (Piece piece in piecesToPlace)
         {
-            PlaceTiles(1, 
-                (x, y) => CanPlaceTile(x, y), 
-                (x, y) => {
-                    Debug.Log($"Placing collectible: {collectible.Name} at ({x}, {y}).");
-                    return new CollectibleTile(x, y, collectible);
-                });
+            if (availableTiles.Count == 0)
+            {
+                Debug.LogError("No neutral tiles left.");
+                return;
+            }
+
+            Tile selectedTile = GetStrategicTile(availableTiles, placedTiles, 4);  
+            if (selectedTile == null) selectedTile = availableTiles[random.Next(availableTiles.Count)];
+
+            availableTiles.Remove(selectedTile);
+            placedTiles.Add(selectedTile);
+
+            selectedTile.OccupyingPiece = piece;
+            piece.InitialPosition = (selectedTile.Position.x, selectedTile.Position.y);
+            piece.UpdatePosition((selectedTile.Position.x, selectedTile.Position.y));
         }
     }
-    
+
+    public void PlaceCollectibles(List<Collectible> collectibles, List<Piece> pieces)
+    {
+        System.Random random = new System.Random();
+        List<Tile> availableTiles = GetValidTiles();
+        List<Tile> placedTiles = new List<Tile>();
+
+        foreach(var collectible in collectibles)
+        {
+            if (availableTiles.Count == 0)
+            {
+                Debug.LogError("No neutral tiles left.");
+                return;
+            }
+
+            Tile selectedile = GetStrategicTile(availableTiles, placedTiles, 3, pieces);
+            if (selectedile == null) selectedile = availableTiles[random.Next(availableTiles.Count)];
+
+            availableTiles.Remove(selectedile);
+            placedTiles.Add(selectedile);
+
+            board.TileGrid[selectedile.Position.x, selectedile.Position.y] = new CollectibleTile(selectedile.Position.x, selectedile.Position.y, collectible);
+        }
+    }
+
+    private List<Tile> GetValidTiles()
+    {
+        List<Tile> validTiles = new List<Tile>();
+
+        for (int x = 0; x < board.Size; x++)
+        {
+            for (int y = 0; y < board.Size; y++)
+            {
+                if (CanPlaceTile(x, y)) validTiles.Add(board.TileGrid[x, y]);
+            }
+        }
+        
+        return validTiles;
+    }
+
+    private Tile GetStrategicTile(List<Tile> availableTiles, List<Tile> placedTiles, int minDistance, List<Piece> pieces = null)
+    {
+        System.Random random = new System.Random();
+
+        for (int attempts = 0; attempts < 10; attempts++)
+        {
+            int randomIndex = random.Next(availableTiles.Count);
+            Tile candidateTile = availableTiles[randomIndex];
+
+            bool tooCloseToOther = placedTiles.Exists(t => GetDistance(t, candidateTile) < minDistance);
+            bool tooCloseToPieces = pieces != null && pieces.Exists(p => 
+            {
+                Tile pieceTile = board.GetTileAtPosition(p.InitialPosition.Value.x, p.InitialPosition.Value.y);
+                return pieceTile != null && GetDistance(candidateTile, pieceTile) < minDistance;
+            });
+
+            if (!tooCloseToOther && !tooCloseToPieces) return candidateTile;
+        }
+
+        return null;
+    }
+
+
+    private int GetDistance(Tile a, Tile b)
+    {
+        return Mathf.Abs(a.Position.x - b.Position.x) + Mathf.Abs(a.Position.y - b.Position.y);
+    }
+
     private bool CanPlaceObstacle(int x, int y)
     {
         return CanPlaceTile(x, y, tile =>

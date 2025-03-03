@@ -126,16 +126,22 @@ public class GameManager : MonoBehaviour
 
     private void InitializeBoard()
     {
-        board = new Board(13, playersCollectibles);
+        board = new Board(13);
+        BoardGenerator generator = new BoardGenerator(board);
+
+        List<Piece> allPieces = new List<Piece>();
 
         foreach(var playerEntry in players)
         {
             Player player = playerEntry.Value;
             Movies selectedMovie = selectedMovies[player.ID];
             
+            List<Piece> playerPieces = PieceFactory.CreatePieces(selectedMovie);
             player.AssignPieces(PieceFactory.CreatePieces(selectedMovie));
-            board.PlacePiecesRandomly(player.Pieces);
+            allPieces.AddRange(playerPieces);
         }
+
+        generator.GenerateBoard(playersCollectibles, allPieces);
 
         Player initialPlayer = players.Values.First();
         GameContext = new Context(board, initialPlayer);  
