@@ -21,7 +21,7 @@ public class CollectibleGridView : MonoBehaviour
 
     private void PlaceAllCollectibles()
     {
-        HashSet<string> placedCollectibles = new HashSet<string>();
+        HashSet<CollectibleName> placedCollectibles = new HashSet<CollectibleName>();
 
         for (int x = 0; x < board.Size; x++)
         {

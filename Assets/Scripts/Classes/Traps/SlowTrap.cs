@@ -19,6 +19,6 @@ public class SlowTrap : ITrapEffect
         context.TurnManager.ApplyTemporaryEffect(slowTemporaryEffect);
         context.CurrentPlayer.RecordTrap();
         
-        Debug.Log($"{piece.Name} fell into a Slow Trap! Speed reduced for {slowTurns} turns.");
+        Debug.Log($"{piece.Name} fell into a Slow Trap! Speed reduced by {speedReduction} for {slowTurns} turn(s).");
     }
 }

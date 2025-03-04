@@ -127,7 +127,7 @@ public class Player
         if (AssignedObjects.Contains(collectible))
         {
             CollectedObjects.Add(collectible);
-            Debug.Log($"Player {ID + 1} collected {collectible.Name}!");
+            Debug.Log($"Player {ID + 1} collected {collectible.Name}: {collectible.Description}");
 
             return true;
         }

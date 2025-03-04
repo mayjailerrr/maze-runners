@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FloatingEffect : MonoBehaviour
+public class BoardFloatingEffect : MonoBehaviour
 {
     public Transform boardContainer;
     public Transform frameContainer;

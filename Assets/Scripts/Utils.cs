@@ -47,3 +47,33 @@ public enum ActionType
     Move,
     UseAbility
 }
+
+
+public enum CollectibleName
+{
+    Ham,
+    Potion,
+    Ship,
+    Calcifer,
+    Feather,
+    MagicDoor,
+    CrystalDagger,
+    Kodama,
+    MononokeMask,
+    Cage,
+    Radio,
+    RedShoes,
+    BathTokens,
+    Hairband,
+    Susuwatari,
+    Acorn,
+    ChibiTotoro,
+    Corn,
+    PilotGoggles,
+    SmallPlane,
+    AmeliaScarf,
+    Teacup,
+    NeedleSword,
+    SugarCube
+}
+

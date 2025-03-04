@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class CollectibleViewManager : MonoBehaviour
 {
     [SerializeField] private GameObject collectiblePrefab; 
     public Transform hudContainer;
-    private Dictionary<string, GameObject> collectibleObjects = new Dictionary<string, GameObject>();
-    public Dictionary<string, Sprite> collectibleSprites;
+    private Dictionary<CollectibleName, GameObject> collectibleObjects = new Dictionary<CollectibleName, GameObject>();
+    public Dictionary<CollectibleName, Sprite> collectibleSprites;
 
     public static CollectibleViewManager Instance { get; private set; }
 
@@ -25,39 +26,40 @@ public class CollectibleViewManager : MonoBehaviour
 
     private void InitializeCollectibleSprites()
     {
-        collectibleSprites = new Dictionary<string, Sprite>
+        collectibleSprites = new Dictionary<CollectibleName, Sprite>
         {
-            { "Ham", Resources.Load<Sprite>("Ham") },
-            { "Potion", Resources.Load<Sprite>("Potion") },
-            { "Ship", Resources.Load<Sprite>("Ship") },
+            { CollectibleName.Ham, Resources.Load<Sprite>("Ham") },
+            { CollectibleName.Potion, Resources.Load<Sprite>("Potion") },
+            { CollectibleName.Ship, Resources.Load<Sprite>("Ship") },
 
-            { "Calcifer", Resources.Load<Sprite>("Calcifer") },
-            { "Feather", Resources.Load<Sprite>("Feather") },
-            { "MagicDoor", Resources.Load<Sprite>("MagicDoor") },
+            { CollectibleName.Calcifer, Resources.Load<Sprite>("Calcifer") },
+            { CollectibleName.Feather, Resources.Load<Sprite>("Feather") },
+            { CollectibleName.MagicDoor, Resources.Load<Sprite>("MagicDoor") },
 
-            { "CrystalDagger", Resources.Load<Sprite>("CrystalDagger") },
-            { "Kodama", Resources.Load<Sprite>("Kodama") },
-            { "MononokeMask", Resources.Load<Sprite>("MononokeMask") },
+            { CollectibleName.CrystalDagger, Resources.Load<Sprite>("CrystalDagger") },
+            { CollectibleName.Kodama, Resources.Load<Sprite>("Kodama") },
+            { CollectibleName.MononokeMask, Resources.Load<Sprite>("MononokeMask") },
 
-            { "Cage", Resources.Load<Sprite>("Cage") },
-            { "Radio", Resources.Load<Sprite>("Radio") },
-            { "RedShoes", Resources.Load<Sprite>("RedShoes") },
+            { CollectibleName.Cage, Resources.Load<Sprite>("Cage") },
+            { CollectibleName.Radio, Resources.Load<Sprite>("Radio") },
+            { CollectibleName.RedShoes, Resources.Load<Sprite>("RedShoes") },
 
-            { "BathTokens", Resources.Load<Sprite>("BathTokens") },
-            { "Hairband", Resources.Load<Sprite>("Hairband") },
-            { "Susuwatari", Resources.Load<Sprite>("Susuwatari") },
+            { CollectibleName.BathTokens, Resources.Load<Sprite>("BathTokens") },
+            { CollectibleName.Hairband, Resources.Load<Sprite>("Hairband") },
+            { CollectibleName.Susuwatari, Resources.Load<Sprite>("Susuwatari") },
 
-            { "Acorn", Resources.Load<Sprite>("Acorn") },
-            { "Chibi-Totoro", Resources.Load<Sprite>("Chibi-Totoro") },
-            { "Corn", Resources.Load<Sprite>("Corn") },
+            { CollectibleName.Acorn, Resources.Load<Sprite>("Acorn") },
+            { CollectibleName.ChibiTotoro, Resources.Load<Sprite>("Chibi-Totoro") },
+            { CollectibleName.Corn, Resources.Load<Sprite>("Corn") },
 
-            { "Pilot Goggles", Resources.Load<Sprite>("Pilot Goggles") },
-            { "Propeller", Resources.Load<Sprite>("Propeller") },
-            { "AmeliaScarf", Resources.Load<Sprite>("AmeliaScarf") },
+            { CollectibleName.PilotGoggles, Resources.Load<Sprite>("Pilot Goggles") },
+            { CollectibleName.SmallPlane, Resources.Load<Sprite>("SmallPlane") },
+            { CollectibleName.AmeliaScarf, Resources.Load<Sprite>("AmeliaScarf") },
 
-            { "Teacup", Resources.Load<Sprite>("Teacup") },
-            { "NeedleSword", Resources.Load<Sprite>("NeedleSword") },
-            { "SugarCube", Resources.Load<Sprite>("SugarCube") }
+            { CollectibleName.Teacup, Resources.Load<Sprite>("Teacup") },
+            { CollectibleName.NeedleSword, Resources.Load<Sprite>("NeedleSword") },
+            { CollectibleName.SugarCube, Resources.Load<Sprite>("SugarCube") }
+
         };
     }
 
@@ -85,11 +87,13 @@ public class CollectibleViewManager : MonoBehaviour
         }
 
         image.sprite = sprite;
-
         collectibleObject.transform.localScale = Vector3.one;
         collectibleObject.name = $"Collectible_{collectible.Name}";
+      
         collectibleObjects.Add(collectible.Name, collectibleObject);
 
+        collectibleObject.AddComponent<CollectibleFloatingEffect>();    
+        
         return collectibleObject;
     }
 
@@ -107,28 +111,29 @@ public class CollectibleViewManager : MonoBehaviour
             return;
         }
 
-        collectibleGO.transform.SetParent(hudContainer, false);
-        collectibleGO.transform.localScale = Vector3.one;
+        collectibleGO.transform.SetParent(hudContainer, true);
+        collectibleGO.transform.DOScale(Vector3.one * 1.2f, 0.3f).SetLoops(2, LoopType.Yoyo);
+        collectibleGO.transform.DOMove(hudContainer.position, 1f).SetEase(Ease.InOutQuad)
+            .OnComplete(() => ShowCollectibleEffect(collectibleGO));
 
         collectibleGO.transform.SetAsLastSibling();
 
         Debug.Log($"Collectible {collectible.Name} moved to HUD.");
     }
 
-    public void RemoveCollectible(string collectibleName)
+    private void ShowCollectibleEffect(GameObject collectibleGO)
     {
-        if (!collectibleObjects.TryGetValue(collectibleName, out GameObject collectibleGO))
-        {
-            Debug.LogWarning($"Collectible {collectibleName} not found in view.");
-            return;
-        }
+        GameObject effect = new GameObject("Effect");
+        effect.transform.SetParent(collectibleGO.transform, false);
+        Image effectImage = effect.AddComponent<Image>();
+        effectImage.color = new Color(1, 1, 1, 0.8f);
+        effectImage.rectTransform.sizeDelta = new Vector2(100, 100);
 
-        Destroy(collectibleGO);
-        collectibleObjects.Remove(collectibleName);
-        Debug.Log($"Collectible {collectibleName} removed from view.");
+        effect.transform.DOScale(Vector3.one * 1.5f, 0.5f).SetEase(Ease.OutQuad);
+        effectImage.DOFade(0, 0.5f).OnComplete(() => Destroy(effect));
     }
 
-    public GameObject GetCollectibleObject(string collectibleName)
+    public GameObject GetCollectibleObject(CollectibleName collectibleName)
     {
         if (collectibleObjects.TryGetValue(collectibleName, out GameObject collectibleGO))
         {

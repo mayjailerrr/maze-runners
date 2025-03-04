@@ -2,11 +2,11 @@
 
 public class Collectible
 {
-    public string Name { get; }
+    public CollectibleName Name { get; }
     public string Description { get; }
     public int TargetPlayerID { get; private set; } = -1;
 
-    public Collectible(string name, string description)
+    public Collectible(CollectibleName name, string description)
     {
         Name = name;
         Description = description;

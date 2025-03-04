@@ -137,7 +137,7 @@ public class GameManager : MonoBehaviour
             Movies selectedMovie = selectedMovies[player.ID];
             
             List<Piece> playerPieces = PieceFactory.CreatePieces(selectedMovie);
-            player.AssignPieces(PieceFactory.CreatePieces(selectedMovie));
+            player.AssignPieces(playerPieces);
             allPieces.AddRange(playerPieces);
         }
 
