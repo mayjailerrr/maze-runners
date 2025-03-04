@@ -173,7 +173,7 @@ public class PieceController : MonoBehaviour
     {
         if (targetTile is TrapTile trapTile)
         {
-            trapTile.ActivateTrap(piece, this.gameContext);
+            trapTile.ActivateTrap(piece, gameContext);
         }
 
         if (targetTile is CollectibleTile collectibleTile)

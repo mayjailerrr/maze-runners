@@ -7,6 +7,7 @@ public class TurnManager
     private int currentPlayerIndex = 0;
     private List<Player> players;
     private Context gameContext;
+    private bool isPaused = false;
 
     private readonly Dictionary<Piece, List<ITemporaryEffect>> activeEffects = new();
    
@@ -38,6 +39,8 @@ public class TurnManager
 
     public void StartTurn()
     {
+        if (isPaused) return;
+
         UpdateTemporaryEffects();
 
         Player currentPlayer = GetCurrentPlayer();
@@ -56,6 +59,8 @@ public class TurnManager
 
     public void NextTurn()
     {
+        if (isPaused) return;
+
         currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
         gameContext.CurrentPlayer = players[currentPlayerIndex];
 
@@ -67,6 +72,7 @@ public class TurnManager
 
     public void ApplyTemporaryEffect(ITemporaryEffect effect)
     {
+        Debug.Log("I passed by ApplyTemporaryEffect at TurnManager");
         if (!activeEffects.ContainsKey(effect.TargetPiece))
         {
             activeEffects[effect.TargetPiece] = new List<ITemporaryEffect>();
@@ -96,6 +102,12 @@ public class TurnManager
 
     public bool CanPerformAction(ActionType actionType)
     {
+        if (isPaused)
+        {
+            Debug.LogWarning("Cannot perform actions while the game is paused.");
+            return false;
+        }
+
         if (actionType == ActionType.Move && hasMovedPiece)
         {
             Debug.LogWarning("Cannot move more than once per turn.");
@@ -110,6 +122,25 @@ public class TurnManager
 
         return true;
     }
+
+    public void PauseTurns(bool pause)
+    {
+        isPaused = pause;
+        Debug.Log(pause ? "Game paused." : "Game resumed.");
+    }
+
+    public void DisablePieceMovement(Piece piece)
+    {
+        piece.Speed = 0;
+        Debug.Log($"{piece.Name} cannot move while affected by a trap.");
+    }
+
+     public void DisableAbilities(Piece piece)
+    {
+        piece.AbilitiesBlocked = true;
+        Debug.Log($"{piece.Name} cannot use abilities while affected by a trap.");
+    }
+    
     public bool PerformAction(ActionType actionType, Piece piece, Board board, int targetX = 0, int targetY = 0, Context context = null)
     {
         if (!CanPerformAction(actionType))  return false;

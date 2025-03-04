@@ -42,16 +42,16 @@ public class BoardGenerator
 
     public void PlaceTraps()
     {
-        int trapCount = (int)(board.Size * board.Size * 0.1f);
-        var predefinedTraps = TrapFactory.GetPredefinedTraps(trapCount).ToList();
+        int trapCount = (int)(board.Size * board.Size * 0.5f);
         System.Random random = new System.Random();
 
         PlaceTiles(trapCount, CanPlaceTrapOrCollectible, (x, y) => 
         {
-            var trapEffect = predefinedTraps[random.Next(predefinedTraps.Count)];
+            var trapEffect = TrapFactory.CreateRandomTrap();
             return new TrapTile(x, y, trapEffect);
         });
     }
+
 
     public void EnsureReachability()
     {

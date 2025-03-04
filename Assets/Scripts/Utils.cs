@@ -77,3 +77,12 @@ public enum CollectibleName
     SugarCube
 }
 
+public enum TrapType
+{
+    Freeze,
+    Slow,
+    Damage,
+    CodeLock,
+    Memory
+}
+

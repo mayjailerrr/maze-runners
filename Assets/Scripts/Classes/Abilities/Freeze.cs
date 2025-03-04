@@ -31,7 +31,6 @@ public class FreezeAbility : IAbility
 
         Piece targetPiece = validTargets[selectedPieceIndex];
         Piece currentPiece = context.CurrentPiece;
-        Debug.Log($"Target piece: {targetPiece?.Name}");
 
         int freezeTurns = 3;
         var turnManager = context.TurnManager;

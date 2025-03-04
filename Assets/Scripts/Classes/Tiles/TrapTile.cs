@@ -14,10 +14,10 @@ public class TrapTile : Tile
 
     public void ActivateTrap(Piece piece, Context context)
     {
-         if (TrapEffect != null)
+        if (TrapEffect != null)
         {
-            Debug.Log($"Trap activated at ({piece.Position.x}, {piece.Position.y}) for piece {piece.Name}!");
-            TrapEffect?.ApplyEffect(piece, context);
+            TrapEffect?.ApplyEffect(context);
+            Debug.Log("I passed by ActivateTrap");
         }
     }
 }

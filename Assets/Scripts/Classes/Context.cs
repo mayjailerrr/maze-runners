@@ -9,6 +9,8 @@ public class Context
     public TurnManager TurnManager { get; private set; }
     public BoardView BoardView { get; set; }
     public Directions PlayerDirection { get; private set; }
+    public GameManager GameManager { get; private set; }
+
     public Context(Board board, Player currentPlayer, Piece currentPiece = null, Tile currentTile = null)
     {
         if (board == null)
@@ -34,6 +36,10 @@ public class Context
         BoardView = boardView;
     }
 
+    public void SetGameManager(GameManager gameManager)
+    {
+        GameManager = gameManager;
+    }
 
     public void UpdateTileAndPosition(Tile tile)
     {

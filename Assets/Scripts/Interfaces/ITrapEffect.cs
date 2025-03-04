@@ -2,6 +2,6 @@
 
 public interface ITrapEffect
 {
-    void ApplyEffect(Piece piece, Context context);
+    void ApplyEffect(Context context);
     string Description { get; }
 }

@@ -101,6 +101,7 @@ public class GameManager : MonoBehaviour
         InitializePieceController();
         GameContext.SetTurnManager(TurnManager);
         GameContext.SetBoardView(boardView);
+        GameContext.SetGameManager(this);
 
         collectibleViewManager = FindObjectOfType<CollectibleViewManager>();
         collectibleGridView.InitializeGrid(board, boardView, collectibleViewManager);
