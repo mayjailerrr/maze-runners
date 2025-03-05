@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class MemoryTrap : ITrapEffect
 {
-    private readonly int penaltyTurns = 2;
     private Piece affectedPiece;
     private Context gameContext;
 

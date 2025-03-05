@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AudioListener : MonoBehaviour
+public class AudioManager : MonoBehaviour
 {
     public AudioSource audioSource;
     public AudioSource minigameAudioSource;

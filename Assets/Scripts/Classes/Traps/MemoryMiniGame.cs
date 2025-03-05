@@ -25,7 +25,7 @@ public class MemoryMinigame : MonoBehaviour
 
     public void StartMinigame(Action<bool> callback)
     {
-        instructionText.text = "Memorize the symbols and find the matching pairs!!";
+        instructionText.text = "Memorize the symbols and find the matching pairs!";
         instructionText.gameObject.SetActive(true);
 
         GameEvents.TriggerMinigameStarted();

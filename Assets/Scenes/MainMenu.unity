@@ -2330,12 +2330,12 @@ MonoBehaviour:
   panel: {fileID: 779163081}
   instructionText: {fileID: 1030483613}
   symbols:
-  - {fileID: 21300000, guid: d93ae26b6e5c0c44cb70345fff45756d, type: 3}
-  - {fileID: 21300000, guid: 7ee6748892753d84e861764cab661908, type: 3}
-  - {fileID: 21300000, guid: dca496f0a76c4ad43b8a88a644dc7555, type: 3}
-  - {fileID: 21300000, guid: 394e9aac5c4a6e345b42da46c81eb7b9, type: 3}
+  - {fileID: 21300000, guid: df0fe20ed434cf148ada0049e37c64a4, type: 3}
+  - {fileID: 21300000, guid: 18741df6614f1cd478d126ce6c1b7963, type: 3}
+  - {fileID: 21300000, guid: 1009be0ceedb6274a940eaf6b6cd2ecd, type: 3}
+  - {fileID: 21300000, guid: 14fca17c24fa6a24d81683c1d181806d, type: 3}
   gridParent: {fileID: 462224942}
-  symbolPrefab: {fileID: 8625996621394616256, guid: 740f78e6810cb004bb7246479407d66b, type: 3}
+  symbolPrefab: {fileID: 8625996621394616256, guid: 7232ec4ee5d632b469b66a2849c8758a, type: 3}
   displayTime: 2
 --- !u!1 &462224941
 GameObject:
