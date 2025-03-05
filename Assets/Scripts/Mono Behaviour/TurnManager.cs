@@ -123,7 +123,6 @@ public class TurnManager
     }
 
     public void PauseTurns(bool pause) => isPaused = pause;
-
     
     public bool PerformAction(ActionType actionType, Piece piece, Board board, int targetX = 0, int targetY = 0, Context context = null)
     {
