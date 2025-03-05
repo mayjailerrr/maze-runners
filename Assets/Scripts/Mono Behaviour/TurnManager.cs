@@ -9,7 +9,7 @@ public class TurnManager
     private Context gameContext;
     private bool isPaused = false;
 
-    private readonly Dictionary<Piece, List<ITemporaryEffect>> activeEffects = new();
+    private readonly Dictionary<object, List<ITemporaryEffect>> activeEffects = new();
    
     private bool hasMovedPiece = false;
     private bool hasUsedAbility = false;
@@ -72,13 +72,12 @@ public class TurnManager
 
     public void ApplyTemporaryEffect(ITemporaryEffect effect)
     {
-        Debug.Log("I passed by ApplyTemporaryEffect at TurnManager");
-        if (!activeEffects.ContainsKey(effect.TargetPiece))
+        if (!activeEffects.ContainsKey(effect.Target))
         {
-            activeEffects[effect.TargetPiece] = new List<ITemporaryEffect>();
+            activeEffects[effect.Target] = new List<ITemporaryEffect>();
         }
 
-        activeEffects[effect.TargetPiece].Add(effect);
+        activeEffects[effect.Target].Add(effect);
         effect.Apply();
     }
 
@@ -123,23 +122,8 @@ public class TurnManager
         return true;
     }
 
-    public void PauseTurns(bool pause)
-    {
-        isPaused = pause;
-        Debug.Log(pause ? "Game paused." : "Game resumed.");
-    }
+    public void PauseTurns(bool pause) => isPaused = pause;
 
-    public void DisablePieceMovement(Piece piece)
-    {
-        piece.Speed = 0;
-        Debug.Log($"{piece.Name} cannot move while affected by a trap.");
-    }
-
-     public void DisableAbilities(Piece piece)
-    {
-        piece.AbilitiesBlocked = true;
-        Debug.Log($"{piece.Name} cannot use abilities while affected by a trap.");
-    }
     
     public bool PerformAction(ActionType actionType, Piece piece, Board board, int targetX = 0, int targetY = 0, Context context = null)
     {

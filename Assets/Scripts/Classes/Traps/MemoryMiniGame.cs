@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using System;
+using TMPro;
 
 public class MemoryMinigame : MonoBehaviour
 {
     public GameObject panel;
+    public TextMeshProUGUI instructionText;
     public List<Sprite> symbols;
     public Transform gridParent;
     public GameObject symbolPrefab;
@@ -19,9 +21,13 @@ public class MemoryMinigame : MonoBehaviour
     private GameObject secondSelected = null;
     private bool isActive = false;
     private Action<bool> onComplete;
-    
+
+
     public void StartMinigame(Action<bool> callback)
     {
+        instructionText.text = "Memorize the symbols and find the matching pairs!!";
+        instructionText.gameObject.SetActive(true);
+
         onComplete = callback;
         panel.SetActive(true);
         GenerateSymbols();
@@ -64,6 +70,7 @@ public class MemoryMinigame : MonoBehaviour
     {
         if (!isActive || selected == firstSelected) return;
         
+
         selected.GetComponent<Image>().sprite = assignedSymbols[index];
         
         if (firstSelected == null)
@@ -119,6 +126,7 @@ public class MemoryMinigame : MonoBehaviour
     {
         isActive = false;
         panel.SetActive(false);
+        instructionText.gameObject.SetActive(false);
         onComplete?.Invoke(success);
     }
     

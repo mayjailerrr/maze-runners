@@ -1,29 +1,28 @@
 using System;
 
-
 public class PropertyTemporaryEffect : ITemporaryEffect
 {
-    private readonly Piece _piece;
+    private readonly object _target;
     private readonly string _propertyName;
     private readonly object _originalValue;
     private readonly object _modifiedValue;
     private int _remainingTurns;
 
     public bool HasExpired => _remainingTurns <= 0;
-    public Piece TargetPiece => _piece;
+    public object Target => _target;
 
-    public PropertyTemporaryEffect(Piece piece, string propertyName, object modifiedValue, int duration)
+    public PropertyTemporaryEffect(object target, string propertyName, object modifiedValue, int duration)
     {
-        _piece = piece ?? throw new ArgumentNullException(nameof(piece));
+        _target = target ?? throw new ArgumentNullException(nameof(target));
         _propertyName = propertyName;
 
-        var property = piece.GetType().GetProperty(propertyName);
+        var property = _target.GetType().GetProperty(propertyName);
         if (property == null)
         {
-            throw new ArgumentException($"Property '{propertyName}' not found in Piece.");
+            throw new ArgumentException($"Property '{propertyName}' not found in target object.");
         }
 
-        _originalValue = property.GetValue(piece);
+        _originalValue = property.GetValue(_target);
         _modifiedValue = modifiedValue;
         _remainingTurns = duration;
     }
@@ -45,10 +44,10 @@ public class PropertyTemporaryEffect : ITemporaryEffect
 
     private void SetPropertyValue(object value)
     {
-        var property = _piece.GetType().GetProperty(_propertyName);
+        var property = _target.GetType().GetProperty(_propertyName);
         if (property != null)
         {
-            property.SetValue(_piece, value);
+            property.SetValue(_target, value);
         }
     }
 }

@@ -21,7 +21,7 @@ public class InvisibilityAbility : IAbility
         Action revertInvisibility = () => currentPiece.View.SetVisibility(true, currentPiece);
 
         var invisibilityEffect = new ActionTemporaryEffect(
-            targetPiece: currentPiece,
+            target: currentPiece,
             applyAction: applyInvisibility,
             revertAction: revertInvisibility,
             duration: invisibilityTurns

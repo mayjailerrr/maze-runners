@@ -34,7 +34,7 @@ public class EndTurnHandler : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("TurnManager is not assigned. Skipping turn.");
+            Debug.LogWarning("Cannot skip your turn right now.");
         }
 
         isButtonLocked = false;

@@ -10,11 +10,12 @@ public class DamageTrap : ITrapEffect
     {
         this.damage = damage;
     }
-    public void ApplyEffect(Piece piece, Context context)
+    public void ApplyEffect(Context context)
     {
-        piece.TakeDamage(damage, context);
+        Piece targetPiece = context.CurrentPiece;
+        targetPiece.TakeDamage(damage, context);
         context.CurrentPlayer.RecordTrap();
         
-        Debug.Log($"{piece.Name} takes {damage} damage from a Damage Trap!");
+        Debug.Log($"{targetPiece.Name} takes {damage} damage from a Damage Trap!");
     }
 }

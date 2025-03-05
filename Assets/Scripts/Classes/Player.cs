@@ -22,6 +22,8 @@ public class Player
     public void RecordMove() => Moves++;
     public void RecordTrap() => TrapsTriggered++;
     public void RecordAbilityUse() => AbilitiesUsed++;
+
+    public bool IsBlinded { get; set; } = false;
   
 
     public Player(int id, string name = "Player")
@@ -127,7 +129,7 @@ public class Player
         if (AssignedObjects.Contains(collectible))
         {
             CollectedObjects.Add(collectible);
-            Debug.Log($"Player {ID + 1} collected {collectible.Name}: {collectible.Description}");
+            Debug.Log($"Player {ID + 1} collected {collectible.Name}: {collectible.Description}.");
 
             return true;
         }

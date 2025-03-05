@@ -14,6 +14,7 @@ public class MemoryTrap : ITrapEffect
     {
         affectedPiece = context.CurrentPiece;
         gameContext = context;
+        context.TurnManager.PauseTurns(true);
 
         MemoryMinigame minigame = Object.FindObjectOfType<MemoryMinigame>();
         if (minigame != null)
@@ -26,17 +27,19 @@ public class MemoryTrap : ITrapEffect
         }
     }
 
-    private void OnMinigameResult(bool success)
+   private void OnMinigameResult(bool success)
     {
         if (success)
         {
-            Debug.Log("Trampa de memoria superada!");
+            Debug.Log("Memory trap deactivated!");
             return;
         }
 
-        Debug.Log("Fallaste! Penalización aplicada.");
+        Debug.Log("You failed the memory challenge! Losing 1 health point.");
 
-        var penaltyEffect = new PropertyTemporaryEffect(affectedPiece, "Speed", affectedPiece.Speed - 1, penaltyTurns);
-        gameContext.TurnManager.ApplyTemporaryEffect(penaltyEffect);
+        affectedPiece.TakeDamage(1, gameContext);
+
+        gameContext.TurnManager.PauseTurns(false);
     }
+
 }

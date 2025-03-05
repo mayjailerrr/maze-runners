@@ -180,8 +180,6 @@ public class Piece
         piece.PreviousPosition = PreviousPosition;
         piece.Health = Health;
 
-        // piece.View.Piece = piece;
-
         return piece;
     }
     

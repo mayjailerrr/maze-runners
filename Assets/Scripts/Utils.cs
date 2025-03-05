@@ -79,10 +79,9 @@ public enum CollectibleName
 
 public enum TrapType
 {
-    Freeze,
-    Slow,
     Damage,
     CodeLock,
-    Memory
+    Memory, 
+    Blindness
 }
 

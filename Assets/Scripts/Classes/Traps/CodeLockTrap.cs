@@ -14,6 +14,7 @@ public class CodeLockTrap : ITrapEffect
     {
         affectedPiece = context.CurrentPiece;
         gameContext = context;
+        context.TurnManager.PauseTurns(true);
 
         CodeLockMinigame minigame = Object.FindObjectOfType<CodeLockMinigame>();
         if (minigame != null)
@@ -36,9 +37,6 @@ public class CodeLockTrap : ITrapEffect
 
         Debug.Log("You failed! Piece unarmed for 2 turns.");
 
-        var freezeEffect = new PropertyTemporaryEffect(affectedPiece, "Speed", 0, stunTurns);
-        gameContext.TurnManager.ApplyTemporaryEffect(freezeEffect);
-
         var blockAbilities = new ActionTemporaryEffect(
             affectedPiece,
             () => affectedPiece.AbilitiesBlocked = true,
@@ -46,5 +44,7 @@ public class CodeLockTrap : ITrapEffect
             stunTurns
         );
         gameContext.TurnManager.ApplyTemporaryEffect(blockAbilities);
+
+        gameContext.TurnManager.PauseTurns(false);
     }
 }

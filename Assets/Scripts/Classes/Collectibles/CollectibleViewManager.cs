@@ -117,8 +117,6 @@ public class CollectibleViewManager : MonoBehaviour
             .OnComplete(() => ShowCollectibleEffect(collectibleGO));
 
         collectibleGO.transform.SetAsLastSibling();
-
-        Debug.Log($"Collectible {collectible.Name} moved to HUD.");
     }
 
     private void ShowCollectibleEffect(GameObject collectibleGO)

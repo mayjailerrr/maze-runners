@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using System;
+using TMPro;
 
 public class CodeLockMinigame : MonoBehaviour
 {
     public GameObject panel;
+    public TextMeshProUGUI instructionText;
     public Transform gridParent;
     public GameObject nodePrefab;
     public float displayTime = 2f;
@@ -39,6 +41,9 @@ public class CodeLockMinigame : MonoBehaviour
 
     public void StartMinigame(Action<bool> callback)
     {
+        instructionText.text = "Memorize the pattern and replicate it!";
+        instructionText.gameObject.SetActive(true);
+
         onComplete = callback;
         panel.SetActive(true);
 
@@ -116,6 +121,7 @@ public class CodeLockMinigame : MonoBehaviour
     {
         isActive = false;
         panel.SetActive(false);
+        instructionText.gameObject.SetActive(false);
         ClearGrid();
         onComplete?.Invoke(success);
     }

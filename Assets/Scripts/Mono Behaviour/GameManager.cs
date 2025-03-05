@@ -94,6 +94,7 @@ public class GameManager : MonoBehaviour
         InitializeBoard();
         InitializeTurnManager();
         InitializeEndTurnHandler();
+        
 
         BoardController.ExternalInitialize(board, boardView); 
        
@@ -102,6 +103,8 @@ public class GameManager : MonoBehaviour
         GameContext.SetTurnManager(TurnManager);
         GameContext.SetBoardView(boardView);
         GameContext.SetGameManager(this);
+
+        
 
         collectibleViewManager = FindObjectOfType<CollectibleViewManager>();
         collectibleGridView.InitializeGrid(board, boardView, collectibleViewManager);
