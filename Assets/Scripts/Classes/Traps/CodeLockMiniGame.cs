@@ -44,6 +44,7 @@ public class CodeLockMinigame : MonoBehaviour
         instructionText.text = "Memorize the pattern and replicate it!";
         instructionText.gameObject.SetActive(true);
 
+        GameEvents.TriggerMinigameStarted();
         onComplete = callback;
         panel.SetActive(true);
 
@@ -77,6 +78,7 @@ public class CodeLockMinigame : MonoBehaviour
         isActive = false;
         foreach (int index in correctPattern)
         {
+            GameEvents.TriggerPatternIlluminate();
             nodes[index].GetComponent<Image>().DOColor(Color.yellow, 0.3f).SetLoops(2, LoopType.Yoyo);
             yield return new WaitForSeconds(0.6f);
         }
@@ -99,6 +101,8 @@ public class CodeLockMinigame : MonoBehaviour
     public void OnNodePressed(int index)
     {
         if (!isActive) return;
+
+        GameEvents.TriggerPatternButtonPressed();
         
         playerPattern.Add(index);
         
@@ -123,6 +127,8 @@ public class CodeLockMinigame : MonoBehaviour
         panel.SetActive(false);
         instructionText.gameObject.SetActive(false);
         ClearGrid();
+        GameEvents.TriggerMinigameEnded();
+        GameEvents.TriggerMinigameEnd(success);
         onComplete?.Invoke(success);
     }
 

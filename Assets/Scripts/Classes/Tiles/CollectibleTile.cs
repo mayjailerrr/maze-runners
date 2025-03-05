@@ -17,6 +17,7 @@ public class CollectibleTile : Tile
         {
             CollectibleViewManager.Instance?.MoveToHUD(Collectible);
             Collectible = null;
+            GameEvents.TriggerCollectible();
         }
         return collected;
     }

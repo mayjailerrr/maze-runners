@@ -16,8 +16,8 @@ public class TrapTile : Tile
     {
         if (TrapEffect != null)
         {
+            GameEvents.TriggerTrap();
             TrapEffect?.ApplyEffect(context);
-            Debug.Log("I passed by ActivateTrap");
         }
     }
 }

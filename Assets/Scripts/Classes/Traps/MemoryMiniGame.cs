@@ -28,6 +28,7 @@ public class MemoryMinigame : MonoBehaviour
         instructionText.text = "Memorize the symbols and find the matching pairs!!";
         instructionText.gameObject.SetActive(true);
 
+        GameEvents.TriggerMinigameStarted();
         onComplete = callback;
         panel.SetActive(true);
         GenerateSymbols();
@@ -70,6 +71,7 @@ public class MemoryMinigame : MonoBehaviour
     {
         if (!isActive || selected == firstSelected) return;
         
+        GameEvents.TriggerMemoryButtonPressed();
 
         selected.GetComponent<Image>().sprite = assignedSymbols[index];
         
@@ -91,6 +93,8 @@ public class MemoryMinigame : MonoBehaviour
         
         if (firstSelected.GetComponent<Image>().sprite == secondSelected.GetComponent<Image>().sprite)
         {
+            GameEvents.TriggerMemoryPairFound();
+
             firstSelected.transform.DOScale(Vector3.zero, 0.3f).OnComplete(() => Destroy(firstSelected));
             secondSelected.transform.DOScale(Vector3.zero, 0.3f).OnComplete(() => Destroy(secondSelected));
             symbolObjects.Remove(firstSelected);
@@ -127,6 +131,8 @@ public class MemoryMinigame : MonoBehaviour
         isActive = false;
         panel.SetActive(false);
         instructionText.gameObject.SetActive(false);
+        GameEvents.TriggerMinigameEnded();
+        GameEvents.TriggerMinigameEnd(success);
         onComplete?.Invoke(success);
     }
     
