@@ -10,21 +10,15 @@ Ghibli Labyrinth: The Spirit Paths is a fan-made multiplayer escape labyrinth ga
 - **Escape Mechanics**: Pick up iconics objects and find your way out of the labyrinth.
 
 ## Installation
-As the game is developed in Unity, I plan to create a build soon. In the meantime, here are some general instructions for running a simple Unity project:
+As the game is developed in Unity, it has been created a build with the executable program of the game (.exe archive in the file). It's possible to download it at the following link using the given code:
 
-1. **Clone the Repository**:
+   **MEGA link with the entering code**:
    ```bash
-   git clone https://github.com/mayjailerrr/maze-runners.git
+   https://mega.nz/folder/OuRhETQK#N2ORHsVjbD1fxRpEGmlmRw
+
+   N2ORHsVjbD1fxRpEGmlmRw
    ```
    
-2. **Open in Unity**:
-   - Open Unity Hub and add the project folder.
-   - Open the project in Unity.
-
-3. **Build the Game**:
-   - Go to `File > Build Settings`.
-   - Select your target platform and click on `Build`.
-
 ## Usage
 A basic guide has been included within the game to guide players on how to navigate and enjoy the experience.
 
