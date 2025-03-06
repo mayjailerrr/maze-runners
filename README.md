@@ -15,7 +15,8 @@ As the game is developed in Unity, it has been created a build with the executab
    **MEGA link with the entering code**:
    ```bash
    https://mega.nz/folder/OuRhETQK#N2ORHsVjbD1fxRpEGmlmRw
-
+   ```
+   ```bash
    N2ORHsVjbD1fxRpEGmlmRw
    ```
    
