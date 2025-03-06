@@ -69,9 +69,9 @@ public enum CollectibleName
     Acorn,
     ChibiTotoro,
     Corn,
-    PilotGoggles,
+    BrownRadio,
     SmallPlane,
-    AmeliaScarf,
+    Hydroplane,
     Teacup,
     NeedleSword,
     SugarCube

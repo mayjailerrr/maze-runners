@@ -45,9 +45,9 @@ public static class CollectibleFactory
                 break;
             
             case Movies.PorcoRosso:
-                collectibles.Add(new Collectible(CollectibleName.PilotGoggles, "Porco's goggles"));
+                collectibles.Add(new Collectible(CollectibleName.Hydroplane, "Curtis' hydroplane"));
                 collectibles.Add(new Collectible(CollectibleName.SmallPlane, "Porco's small plane"));
-                collectibles.Add(new Collectible(CollectibleName.AmeliaScarf, "A scarf from Amelia's aviator outfit"));
+                collectibles.Add(new Collectible(CollectibleName.BrownRadio, "A radio from Porco"));
                 break;
             
             case Movies.Arietty:

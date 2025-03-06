@@ -52,9 +52,9 @@ public class CollectibleViewManager : MonoBehaviour
             { CollectibleName.ChibiTotoro, Resources.Load<Sprite>("Chibi-Totoro") },
             { CollectibleName.Corn, Resources.Load<Sprite>("Corn") },
 
-            { CollectibleName.PilotGoggles, Resources.Load<Sprite>("Pilot Goggles") },
+            { CollectibleName.Hydroplane, Resources.Load<Sprite>("Hydroplane") },
             { CollectibleName.SmallPlane, Resources.Load<Sprite>("SmallPlane") },
-            { CollectibleName.AmeliaScarf, Resources.Load<Sprite>("AmeliaScarf") },
+            { CollectibleName.BrownRadio, Resources.Load<Sprite>("BrownRadio") },
 
             { CollectibleName.Teacup, Resources.Load<Sprite>("Teacup") },
             { CollectibleName.NeedleSword, Resources.Load<Sprite>("NeedleSword") },

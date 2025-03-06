@@ -112,7 +112,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BoardView: {fileID: 0}
-  moveDuration: 0.4
 --- !u!82 &1058956065085051073
 AudioSource:
   m_ObjectHideFlags: 0
