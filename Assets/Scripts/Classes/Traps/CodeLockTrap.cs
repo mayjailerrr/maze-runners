@@ -32,6 +32,7 @@ public class CodeLockTrap : ITrapEffect
         if (success)
         {
             Debug.Log("Trap deactivated successfully!");
+            gameContext.TurnManager.PauseTurns(false);
             return;
         }
 

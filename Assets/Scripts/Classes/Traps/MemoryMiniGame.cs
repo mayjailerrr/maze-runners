@@ -69,7 +69,7 @@ public class MemoryMinigame : MonoBehaviour
     
     private void OnSymbolSelected(GameObject selected, int index)
     {
-        if (!isActive || selected == firstSelected) return;
+        if (!isActive || selected == firstSelected || selected == null) return;
         
         GameEvents.TriggerMemoryButtonPressed();
 
@@ -88,15 +88,18 @@ public class MemoryMinigame : MonoBehaviour
     
     private IEnumerator CheckMatch()
     {
-        isActive = false;
+        isActive = false; 
         yield return new WaitForSeconds(0.5f);
-        
+
         if (firstSelected.GetComponent<Image>().sprite == secondSelected.GetComponent<Image>().sprite)
         {
             GameEvents.TriggerMemoryPairFound();
 
-            firstSelected.transform.DOScale(Vector3.zero, 0.3f).OnComplete(() => Destroy(firstSelected));
-            secondSelected.transform.DOScale(Vector3.zero, 0.3f).OnComplete(() => Destroy(secondSelected));
+            Tween firstTween = firstSelected.transform.DOScale(Vector3.zero, 0.3f).OnKill(() => Destroy(firstSelected));
+            Tween secondTween = secondSelected.transform.DOScale(Vector3.zero, 0.3f).OnKill(() => Destroy(secondSelected));
+
+            yield return new WaitForSeconds(0.3f);
+
             symbolObjects.Remove(firstSelected);
             symbolObjects.Remove(secondSelected);
         }
@@ -106,25 +109,30 @@ public class MemoryMinigame : MonoBehaviour
             EndMinigame(false);
             yield break;
         }
-        
+
         firstSelected = null;
         secondSelected = null;
         isActive = true;
-        
+
         if (symbolObjects.Count == 0)
         {
             EndMinigame(true);
         }
     }
+
     
     private void ClearRemainingSymbols()
     {
+        List<Tween> tweens = new List<Tween>();
+
         foreach (var obj in symbolObjects)
         {
-            obj.transform.DOScale(Vector3.zero, 0.3f).OnComplete(() => Destroy(obj));
+            tweens.Add(obj.transform.DOScale(Vector3.zero, 0.3f).OnComplete(() => Destroy(obj)));
         }
-        symbolObjects.Clear();
+
+        DOTween.Sequence().AppendInterval(0.3f).OnComplete(() => symbolObjects.Clear());
     }
+
     
     private void EndMinigame(bool success)
     {

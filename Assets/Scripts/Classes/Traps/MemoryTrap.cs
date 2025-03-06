@@ -31,6 +31,7 @@ public class MemoryTrap : ITrapEffect
         if (success)
         {
             Debug.Log("Memory trap deactivated!");
+            gameContext.TurnManager.PauseTurns(false);
             return;
         }
 
