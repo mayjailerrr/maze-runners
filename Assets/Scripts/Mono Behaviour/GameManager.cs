@@ -242,8 +242,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void NextPlayer()
-    {
-      
+    {  
         currentPlayerIndex++;
         if (currentPlayerIndex >= 4 || currentPlayerIndex >= PlayerCount + 1)
         {

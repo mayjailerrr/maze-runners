@@ -42,7 +42,7 @@ public class BoardGenerator
 
     public void PlaceTraps()
     {
-        int trapCount = (int)(board.Size * board.Size * 0.5f);
+        int trapCount = (int)(board.Size * board.Size * 0.1f);
         System.Random random = new System.Random();
 
         PlaceTiles(trapCount, CanPlaceTrapOrCollectible, (x, y) => 
@@ -101,7 +101,7 @@ public class BoardGenerator
                 return;
             }
 
-            Tile selectedTile = GetStrategicTile(availableTiles, placedTiles, 4);  
+            Tile selectedTile = GetStrategicTile(availableTiles, placedTiles, 3);  
             if (selectedTile == null) selectedTile = availableTiles[random.Next(availableTiles.Count)];
 
             availableTiles.Remove(selectedTile);
@@ -127,7 +127,7 @@ public class BoardGenerator
                 return;
             }
 
-            Tile selectedile = GetStrategicTile(availableTiles, placedTiles, 3, pieces);
+            Tile selectedile = GetStrategicTile(availableTiles, placedTiles, 2, pieces);
             if (selectedile == null) selectedile = availableTiles[random.Next(availableTiles.Count)];
 
             availableTiles.Remove(selectedile);
