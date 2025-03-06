@@ -36,7 +36,7 @@ public class ShieldAbility : IAbility
         
         context.CurrentPlayer.RecordAbilityUse();
         targetPiece.View.PlayAbilityEffect(new Color(1f, 1f, 0.7f, 0.8f));
-        targetPiece.View.PlayAbilitySound();
+        GameEvents.TriggerShieldUsed();
         
         Debug.Log($"{targetPiece.Name} is now shielded for {shieldTurns} turns.");
         return true;

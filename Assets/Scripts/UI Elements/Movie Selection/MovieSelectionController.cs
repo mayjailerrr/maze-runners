@@ -57,6 +57,7 @@ public class MovieSelectionController : MonoBehaviour
             return;
         }
 
+        GameEvents.TriggerPatternIlluminate();
         Movies selectedMovie = (Movies)movieIndex;
         int currentPlayerIndex = GameManager.Instance.GetCurrentPlayerIndex();
 

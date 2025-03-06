@@ -25,7 +25,7 @@ public class TeleportAbility : IAbility
 
         context.CurrentPiece.Position = (randomTile.Position.x, randomTile.Position.y);
         context.CurrentPlayer.RecordAbilityUse();
-        pieceView.PlayAbilitySound();
+        GameEvents.TriggerTeleportUsed();
         
         Debug.Log($"Piece teleported to ({randomTile.Position.x}, {randomTile.Position.y})");
 

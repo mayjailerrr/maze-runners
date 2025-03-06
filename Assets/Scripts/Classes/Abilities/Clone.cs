@@ -30,7 +30,7 @@ public class CloneAbility : IAbility
 
         context.CurrentPlayer.RecordAbilityUse();
         currentPiece.View.PlayAbilityEffect(new Color(0f, 0f, 0f, 0.8f));
-        currentPiece.View.PlayAbilitySound();
+        GameEvents.TriggerCloneUsed();
 
         Debug.Log($"Piece {context.CurrentPiece.Name} cloned successfully. New piece: {clonedPiece.Name}");
 

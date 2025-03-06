@@ -42,7 +42,7 @@ public class AbsorbAbilitiesAbility : IAbility
         
         context.CurrentPlayer.RecordAbilityUse();
         currentPiece.View.PlayAbilityEffect(new Color(1f, 0.65f, 0f, 0.8f)); 
-        currentPiece.View.PlayAbilitySound();
+        GameEvents.TriggerAbsorbUsed();
 
         Debug.Log($"Ability absorbed: {targetPiece.Ability.Description}");
         return true;

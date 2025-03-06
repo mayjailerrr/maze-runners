@@ -54,7 +54,7 @@ public class FreezeAbility : IAbility
 
         context.CurrentPlayer.RecordAbilityUse();
         currentPiece.View.PlayAbilityEffect(new Color(0.68f, 0.85f, 1f, 0.8f));
-        currentPiece.View.PlayAbilitySound();
+        GameEvents.TriggerFreezeUsed();
         
         Debug.Log($"Piece {targetPiece.Name} has been frozen for {freezeTurns} turns.");
        

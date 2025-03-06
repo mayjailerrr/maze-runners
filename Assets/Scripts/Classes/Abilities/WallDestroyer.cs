@@ -43,7 +43,7 @@ public class WallDestroyerAbility : IAbility
         }
         context.CurrentPlayer.RecordAbilityUse();
         currentPiece.View.PlayAbilityEffect(new Color(0f, 0.39f, 0f, 0.8f));
-        currentPiece.View.PlayAbilitySound();
+        GameEvents.TriggerWallDestroyerUsed();
 
         Debug.LogError($"Target position ({targetX}, {targetY}) is out of bounds.");
         return false;

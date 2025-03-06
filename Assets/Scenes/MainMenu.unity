@@ -10020,6 +10020,19 @@ MonoBehaviour:
   memoryPairFoundSound: {fileID: 8300000, guid: 50b3f672b30e98445a2c41155a771069, type: 3}
   minigameWinSound: {fileID: 8300000, guid: d7ecbe9bad35455459a9eb2348040e49, type: 3}
   minigameFailSound: {fileID: 8300000, guid: 6be8be228c5bac64680b3529d92aa641, type: 3}
+  absorbSound: {fileID: 8300000, guid: a642be9c25b0cd04d83f9be53826bdef, type: 3}
+  absorbDamageSound: {fileID: 8300000, guid: 41af545080e4e934c9f3e1c459d4b343, type: 3}
+  cloneSound: {fileID: 8300000, guid: 33cdc4536ff6b6345972fbe08ec93e5c, type: 3}
+  freezeSound: {fileID: 8300000, guid: ac6b8f126606a4048a1d6b314160ae62, type: 3}
+  healthDamageSound: {fileID: 8300000, guid: d68ac45291b2f3d4398aee267f065a2e, type: 3}
+  invisibilitySound: {fileID: 8300000, guid: ce9e400a6393c3545ad0383b4c482973, type: 3}
+  rampartBuilderSound: {fileID: 8300000, guid: eb00fe8fe2a8b854c9997af1a729c6a7, type: 3}
+  shieldSound: {fileID: 8300000, guid: e69316bd3da329d4ca5b78423a9d330e, type: 3}
+  speedBoostSound: {fileID: 8300000, guid: 62638ff1004e2074399f514ca2d05000, type: 3}
+  teleportSound: {fileID: 8300000, guid: c408a1b8a6a102d42a9b59e6a3bcb8cb, type: 3}
+  WallBombSound: {fileID: 8300000, guid: 601e868d9ba0c79418bd52605a02b8cf, type: 3}
+  WallBuilderSound: {fileID: 8300000, guid: 3d3ce8d5def7548428ca0ab6dfc87683, type: 3}
+  WallDestroyerSound: {fileID: 8300000, guid: 629edac567e246e48a4f58c69a41a604, type: 3}
 --- !u!1 &1956512616
 GameObject:
   m_ObjectHideFlags: 0

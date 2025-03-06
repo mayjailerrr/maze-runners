@@ -12,9 +12,6 @@ public class PieceView : MonoBehaviour
     public BoardView BoardView;
     public Piece Piece { get; set; } 
 
-    private AudioSource audioSource;
-
-
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -22,14 +19,7 @@ public class PieceView : MonoBehaviour
         if (animator == null)
         {
             Debug.LogError("Animator is not assigned in PieceView.");
-        }
-
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            Debug.LogError("AudioSource is missing on this piece!");
-        }
-        
+        }  
     }
 
     public void UpdateAnimation(Vector2 direction, bool isMoving)
@@ -92,19 +82,6 @@ public class PieceView : MonoBehaviour
             piece.IsShielded = !isVisible;
         }
     }
-
-    public void PlayAbilitySound()
-    {
-        if (audioSource != null && audioSource.clip != null)
-        {
-            audioSource.Play();
-        }
-        else
-        {
-            Debug.LogWarning("No AudioSource or AudioClip assigned.");
-        }
-    }
-
 
     public void PlayAbilityEffect(Color effectColor)
     {

@@ -76,7 +76,7 @@ public class RampartBuilderAbility : IAbility
 
         context.CurrentPlayer.RecordAbilityUse();
         currentPiece.View.PlayAbilityEffect(new Color(0.6f, 0.2f, 1f, 0.8f));
-        currentPiece.View.PlayAbilitySound();
+        GameEvents.TriggerRampartBuilderUsed();
 
         return wallBuilt;
     }

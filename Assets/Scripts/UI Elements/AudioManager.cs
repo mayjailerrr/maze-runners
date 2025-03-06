@@ -16,6 +16,21 @@ public class AudioManager : MonoBehaviour
     public AudioClip minigameWinSound;
     public AudioClip minigameFailSound;
 
+    public AudioClip absorbSound;
+    public AudioClip absorbDamageSound;
+    public AudioClip cloneSound;
+    public AudioClip freezeSound;
+    public AudioClip healthDamageSound;
+    public AudioClip invisibilitySound;
+    public AudioClip rampartBuilderSound;
+    public AudioClip shieldSound;
+    public AudioClip speedBoostSound;
+    public AudioClip teleportSound;
+    public AudioClip WallBombSound;
+    public AudioClip WallBuilderSound;
+    public AudioClip WallDestroyerSound;
+
+
     private void OnEnable()
     {
         GameEvents.OnTrapTriggered += PlayTrapSound;
@@ -29,6 +44,21 @@ public class AudioManager : MonoBehaviour
     
         GameEvents.OnMinigameStarted += PauseBackgroundMusic;
         GameEvents.OnMinigameEnded += ResumeBackgroundMusic;
+
+        GameEvents.OnAbsorbUsed += PlayAbsorbSound;
+        GameEvents.OnAbsorbDamageUsed += PlayAbsorbDamageSound;
+        GameEvents.OnCloneUsed += PlayCloneSound;
+        GameEvents.OnFreezeUsed += PlayFreezeSound;
+        GameEvents.OnHealthDamageUsed += PlayHealthDamageSound;
+        GameEvents.OnInvisibilityUsed += PlayInvisibilitySound;
+        GameEvents.OnRampartBuilderUsed += PlayRampartBuilderSound;
+        GameEvents.OnShieldUsed += PlayShieldSound;
+        GameEvents.OnSpeedBoostUsed += PlaySpeedBoostSound;
+        GameEvents.OnTeleportUsed += PlayTeleportSound;
+        GameEvents.OnWallBombUsed += PlayWallBombSound;
+        GameEvents.OnWallBuilderUsed += PlayWallBuilderSound;
+        GameEvents.OnWallDestroyerUsed += PlayWallDestroyerSound;
+
     }
 
     private void OnDisable()
@@ -44,6 +74,20 @@ public class AudioManager : MonoBehaviour
     
         GameEvents.OnMinigameStarted -= PauseBackgroundMusic;
         GameEvents.OnMinigameEnded -= ResumeBackgroundMusic;
+
+        GameEvents.OnAbsorbUsed -= PlayAbsorbSound;
+        GameEvents.OnAbsorbDamageUsed -= PlayAbsorbDamageSound;
+        GameEvents.OnCloneUsed -= PlayCloneSound;
+        GameEvents.OnFreezeUsed -= PlayFreezeSound;
+        GameEvents.OnHealthDamageUsed -= PlayHealthDamageSound;
+        GameEvents.OnInvisibilityUsed -= PlayInvisibilitySound;
+        GameEvents.OnRampartBuilderUsed -= PlayRampartBuilderSound;
+        GameEvents.OnShieldUsed -= PlayShieldSound;
+        GameEvents.OnSpeedBoostUsed -= PlaySpeedBoostSound;
+        GameEvents.OnTeleportUsed -= PlayTeleportSound;
+        GameEvents.OnWallBombUsed -= PlayWallBombSound;
+        GameEvents.OnWallBuilderUsed -= PlayWallBuilderSound;
+        GameEvents.OnWallDestroyerUsed -= PlayWallDestroyerSound;
     }
 
     private void PlayTrapSound()
@@ -117,4 +161,83 @@ public class AudioManager : MonoBehaviour
             audioSource.UnPause();
         }
     }
+
+    private void PlayAbsorbSound()
+    {
+        if (absorbSound != null)
+            audioSource.PlayOneShot(absorbSound);
+    }
+
+    private void PlayAbsorbDamageSound()
+    {
+        if (absorbDamageSound != null)
+            audioSource.PlayOneShot(absorbDamageSound);
+    }
+
+    private void PlayCloneSound()
+    {
+        if (cloneSound != null)
+            audioSource.PlayOneShot(cloneSound);
+    }
+
+    private void PlayFreezeSound()
+    {
+        if (freezeSound != null)
+            audioSource.PlayOneShot(freezeSound);
+    }
+
+    private void PlayHealthDamageSound()
+    {
+        if (healthDamageSound != null)
+            audioSource.PlayOneShot(healthDamageSound);
+    }
+
+    private void PlayInvisibilitySound()
+    {
+        if (invisibilitySound != null)
+            audioSource.PlayOneShot(invisibilitySound);
+    }
+
+    private void PlayRampartBuilderSound()
+    {
+        if (rampartBuilderSound != null)
+            audioSource.PlayOneShot(rampartBuilderSound);
+    }
+
+    private void PlayShieldSound()
+    {
+        if (shieldSound != null)
+            audioSource.PlayOneShot(shieldSound);
+    }
+
+    private void PlaySpeedBoostSound()
+    {
+        if (speedBoostSound != null)
+            audioSource.PlayOneShot(speedBoostSound);
+    }
+
+    private void PlayTeleportSound()
+    {
+        if (teleportSound != null)
+            audioSource.PlayOneShot(teleportSound);
+    }
+
+    private void PlayWallBombSound()
+    {
+        if (WallBombSound != null)
+            audioSource.PlayOneShot(WallBombSound);
+    }
+
+    private void PlayWallBuilderSound()
+    {
+        if (WallBuilderSound != null)
+            audioSource.PlayOneShot(WallBuilderSound);
+    }
+
+    private void PlayWallDestroyerSound()
+    {
+        if (WallDestroyerSound != null)
+            audioSource.PlayOneShot(WallDestroyerSound);
+    }
+
 }

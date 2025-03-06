@@ -19,7 +19,7 @@ public class SpeedBoostAbility : IAbility
 
         context.CurrentPlayer.RecordAbilityUse();
         currentPiece.View.PlayAbilityEffect(new Color(0.6f, 1f, 0.6f, 0.8f));
-        currentPiece.View.PlayAbilitySound();
+        GameEvents.TriggerSpeedBoostUsed();
         
         Debug.Log($"Piece speed increased to {targetPiece.Speed}");
         return true;

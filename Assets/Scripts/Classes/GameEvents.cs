@@ -14,6 +14,21 @@ public static class GameEvents
     public static event Action OnMinigameStarted;
     public static event Action OnMinigameEnded;
 
+    public static event Action OnAbsorbUsed;
+    public static event Action OnAbsorbDamageUsed;
+    public static event Action OnCloneUsed;
+    public static event Action OnFreezeUsed;
+    public static event Action OnHealthDamageUsed;
+    public static event Action OnInvisibilityUsed;
+    public static event Action OnRampartBuilderUsed;
+    public static event Action OnShieldUsed;
+    public static event Action OnSpeedBoostUsed;
+    public static event Action OnTeleportUsed;
+    public static event Action OnWallBombUsed;
+    public static event Action OnWallBuilderUsed;
+    public static event Action OnWallDestroyerUsed;
+
+
     public static void TriggerTrap()
     {
         OnTrapTriggered?.Invoke();
@@ -58,4 +73,70 @@ public static class GameEvents
     {
         OnMinigameEnded?.Invoke();
     }
+
+    public static void TriggerAbsorbUsed()
+    {
+        OnAbsorbUsed?.Invoke();
+    }
+
+    public static void TriggerAbsorbDamageUsed()
+    {
+        OnAbsorbDamageUsed?.Invoke();
+    }
+
+    public static void TriggerCloneUsed()
+    {
+        OnCloneUsed?.Invoke();
+    }
+
+    public static void TriggerFreezeUsed()
+    {
+        OnFreezeUsed?.Invoke();
+    }
+
+    public static void TriggerHealthDamageUsed()
+    {
+        OnHealthDamageUsed?.Invoke();
+    }
+
+    public static void TriggerInvisibilityUsed()
+    {
+        OnInvisibilityUsed?.Invoke();
+    }
+
+    public static void TriggerRampartBuilderUsed()
+    {
+        OnRampartBuilderUsed?.Invoke();
+    }
+
+    public static void TriggerShieldUsed()
+    {
+        OnShieldUsed?.Invoke();
+    }
+
+    public static void TriggerSpeedBoostUsed()
+    {
+        OnSpeedBoostUsed?.Invoke();
+    }
+
+    public static void TriggerTeleportUsed()
+    {
+        OnTeleportUsed?.Invoke();
+    }
+
+    public static void TriggerWallBombUsed()
+    {
+        OnWallBombUsed?.Invoke();
+    }
+
+    public static void TriggerWallBuilderUsed()
+    {
+        OnWallBuilderUsed?.Invoke();
+    }
+
+    public static void TriggerWallDestroyerUsed()
+    {
+        OnWallDestroyerUsed?.Invoke();
+    }
+
 }

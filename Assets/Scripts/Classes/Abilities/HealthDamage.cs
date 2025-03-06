@@ -43,7 +43,7 @@ public class HealthDamageAbility : IAbility
 
         context.CurrentPlayer.RecordAbilityUse();
         currentPiece.View.PlayAbilityEffect(new Color(0.65f, 0.16f, 0.16f, 0.8f));
-        currentPiece.View.PlayAbilitySound();
+        GameEvents.TriggerHealthDamageUsed();
 
         return true;
     }
