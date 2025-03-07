@@ -26,21 +26,28 @@ public class PieceView : MonoBehaviour
     {
         if (animator == null) return;
 
-      
         if (isMoving && direction != Vector2.zero)
         {
-            lastDirection = direction.normalized; 
+            lastDirection = direction.normalized;
         }
-        
-        
+
         animator.SetFloat("Horizontal", lastDirection.x);
         animator.SetFloat("Vertical", lastDirection.y);
         animator.SetBool("IsMoving", isMoving);
+
+        if (!isMoving)
+        {
+            if (lastDirection.x > 0)
+                animator.Play("IdleRight");
+            else if (lastDirection.x < 0)
+                animator.Play("IdleLeft");
+        }
     }
 
     public IEnumerator AnimateMovement(Vector3 targetPosition, System.Action onMovementComplete)
     {
         UpdateAnimation(Vector2.zero, false);
+        
         Transform originalParent = transform.parent;
         Vector3 originalScale = transform.localScale;
         Vector2 direction = (targetPosition - transform.position).normalized;

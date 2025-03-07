@@ -119,7 +119,11 @@ public class PieceController : MonoBehaviour
             _ => Directions.Right
         };
 
-        gameContext.SetPlayerDirection(directionString);
+        if (direction == Vector2.left || direction == Vector2.right)
+        {
+            gameContext.SetPlayerDirection(directionString);
+        }
+
 
         int newX = piece.Position.Item1 + (int)direction.x;
         int newY = piece.Position.Item2 + (int)direction.y;
@@ -136,7 +140,8 @@ public class PieceController : MonoBehaviour
             !collectibleTile.CanBeCollectedBy(gameContext.CurrentPlayer)) || targetTile.IsOccupied)
         {
             Debug.LogWarning("Movement blocked by another piece or collectible.");
-            piece.View.UpdateAnimation(Vector2.zero, false);
+            piece.View.UpdateAnimation(gameContext.PlayerDirection == Directions.Left ? Vector2.left : Vector2.right, false);
+
             return;
         }
 
@@ -195,7 +200,7 @@ public class PieceController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Ability of piece {piece.Name} is on cooldown.");
+            Debug.LogWarning($"Ability of piece {piece.Name} is on cooldown or you haven't selected the piece previously.");
         }
     }
 }
