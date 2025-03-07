@@ -1,15 +1,18 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BlindnessEffectHandler : MonoBehaviour
 {
     public Canvas targetCanvas; 
     private GameObject blindnessOverlay;
+    public TextMeshProUGUI blindnessText;
     private Context gameContext;
     private Player player;
 
     private void Start()
     {
+        blindnessText.text = "";
         if (targetCanvas == null)
         {
             Canvas[] canvases = FindObjectsOfType<Canvas>();
@@ -42,6 +45,7 @@ public class BlindnessEffectHandler : MonoBehaviour
             player = gameContext.CurrentPlayer;
             if (blindnessOverlay != null)
             {
+                blindnessText.text = "";
                 Destroy(blindnessOverlay);
             }
             return;
@@ -51,11 +55,13 @@ public class BlindnessEffectHandler : MonoBehaviour
         {
             if (blindnessOverlay == null)
             {
+                blindnessText.text = "You are under the effect of a Blindness Trap!";
                 CreateBlindnessOverlay();
             }
         }
         else if (blindnessOverlay != null)
         {
+            blindnessText.text = "";
             Destroy(blindnessOverlay);
         }
     }
@@ -69,6 +75,10 @@ public class BlindnessEffectHandler : MonoBehaviour
 
         Image image = blindnessOverlay.AddComponent<Image>();
         image.color = new Color(0, 0, 0, 1f);
+
+        blindnessText.transform.SetParent(targetCanvas.transform, false);
+        blindnessText.transform.SetAsLastSibling();
+
     }
 
 }
