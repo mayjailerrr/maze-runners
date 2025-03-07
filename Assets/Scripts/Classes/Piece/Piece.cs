@@ -99,6 +99,12 @@ public class Piece
 
     public bool UseAbility(Context context)
     {
+        if (context.CurrentPiece is null)
+        {
+            Debug.LogWarning("Select the piece first, please.");
+            return false;
+        }
+
         if (!CanUseAbility)
         {
             Debug.Log($"{Name} ability is on cooldown for {currentCooldown} more turn(s).");
@@ -115,7 +121,6 @@ public class Piece
             return true;
         }
 
-        Debug.LogWarning($"{Name} ability failed.");
         return false;
        
     }
@@ -191,8 +196,12 @@ public class Piece
         if (Health <= 0)
         {
             Health = 3;
+
             Debug.Log($"{Name} health reached 0. Resetting to initial position.");
+            
+            context.Board.GetTileAtPosition(Position.x, Position.y).OccupyingPiece = null;
             ResetPosition();
+
             context.BoardView.ResetPositionWithFeedback(this);
         }
     }

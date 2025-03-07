@@ -31,7 +31,7 @@ public class Board
             for (int y = 0; y < Size; y++)
             {
                 Tile tile = TileGrid[x, y];
-                if (!(tile is ObstacleTile) && !(tile is TrapTile) && !(tile is CollectibleTile))
+                if (!(tile is ObstacleTile) && !(tile is TrapTile) && !(tile is CollectibleTile) && !tile.IsOccupied)
                 {
                     neutralTiles.Add(tile);
                 }

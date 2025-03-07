@@ -23,6 +23,7 @@ public class TeleportAbility : IAbility
             return false;
         }
 
+        context.Board.TileGrid[context.CurrentPiece.Position.x, context.CurrentPiece.Position.y].OccupyingPiece = null;
         context.CurrentPiece.Position = (randomTile.Position.x, randomTile.Position.y);
         context.CurrentPlayer.RecordAbilityUse();
         GameEvents.TriggerTeleportUsed();
