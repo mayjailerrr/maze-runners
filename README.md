@@ -14,10 +14,10 @@ As the game is developed in Unity, it has been created a build with the executab
 
    **MEGA link with the entering code**:
    ```bash
-   https://mega.nz/folder/OuRhETQK#N2ORHsVjbD1fxRpEGmlmRw
+   https://mega.nz/folder/v34y0IxQ
    ```
    ```bash
-   N2ORHsVjbD1fxRpEGmlmRw
+   1oYCpuZGDFnqnnKIPQj6pQ
    ```
    
 ## Usage
