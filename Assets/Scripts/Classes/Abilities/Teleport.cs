@@ -10,11 +10,6 @@ public class TeleportAbility : IAbility
     public bool Execute(Context context)
     {
         var pieceView = context.CurrentPiece.View;
-        if (pieceView == null)
-        {
-            Debug.LogError("Piece view is null.");
-            return false;
-        }
 
         var randomTile = context.Board.GetRandomTile();
         if (randomTile == null)

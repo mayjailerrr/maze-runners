@@ -43,14 +43,7 @@ public class CollectibleGridView : MonoBehaviour
     {
         GameObject tileObject = boardView.GetTileObject(x, y);
 
-        if (tileObject == null)
-        {
-            Debug.LogError($"No tile found at ({x}, {y}) to place collectible {collectible.Name}.");
-            return;
-        }
-
         GameObject collectibleGO = collectibleViewManager.CreateCollectibleVisual(collectible);
-        if (collectibleGO == null) return;
 
         collectibleGO.transform.SetParent(tileObject.transform, false);
         collectibleGO.transform.localPosition = Vector3.zero;

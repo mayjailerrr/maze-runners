@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using MazeRunners;
 using System;
-using System.Linq;
 using UnityEngine;
 public class BoardGenerator
 {
@@ -43,7 +42,6 @@ public class BoardGenerator
     public void PlaceTraps()
     {
         int trapCount = (int)(board.Size * board.Size * 0.1f);
-        System.Random random = new System.Random();
 
         PlaceTiles(trapCount, CanPlaceTrapOrCollectible, (x, y) => 
         {

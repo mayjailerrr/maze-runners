@@ -6,7 +6,6 @@ public class PieceView : MonoBehaviour
 {
     private Animator animator;
     private Vector2 lastDirection = Vector2.right;
-    private RectTransform rectTransform;
 
     public GameObject FreezeIndicator { get; set; }
     public BoardView BoardView;
@@ -15,11 +14,6 @@ public class PieceView : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        rectTransform = GetComponent<RectTransform>();
-        if (animator == null)
-        {
-            Debug.LogError("Animator is not assigned in PieceView.");
-        }  
     }
 
     public void UpdateAnimation(Vector2 direction, bool isMoving)

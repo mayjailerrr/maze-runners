@@ -11,7 +11,6 @@ public class Piece
     private int currentCooldown = 0;
    
     public (int x, int y) Position { get; set; }
-    public (int x, int y)? PreviousPosition { get; private set; }
     public (int x, int y)? InitialPosition { get; set; }
     
     public event Action OnHealthChanged;
@@ -81,14 +80,12 @@ public class Piece
         Cooldown = cooldown;
         Ability = ability;
         Position = (0, 0);
-        PreviousPosition = null;
         InitialPosition = null;
         ResetTurn();
     }
 
     public void UpdatePosition((int x, int y) newPosition)
     {
-        PreviousPosition = Position; 
         Position = newPosition; 
     }
 
@@ -105,15 +102,8 @@ public class Piece
             return false;
         }
 
-        if (!CanUseAbility)
-        {
-            Debug.Log($"{Name} ability is on cooldown for {currentCooldown} more turn(s).");
-            return false;
-        }
-
         if (Ability?.Execute(context) == true)
         {
-            Debug.Log($"Piece {Name} used its ability!");
             ActivateAbility();
             HasUsedAbility = true;
 
@@ -150,8 +140,6 @@ public class Piece
   
     public void Move(int newX, int newY, Board board)
     {
-        if (board == null) throw new ArgumentNullException(nameof(board));
-
         Tile currentTile = board.TileGrid[Position.x, Position.y];
         Tile targetTile = board.TileGrid[newX, newY];
 
@@ -181,8 +169,8 @@ public class Piece
     public Piece Clone()
     {
         Piece piece = new Piece(Name + "_Clone", Speed, Cooldown, null);
+        piece.InitialPosition = Position;
         piece.Position = Position;
-        piece.PreviousPosition = PreviousPosition;
         piece.Health = Health;
 
         return piece;

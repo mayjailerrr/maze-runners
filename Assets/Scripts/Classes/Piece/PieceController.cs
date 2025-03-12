@@ -10,22 +10,19 @@ public class PieceController : MonoBehaviour
     private Context gameContext;
     private Board board;
     private PieceGridView pieceGridView;
-    private CollectibleViewManager collectibleViewManager;
     private HUDController hudController;
 
     private Queue<Vector2> inputQueue = new Queue<Vector2>();
     private bool isProcessingInput = false;
-
     private bool isInitialized = false;
 
     public void InitializePieceController(Board board, TurnManager turnManager, Context context, PieceGridView pieceGridView)
     {
         this.board = board;
         this.turnManager = turnManager;
-        this.gameContext = context;
+        gameContext = context;
         this.pieceGridView = pieceGridView;
-        this.collectibleViewManager = FindObjectOfType<CollectibleViewManager>();
-        this.hudController = FindObjectOfType<HUDController>();
+        hudController = FindObjectOfType<HUDController>();
 
         isInitialized = true;
     }
@@ -128,15 +125,16 @@ public class PieceController : MonoBehaviour
         int newX = piece.Position.Item1 + (int)direction.x;
         int newY = piece.Position.Item2 + (int)direction.y;
 
-        if (!board.IsWithinBounds(newX, newY))
+        if (!board.IsValidMove(newX, newY))
         {
-            Debug.LogWarning("Move out of bounds.");
+            piece.View.UpdateAnimation(Vector2.zero, false);
+            Debug.LogWarning($"Invalid move for piece {piece.Name} to ({newX}, {newY}).");
             return;
         }
 
         Tile targetTile = board.GetTileAtPosition(newX, newY);
 
-       if ((targetTile is CollectibleTile collectibleTile && collectibleTile.Collectible != null &&
+        if ((targetTile is CollectibleTile collectibleTile && collectibleTile.Collectible != null &&
             !collectibleTile.CanBeCollectedBy(gameContext.CurrentPlayer)) || targetTile.IsOccupied)
         {
             Debug.LogWarning("Movement blocked by another piece or collectible.");
@@ -145,30 +143,16 @@ public class PieceController : MonoBehaviour
             return;
         }
 
-        if (!board.IsValidMove(piece, newX, newY, gameContext))
-        {
-            piece.View.UpdateAnimation(Vector2.zero, false);
-            Debug.LogWarning($"Invalid move for piece {piece.Name} to ({newX}, {newY}).");
-            return;
-        }
-
         var previousPosition = piece.Position;
 
-        if(turnManager.PerformAction(ActionType.Move, piece, board, newX, newY, gameContext))
+        if(turnManager.PerformAction(ActionType.Move, piece, board, newX, newY))
         {
-           
             gameContext.UpdateTileAndPosition(board.GetTileAtPosition(newX, newY));
 
             pieceGridView.MovePiece(piece, previousPosition.x, previousPosition.y, newX, newY);
             piece.UpdatePosition((newX, newY));
             board.CleanPreviousTile(previousPosition.x, previousPosition.y);
 
-            if (piece.View == null)
-            {
-                Debug.LogError("PieceView is null for piece.");
-                return;
-            }
-            
             piece.View.UpdateAnimation(direction, true);
             HandleTileInteractions(piece, targetTile);
         }
@@ -183,7 +167,7 @@ public class PieceController : MonoBehaviour
 
         if (targetTile is CollectibleTile collectibleTile)
         {
-            collectibleTile.Interact(piece, gameContext.CurrentPlayer);
+            collectibleTile.Interact(gameContext.CurrentPlayer);
 
             if (gameContext.CurrentPlayer.HasCollectedAllObjects())
             {
@@ -200,7 +184,7 @@ public class PieceController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Ability of piece {piece.Name} is on cooldown or you haven't selected the piece previously.");
+            Debug.LogWarning($"Using the ability of piece {piece.Name} it's not possible right now.");
         }
     }
 }

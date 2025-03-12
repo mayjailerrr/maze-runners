@@ -37,18 +37,8 @@ public class PieceGridView : MonoBehaviour
     public void PlacePiece(Piece piece, int x, int y)
     {
         GameObject tileObject = boardView.GetTileObject(x, y);
-        if (tileObject == null)
-        {
-            Debug.LogError($"No tile found at ({x}, {y}) to place piece {piece.Name}.");
-            return;
-        }
-
+    
         GameObject prefab = piecePrefabRegistry.GetPrefab(piece.Name);
-        if (prefab == null)
-        {
-            Debug.LogError($"No prefab found for piece {piece.Name}. Skipping instantiation.");
-            return;
-        }
 
         GameObject pieceObject = Instantiate(prefab, tileObject.transform.position, Quaternion.identity, tileObject.transform);
         pieceObject.name = $"Piece {piece.Name} ({x}, {y})";
@@ -68,18 +58,6 @@ public class PieceGridView : MonoBehaviour
         GameObject currentTileObject = boardView.GetTileObject(previousX, previousY);
         GameObject newTileObject = boardView.GetTileObject(newX, newY);
 
-        if (currentTileObject == null || newTileObject == null)
-        {
-            Debug.LogError($"Tile object not found for position ({piece.Position.x}, {piece.Position.y}) or ({newX}, {newY}).");
-            return;
-        }
-
-        if (currentTileObject.transform.childCount == 0)
-        {
-            Debug.LogError($"No piece found on tile ({piece.Position.x}, {piece.Position.y}).");
-            return;
-        }
-
         GameObject pieceObject = currentTileObject.transform.GetChild(0).gameObject;
 
         PieceView pieceView = pieceObject.GetComponent<PieceView>();
@@ -90,10 +68,6 @@ public class PieceGridView : MonoBehaviour
             if (!boardView.activeMovements.ContainsKey(piece))
             {
                 boardView.activeMovements[piece] = movementCoroutine;
-            }
-            else
-            {
-                Debug.LogWarning($"La pieza {piece.Name} ya está en activeMovements.");
             }
         }
     }

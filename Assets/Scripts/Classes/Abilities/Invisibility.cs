@@ -11,12 +11,6 @@ public class InvisibilityAbility : IAbility
         Player currentPlayer = context.CurrentPlayer;
         Piece currentPiece = context.CurrentPiece;
 
-        if (currentPlayer == null || currentPiece == null || currentPiece.View == null)
-        {
-            Debug.LogError("No valid target pieces or player.");
-            return false;
-        }
-
         Action applyInvisibility = () => currentPiece.View.SetVisibility(false, currentPiece);
         Action revertInvisibility = () => currentPiece.View.SetVisibility(true, currentPiece);
 
@@ -32,6 +26,8 @@ public class InvisibilityAbility : IAbility
         context.TurnManager.ApplyTemporaryEffect(invisibilityEffect);
         context.CurrentPlayer.RecordAbilityUse();
         GameEvents.TriggerInvisibilityUsed();
+
+        Debug.Log($"{currentPiece.Name} is now invisible!");
         
         return true;
     }

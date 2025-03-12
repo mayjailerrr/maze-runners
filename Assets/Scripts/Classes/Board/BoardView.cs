@@ -44,13 +44,12 @@ public class BoardView : MonoBehaviour
 
     public GameObject GetTileObject(int x, int y)
     {
-        if (x < 0 || x >= tileObjects.GetLength(0) || y < 0 || y >= tileObjects.GetLength(1))
-        {
-            Debug.LogError($"Tile position ({x}, {y}) is out of bounds.");
-            return null;
-        }
-
         return tileObjects[x, y];
+    }
+
+    public void UpdateTileReference(int x, int y, GameObject newTile)
+    {
+        tileObjects[x, y] = newTile;
     }
 
     public GameObject GetPrefabForTile(Board board, MazeRunners.Tile tile, int x, int y)
@@ -95,37 +94,15 @@ public class BoardView : MonoBehaviour
 
     public void ResetPositionWithFeedback(Piece piece)
     {
-        if (piece == null)
-        {
-            Debug.LogError("Piece is null.");
-            return;
-        }
-
         if (activeMovements.TryGetValue(piece, out Coroutine coroutine))
         {
             StopCoroutine(coroutine);
             activeMovements.Remove(piece);
         }
 
-        if (!piece.InitialPosition.HasValue)
-        {
-            Debug.LogError("Piece initial position not set.");
-            return;
-        }
-
         var initialTileGO = GetTileObject(piece.InitialPosition.Value.x, piece.InitialPosition.Value.y);
-        if (initialTileGO == null)
-        {
-            Debug.LogError($"Initial tile at ({piece.InitialPosition.Value.x}, {piece.InitialPosition.Value.y}) not found.");
-            return;
-        }
 
         var pieceView = piece.View;
-        if (pieceView == null)
-        {
-            Debug.LogError("Piece view is null.");
-            return;
-        }
 
         pieceView.UpdateAnimation(Vector2.zero, false); 
 

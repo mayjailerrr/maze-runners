@@ -9,11 +9,6 @@ public class SpeedBoostAbility : IAbility
     {
         var targetPiece = context.CurrentPiece;
         var currentPiece = context.CurrentPiece;
-        if (targetPiece == null)
-        {
-            Debug.LogError("No piece selected to clone.");
-            return false;
-        }
 
         targetPiece.Speed += 2;
 

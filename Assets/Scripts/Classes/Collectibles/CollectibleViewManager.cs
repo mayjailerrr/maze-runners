@@ -105,11 +105,6 @@ public class CollectibleViewManager : MonoBehaviour
     public void MoveToHUD(Collectible collectible)
     {
         GameObject collectibleGO = GetCollectibleObject(collectible.Name);
-        if (collectibleGO == null)
-        {
-            Debug.LogError($"Collectible {collectible.Name} cannot be moved to HUD because it does not exist.");
-            return;
-        }
 
         collectibleGO.transform.SetParent(hudContainer, true);
         collectibleGO.transform.DOScale(Vector3.one * 1.2f, 0.3f).SetLoops(2, LoopType.Yoyo);

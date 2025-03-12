@@ -11,18 +11,10 @@ public class TurnManager
 
     private readonly Dictionary<object, List<ITemporaryEffect>> activeEffects = new();
    
-    private bool hasMovedPiece = false;
-    private bool hasUsedAbility = false;
-   
     public TurnManager(List<Player> players, Context context)
     {
-        if (players == null || players.Count < 2)
-        {
-            throw new System.ArgumentException("TurnManager requires at least two players.");
-        }
-
         this.players = players;
-        this.gameContext = context;
+        gameContext = context;
         StartTurn();
     }
 
@@ -83,7 +75,7 @@ public class TurnManager
 
     public void UpdateTemporaryEffects()
     {
-        foreach (var (piece, effects) in activeEffects)
+        foreach (var (obj, effects) in activeEffects)
         {
             for (int i = effects.Count - 1; i >= 0; i--)
             {
@@ -107,24 +99,12 @@ public class TurnManager
             return false;
         }
 
-        if (actionType == ActionType.Move && hasMovedPiece)
-        {
-            Debug.LogWarning("Cannot move more than once per turn.");
-            return false;
-        }
-
-        if (actionType == ActionType.UseAbility && hasUsedAbility)
-        {
-            Debug.LogWarning("Cannot use an ability more than once per turn.");
-            return false;
-        }
-
         return true;
     }
 
     public void PauseTurns(bool pause) => isPaused = pause;
     
-    public bool PerformAction(ActionType actionType, Piece piece, Board board, int targetX = 0, int targetY = 0, Context context = null)
+    public bool PerformAction(ActionType actionType, Piece piece, Board board, int targetX = 0, int targetY = 0)
     {
         if (!CanPerformAction(actionType))  return false;
        
@@ -139,26 +119,15 @@ public class TurnManager
                     return false;
                 }
 
-                if (!board.IsWithinBounds(targetX, targetY))
-                {
-                    Debug.LogWarning("Target move is out of bounds.");
-                    return false;
-                }
-
                 if (currentPlayer.MovePiece(piece, targetX, targetY, board))
                 {
                     CheckPieceExhausted();
                     return true;
                 }
+                
             return false;
 
             case ActionType.UseAbility:
-                if (currentPlayer.HasUsedAbility())
-                {
-                    Debug.LogWarning("Cannot use more than one ability per turn.");
-                    return false;
-                }
-
                 if (piece.HasUsedAbility)
                 {
                     CheckPieceExhausted();

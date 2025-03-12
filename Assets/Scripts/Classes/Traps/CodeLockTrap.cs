@@ -21,10 +21,6 @@ public class CodeLockTrap : ITrapEffect
         {
             minigame.StartMinigame(OnMinigameResult);
         }
-        else
-        {
-            Debug.LogError("CodeLockMinigame not found in scene!");
-        }
     }
 
     private void OnMinigameResult(bool success)

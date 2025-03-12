@@ -1,6 +1,5 @@
 
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,54 +8,33 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     public float GameStartTime { get; private set; }
 
-    public List<Collectible> playersCollectibles = new List<Collectible>();
-
-    public int PlayerCount => players.Count;
-    private Dictionary<int, Player> players = new Dictionary<int, Player>();
-    public IReadOnlyDictionary<int, Player> Players => players;
-    
+    public int PlayerCount => Players.Count;
+    public Dictionary<int, Player> Players = new Dictionary<int, Player>();
     private List<Movies> selectedMovies = new List<Movies>();
     
     public Context GameContext { get; private set; }
-
     private Board board;
-    public BoardController BoardController { get; private set; }
-    public TurnManager TurnManager { get; private set; }
+    private BoardView boardView;
+    private PieceGridView pieceGridView;
+    private PieceController pieceController;
+    private TurnManager turnManager;
+    private EndTurnHandler endTurnHandler;
     
+    public List<Collectible> playersCollectibles = new List<Collectible>();
     public CollectibleGridView collectibleGridView;
     public CollectibleViewManager collectibleViewManager;
     
-    private EndTurnHandler endTurnHandler;
-   
     private int currentPlayerIndex = 0;
-    public PieceGridView PieceGridView { get; set; }
-    public PieceController PieceController { get; set; }
-    private BoardView boardView;
     
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else if (Instance != this)
-        {
-            Destroy(gameObject);
-        }
+        Instance = this;
     }
 
     private void Update()
     {
-        BoardController = FindObjectOfType<BoardController>();
-        boardView = BoardController.GetComponent<BoardView>();
-
-        if (BoardController == null)
-        {
-            Debug.LogError("BoardController not found in scene.");
-        }
+        boardView = FindObjectOfType<BoardView>();
     }
-
 
     public int GetCurrentPlayerIndex()
     {
@@ -65,13 +43,7 @@ public class GameManager : MonoBehaviour
 
     public bool AssignMovieToPlayer(Movies movie)
     {
-        if (selectedMovies.Contains(movie))
-        {
-            Debug.LogError($"Movie {movie} is already selected. Choose a different one.");
-            return false;
-        }
-
-        var player = GetOrCreatePlayer();
+        var player = CreatePlayer();
         AssignMovieToPlayer(movie, player);
         
         selectedMovies.Add(movie);
@@ -82,12 +54,6 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        if (!CanStartGame())
-        {
-            Debug.LogError("Cannot start game. Not enough players or movies selected.");
-            return;
-        }
-
         GameStartTime = Time.time;
 
         GenerateAllCollectibles();
@@ -95,31 +61,28 @@ public class GameManager : MonoBehaviour
         InitializeTurnManager();
         InitializeEndTurnHandler();
         
-
-        BoardController.ExternalInitialize(board, boardView); 
+        boardView.InitializeTileBoardView(board); 
        
         InitializePieceGridView();
         InitializePieceController();
-        GameContext.SetTurnManager(TurnManager);
+        GameContext.SetTurnManager(turnManager);
         GameContext.SetBoardView(boardView);
         GameContext.SetGameManager(this);
-
-        
 
         collectibleViewManager = FindObjectOfType<CollectibleViewManager>();
         collectibleGridView.InitializeGrid(board, boardView, collectibleViewManager);
 
-        TurnManager.StartTurn();
+        turnManager.StartTurn();
     }
 
     public bool CanStartGame() => PlayerCount >= 2 && PlayerCount <= 4 && selectedMovies.Count == PlayerCount;
    
-    private Player GetOrCreatePlayer()
+    private Player CreatePlayer()
     {
-        if (!players.ContainsKey(players.Count))
-            players[players.Count] = new Player(players.Count);
+        if (!Players.ContainsKey(Players.Count))
+            Players[Players.Count] = new Player(Players.Count);
 
-        return players[players.Count - 1];
+        return Players[Players.Count - 1];
     }
 
     private void AssignMovieToPlayer(Movies movie, Player player)
@@ -135,7 +98,7 @@ public class GameManager : MonoBehaviour
 
         List<Piece> allPieces = new List<Piece>();
 
-        foreach(var playerEntry in players)
+        foreach(var playerEntry in Players)
         {
             Player player = playerEntry.Value;
             Movies selectedMovie = selectedMovies[player.ID];
@@ -147,20 +110,14 @@ public class GameManager : MonoBehaviour
 
         generator.GenerateBoard(playersCollectibles, allPieces);
 
-        Player initialPlayer = players.Values.First();
+        Player initialPlayer = Players.Values.First();
         GameContext = new Context(board, initialPlayer);  
 
     }
 
     private void GenerateAllCollectibles()
     {
-        if (collectibleViewManager == null)
-        {
-            Debug.LogError("CollectibleViewManager is null. Ensure it is properly assigned.");
-            return;
-        }
-
-        foreach (var playerEntry in players)
+        foreach (var playerEntry in Players)
         {
             Player player = playerEntry.Value;
             Movies selectedMovie = selectedMovies[player.ID];
@@ -171,74 +128,36 @@ public class GameManager : MonoBehaviour
 
             foreach (var collectible in collectibles)
             {
-                if (collectibleViewManager == null)
-                {
-                    Debug.LogError("CollectibleViewManager not found in the scene.");
-                    return;
-                }
-
-                if (collectible is null)
-                {
-                    Debug.LogError("Collectible is null.");
-                }
-
                 collectibleViewManager.CreateCollectibleVisual(collectible);
-
                 collectibleIndex++; 
             }
 
             player.AssignObjects(collectibles);
-
             playersCollectibles.AddRange(collectibles);
         }
     }
 
     private void InitializeTurnManager()
     {
-        TurnManager = new TurnManager(new List<Player>(players.Values), GameContext);
+        turnManager = new TurnManager(new List<Player>(Players.Values), GameContext);
     }
 
     private void InitializeEndTurnHandler()
     {
-        endTurnHandler = gameObject.GetComponent<EndTurnHandler>();
-        if (endTurnHandler == null)
-        {
-            endTurnHandler = gameObject.AddComponent<EndTurnHandler>();
-        }
-
-        endTurnHandler.Initialize(TurnManager);
+        endTurnHandler = gameObject.AddComponent<EndTurnHandler>();
+        endTurnHandler.Initialize(turnManager);
     }
 
     private void InitializePieceController()
     {
-        if (PieceController == null)
-        {
-            PieceController = FindObjectOfType<PieceController>();
-            if (PieceController == null)
-            {
-                Debug.LogError("PieceController not found in the scene.");
-            }
-            else
-            {
-               PieceController.InitializePieceController(board, TurnManager, GameContext, PieceGridView);
-            }
-        }
+        pieceController = FindObjectOfType<PieceController>();
+        pieceController.InitializePieceController(board, turnManager, GameContext, pieceGridView);
     }
 
     private void InitializePieceGridView()
     {
-        if (PieceGridView == null)
-        {
-            PieceGridView = FindObjectOfType<PieceGridView>();
-            if (PieceGridView == null)
-            {
-                Debug.LogError("PieceGridView not found in the scene.");
-            }
-            else
-            {
-                PieceGridView.InitializeGrid(board, BoardController.GetComponent<BoardView>());
-            }
-        }
+        pieceGridView = FindObjectOfType<PieceGridView>();
+        pieceGridView.InitializeGrid(board, boardView);
     }
 
     public void NextPlayer()
@@ -261,11 +180,6 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Player {winner.ID + 1} wins the game!");
 
         EndGameManager endGameManager = FindObjectOfType<EndGameManager>();
-        if (endGameManager == null)
-        {
-            Debug.LogError("EndGameManager not found in the scene.");
-            return;
-        }
 
         var winnerMovie = selectedMovies[winner.ID];
         Sprite finalMeme = MemeManager.Instance.GetMemeForMovie(winnerMovie);

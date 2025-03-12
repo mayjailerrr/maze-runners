@@ -11,27 +11,14 @@ public class WallBuilderAbility : IAbility
     {
         Player nextPlayer = context.TurnManager.GetNextPlayer(context.CurrentPlayer);
 
-        if (nextPlayer == null || nextPlayer.Pieces.Count == 0)
-        {
-            Debug.LogError("No valid target pieces.");
-            return false;
-        }
-
         var validTargets = nextPlayer.Pieces.Where(piece => !piece.IsShielded).ToList();
-
-        if (validTargets.Count == 0)
-        {
-            Debug.LogWarning("All target pieces are shielded. No walls builded.");
-            return false;
-        }
 
         System.Random random = new System.Random();
         selectedPieceIndex = random.Next(0, validTargets.Count);
 
         Piece targetPiece = validTargets[selectedPieceIndex];
         Piece currentPiece = context.CurrentPiece;
-        Debug.Log($"Target piece: {targetPiece?.Name}");
-
+      
         var board = context.Board;
         var boardView = context.BoardView;
         var position = targetPiece.Position;
@@ -56,8 +43,13 @@ public class WallBuilderAbility : IAbility
                     {
                         board.ReplaceTile(targetX, targetY, new ObstacleTile(targetX, targetY));
                         ReplaceTileVisual(boardView, targetX, targetY, board);
+
+                        context.CurrentPlayer.RecordAbilityUse();
+                        currentPiece.View.PlayAbilityEffect(new Color(0f, 0.39f, 0f, 0.8f));
+                        GameEvents.TriggerWallBuilderUsed();
                         
                         Debug.Log($"Wall built at ({targetX}, {targetY}).");
+
                         return true;
                     }
                     else
@@ -68,10 +60,6 @@ public class WallBuilderAbility : IAbility
             }
         }
 
-        context.CurrentPlayer.RecordAbilityUse();
-        currentPiece.View.PlayAbilityEffect(new Color(0f, 0.39f, 0f, 0.8f));
-        GameEvents.TriggerWallBuilderUsed();
-
         Debug.LogWarning("No valid position to build a wall.");
         
         return false;
@@ -80,11 +68,6 @@ public class WallBuilderAbility : IAbility
     private void ReplaceTileVisual(BoardView boardView, int x, int y, Board board)
     {
         var tileGO = boardView.GetTileObject(x, y);
-        if (tileGO == null)
-        {
-            Debug.LogError($"No tile found at ({x}, {y}).");
-            return;
-        }
 
         int siblingIndex = tileGO.transform.GetSiblingIndex();
         GameObject.Destroy(tileGO);

@@ -73,7 +73,7 @@ public class Board
         return x >= 0 && x < Size && y >= 0 && y < Size;
     }
 
-    public bool IsValidMove(Piece piece, int targetX, int targetY, Context gameContext)
+    public bool IsValidMove(int targetX, int targetY)
     {
         if (!IsWithinBounds(targetX, targetY)) return false;
 
@@ -106,6 +106,52 @@ public class Board
     public void CleanPreviousTile(int x, int y)
     {
         TileGrid[x, y].OccupyingPiece = null;
+    }
+
+    public (int x, int y)? FindNearestFreeTile((int x, int y) start)
+    {
+        var directions = new (int x, int y)[]
+        {
+            (0, 1), (1, 0), (0, -1), (-1, 0), 
+            (1, 1), (1, -1), (-1, 1), (-1, -1)
+        };
+
+        var visited = new HashSet<(int, int)>();
+        var queue = new Queue<((int x, int y) position, int distance)>();
+        queue.Enqueue((start, 0));
+
+        while (queue.Count > 0)
+        {
+            var (current, _) = queue.Dequeue();
+
+            if (visited.Contains(current)) continue;
+            visited.Add(current);
+
+            if (IsWithinBounds(current.x, current.y))
+            {
+                var tile = GetTileAtPosition(current.x, current.y);
+
+                bool isTileFree = tile != null && !(tile is TrapTile) && !(tile is ObstacleTile) &&
+                                !tile.IsOccupied &&
+                                (!(tile is CollectibleTile collectibleTile) || collectibleTile.Collectible == null);
+
+                if (isTileFree)
+                {
+                    return current;
+                }
+            }
+
+            foreach (var direction in directions)
+            {
+                var neighbor = (current.x + direction.x, current.y + direction.y);
+                if (!visited.Contains(neighbor) && IsWithinBounds(neighbor.Item1, neighbor.Item2))
+                {
+                    queue.Enqueue((neighbor, 0));
+                }
+            }
+        }
+
+        return null;
     }
 
 }

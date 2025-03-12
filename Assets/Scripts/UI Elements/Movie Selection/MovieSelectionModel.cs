@@ -26,7 +26,7 @@ namespace MazeRunners
             return availableMovies.Contains(movie);
         }
 
-        public void AssignMovieToPlayer(int playerId, Movies movie)
+        public void AssignMovieToPlayer(Movies movie)
         {
             if (!IsMovieAvailable(movie))
                 return;

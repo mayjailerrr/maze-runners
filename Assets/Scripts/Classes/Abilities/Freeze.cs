@@ -12,19 +12,7 @@ public class FreezeAbility : IAbility
     {
         Player nextPlayer = context.TurnManager.GetNextPlayer(context.CurrentPlayer);
 
-        if (nextPlayer == null || nextPlayer.Pieces.Count == 0)
-        {
-            Debug.LogError("No valid target pieces.");
-            return false;
-        }
-
         var validTargets = nextPlayer.Pieces.Where(piece => !piece.IsShielded).ToList();
-
-        if (validTargets.Count == 0)
-        {
-            Debug.LogWarning("All target pieces are shielded. No freeze applied.");
-            return false;
-        }
 
         System.Random random = new System.Random();
         selectedPieceIndex = random.Next(0, validTargets.Count);

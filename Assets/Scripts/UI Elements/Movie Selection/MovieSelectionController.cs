@@ -67,7 +67,7 @@ public class MovieSelectionController : MonoBehaviour
             return;
         }
 
-        model.AssignMovieToPlayer(currentPlayerIndex, selectedMovie);
+        model.AssignMovieToPlayer(selectedMovie);
         GameManager.Instance.AssignMovieToPlayer(selectedMovie);
 
         string movieName = FormatMovieName(selectedMovie.ToString());

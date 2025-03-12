@@ -8,28 +8,15 @@ public class RampartBuilderAbility : IAbility
     private int selectedPieceIndex;
     public bool Execute(Context context)
     {
-       Player nextPlayer = context.TurnManager.GetNextPlayer(context.CurrentPlayer);
-
-        if (nextPlayer == null || nextPlayer.Pieces.Count == 0)
-        {
-            Debug.LogError("No valid target pieces.");
-            return false;
-        }
+        Player nextPlayer = context.TurnManager.GetNextPlayer(context.CurrentPlayer);
 
         var validTargets = nextPlayer.Pieces.Where(piece => !piece.IsShielded).ToList();
-
-        if (validTargets.Count == 0)
-        {
-            Debug.LogWarning("All target pieces are shielded. No walls builded.");
-            return false;
-        }
 
         System.Random random = new System.Random();
         selectedPieceIndex = random.Next(0, validTargets.Count);
 
         Piece targetPiece = validTargets[selectedPieceIndex];
         Piece currentPiece = context.CurrentPiece;
-        Debug.Log($"Target piece: {targetPiece?.Name}");
 
         var board = context.Board;
         var boardView = context.BoardView;
@@ -56,7 +43,6 @@ public class RampartBuilderAbility : IAbility
                     if (tile is Tile && !hasPiece && !hasCollectible)
                     {
                         board.ReplaceTile(targetX, targetY, new ObstacleTile(targetX, targetY));
-                        Debug.Log($"Wall built at ({targetX}, {targetY}).");
                         wallBuilt = true;
 
                         ReplaceTileVisual(boardView, targetX, targetY, board);
@@ -78,17 +64,14 @@ public class RampartBuilderAbility : IAbility
         currentPiece.View.PlayAbilityEffect(new Color(0.6f, 0.2f, 1f, 0.8f));
         GameEvents.TriggerRampartBuilderUsed();
 
+        Debug.Log($"A rampart has been built around {targetPiece.Name}.");
+
         return wallBuilt;
     }
 
     private void ReplaceTileVisual(BoardView boardView, int x, int y, Board board)
     {
         var tileGO = boardView.GetTileObject(x, y);
-        if (tileGO == null)
-        {
-            Debug.LogError($"No tile found at ({x}, {y}).");
-            return;
-        }
 
         int siblingIndex = tileGO.transform.GetSiblingIndex();
         GameObject.Destroy(tileGO);

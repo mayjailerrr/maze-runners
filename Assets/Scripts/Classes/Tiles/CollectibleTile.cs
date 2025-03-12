@@ -8,7 +8,7 @@ public class CollectibleTile : Tile
         Collectible = collectible;
     }
 
-    public bool Interact(Piece piece, Player player)
+    public bool Interact(Player player)
     {
         if (Collectible == null) return false;
 
@@ -26,4 +26,5 @@ public class CollectibleTile : Tile
     {
         return Collectible != null && Collectible.TargetPlayerID == player.ID;
     }
+    
 }

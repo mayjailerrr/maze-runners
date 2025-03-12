@@ -11,11 +11,6 @@ public class ShieldAbility : IAbility
     public bool Execute(Context context)
     {
         var targetPiece = context.CurrentPiece;
-        if (targetPiece == null)
-        {
-            Debug.LogError("No piece selected to shield.");
-            return false;
-        }
 
         Debug.Log($"Applying shield to piece {targetPiece.Name} for {shieldTurns} turns.");
 
@@ -71,8 +66,6 @@ public class ShieldAbility : IAbility
             GameObject.Destroy(shieldIndicator);
             shieldIndicator = null;
         }
-
-        Debug.Log("Shield effect deactivated!");
     }
 
     private Sprite CreateCircleSprite(int diameter)
